@@ -1,0 +1,1294 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#f97316">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="MotoControle">
+<link rel="manifest" href="manifest.json">
+<title>MotoControle</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0d0f14;
+    --bg2: #13161e;
+    --bg3: #1a1e2a;
+    --card: #1e2230;
+    --card2: #252a3a;
+    --border: #2e3347;
+    --accent: #f97316;
+    --accent2: #fb923c;
+    --green: #22c55e;
+    --red: #ef4444;
+    --blue: #3b82f6;
+    --yellow: #eab308;
+    --purple: #a855f7;
+    --text: #e8eaf0;
+    --text2: #9aa0b8;
+    --text3: #5c6280;
+    --ifood: #ea1d2c;
+    --n99: #f5a623;
+    --particular: #22c55e;
+    --safe-bottom: env(safe-area-inset-bottom, 0px);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+
+  html, body {
+    height: 100%;
+    overflow: hidden;
+  }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* TOP HEADER */
+  .topbar {
+    background: var(--bg2);
+    border-bottom: 1px solid var(--border);
+    padding: 14px 16px 12px;
+    padding-top: calc(14px + env(safe-area-inset-top, 0px));
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-shrink: 0;
+    z-index: 10;
+  }
+
+  .logo {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 22px;
+    letter-spacing: 2px;
+    color: var(--accent);
+  }
+
+  .page-title {
+    font-size: 13px;
+    color: var(--text3);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+
+  .header-right {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  /* SCROLL CONTENT */
+  .content {
+    flex: 1;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    padding: 16px;
+    padding-bottom: calc(80px + var(--safe-bottom));
+  }
+
+  /* BOTTOM NAV */
+  .bottom-nav {
+    position: fixed;
+    bottom: 0;
+    left: 0; right: 0;
+    background: var(--bg2);
+    border-top: 1px solid var(--border);
+    display: flex;
+    padding-bottom: var(--safe-bottom);
+    z-index: 100;
+  }
+
+  .nav-item {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 3px;
+    padding: 10px 4px;
+    cursor: pointer;
+    color: var(--text3);
+    font-size: 10px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    transition: color 0.2s;
+    border: none;
+    background: none;
+    font-family: 'DM Sans', sans-serif;
+  }
+
+  .nav-item .icon { font-size: 22px; line-height: 1; }
+  .nav-item.active { color: var(--accent); }
+
+  /* PAGES */
+  .page { display: none; }
+  .page.active { display: block; }
+
+  /* CARDS */
+  .cards-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin-bottom: 20px;
+  }
+
+  .stat-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 14px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .stat-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 3px;
+  }
+  .stat-card.orange::before { background: linear-gradient(90deg, var(--accent), var(--accent2)); }
+  .stat-card.green::before { background: linear-gradient(90deg, var(--green), #4ade80); }
+  .stat-card.red::before { background: linear-gradient(90deg, var(--red), #f87171); }
+  .stat-card.blue::before { background: linear-gradient(90deg, var(--blue), #60a5fa); }
+
+  .stat-label { font-size: 10px; text-transform: uppercase; letter-spacing: 1px; color: var(--text3); font-weight: 600; margin-bottom: 6px; }
+  .stat-value { font-family: 'Bebas Neue', sans-serif; font-size: 26px; color: var(--text); letter-spacing: 0.5px; line-height: 1; }
+  .stat-sub { font-size: 11px; color: var(--text3); margin-top: 4px; }
+  .stat-icon { position: absolute; right: 10px; top: 12px; font-size: 22px; opacity: 0.15; }
+
+  /* SECTION */
+  .section-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 12px;
+  }
+
+  .section-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 19px;
+    letter-spacing: 1px;
+  }
+
+  /* FAB */
+  .fab {
+    position: fixed;
+    bottom: calc(70px + var(--safe-bottom) + 12px);
+    right: 16px;
+    width: 52px;
+    height: 52px;
+    border-radius: 50%;
+    background: var(--accent);
+    color: #fff;
+    font-size: 26px;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 20px rgba(249,115,22,0.5);
+    z-index: 90;
+    transition: transform 0.2s;
+  }
+  .fab:active { transform: scale(0.92); }
+
+  /* TABLE CARDS (mobile-friendly) */
+  .list-item {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 13px 14px;
+    margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .list-item-main { flex: 1; min-width: 0; }
+  .list-item-title { font-size: 14px; font-weight: 600; color: var(--text); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .list-item-sub { font-size: 12px; color: var(--text3); margin-top: 2px; }
+  .list-item-right { text-align: right; flex-shrink: 0; }
+  .list-item-value { font-family: 'JetBrains Mono', monospace; font-size: 15px; font-weight: 700; }
+  .list-item-sub2 { font-size: 11px; color: var(--text3); margin-top: 2px; }
+
+  .money-positive { color: var(--green); }
+  .money-negative { color: var(--red); }
+  .money-neutral { color: var(--text); }
+
+  /* BADGES */
+  .badge {
+    display: inline-flex;
+    align-items: center;
+    padding: 2px 8px;
+    border-radius: 20px;
+    font-size: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+  .badge-ifood { background: rgba(234,29,44,0.15); color: var(--ifood); border: 1px solid rgba(234,29,44,0.3); }
+  .badge-99 { background: rgba(245,166,35,0.15); color: var(--n99); border: 1px solid rgba(245,166,35,0.3); }
+  .badge-particular { background: rgba(34,197,94,0.15); color: var(--particular); border: 1px solid rgba(34,197,94,0.3); }
+  .badge-gasto { background: rgba(168,85,247,0.15); color: var(--purple); border: 1px solid rgba(168,85,247,0.3); }
+
+  /* MODAL / BOTTOM SHEET */
+  .sheet-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.6);
+    backdrop-filter: blur(3px);
+    z-index: 200;
+    display: none;
+    align-items: flex-end;
+  }
+  .sheet-overlay.open { display: flex; }
+
+  .sheet {
+    background: var(--card);
+    border-radius: 20px 20px 0 0;
+    width: 100%;
+    max-height: 92vh;
+    overflow-y: auto;
+    padding: 0 16px calc(16px + var(--safe-bottom));
+    animation: slideUp 0.3s ease;
+  }
+
+  @keyframes slideUp {
+    from { transform: translateY(100%); }
+    to { transform: translateY(0); }
+  }
+
+  .sheet-handle {
+    width: 36px;
+    height: 4px;
+    background: var(--border);
+    border-radius: 2px;
+    margin: 10px auto 16px;
+  }
+
+  .sheet h2 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 22px;
+    letter-spacing: 1px;
+    margin-bottom: 16px;
+    color: var(--text);
+  }
+
+  .sheet h2 span { color: var(--accent); }
+
+  /* FORM */
+  .form-group { display: flex; flex-direction: column; gap: 5px; margin-bottom: 12px; }
+  .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+
+  label {
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--text3);
+  }
+
+  input, select, textarea {
+    background: var(--bg3);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 12px 14px;
+    color: var(--text);
+    font-size: 16px; /* 16px evita zoom no iOS */
+    font-family: 'DM Sans', sans-serif;
+    outline: none;
+    width: 100%;
+    transition: border-color 0.2s;
+    -webkit-appearance: none;
+  }
+
+  input:focus, select:focus { border-color: var(--accent); }
+  select option { background: var(--card); }
+
+  .form-actions {
+    display: flex;
+    gap: 10px;
+    margin-top: 16px;
+  }
+
+  .btn {
+    flex: 1;
+    padding: 14px;
+    border-radius: 12px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 15px;
+    font-weight: 700;
+    cursor: pointer;
+    border: none;
+    transition: all 0.2s;
+  }
+
+  .btn-primary { background: var(--accent); color: #fff; }
+  .btn-primary:active { background: var(--accent2); transform: scale(0.98); }
+  .btn-ghost { background: var(--bg3); color: var(--text2); border: 1px solid var(--border); }
+  .btn-ghost:active { opacity: 0.7; }
+  .btn-danger { background: rgba(239,68,68,0.15); color: var(--red); border: 1px solid rgba(239,68,68,0.3); }
+
+  /* PROFIT PREVIEW */
+  .profit-preview {
+    background: var(--bg3);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 12px;
+    margin-bottom: 12px;
+    display: none;
+  }
+  .profit-preview.visible { display: block; }
+
+  .profit-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 4px 0;
+    font-size: 13px;
+  }
+  .profit-row .lbl { color: var(--text3); }
+  .profit-row .val { font-family: 'JetBrains Mono', monospace; font-weight: 700; font-size: 14px; }
+  .profit-row.total { border-top: 1px solid var(--border); margin-top: 6px; padding-top: 10px; }
+
+  /* EMPTY */
+  .empty-state {
+    text-align: center;
+    padding: 50px 20px;
+    color: var(--text3);
+  }
+  .empty-state .emoji { font-size: 44px; margin-bottom: 10px; }
+
+  /* RENTA CARD */
+  .renta-result-card {
+    background: var(--bg3);
+    border-radius: 12px;
+    padding: 14px;
+    margin-bottom: 10px;
+  }
+  .renta-result-card .rl { font-size: 11px; text-transform: uppercase; letter-spacing: 1px; color: var(--text3); margin-bottom: 4px; }
+  .renta-result-card .rv { font-family: 'Bebas Neue', sans-serif; font-size: 26px; }
+
+  .renta-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 12px; }
+
+  /* CONFIG */
+  .config-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 16px;
+    margin-bottom: 14px;
+  }
+  .config-card h3 { font-size: 15px; font-weight: 700; margin-bottom: 14px; padding-bottom: 10px; border-bottom: 1px solid var(--border); }
+
+  /* MULTAS */
+  .multa-badge {
+    display: inline-flex;
+    padding: 2px 8px;
+    border-radius: 20px;
+    font-size: 10px;
+    font-weight: 700;
+  }
+  .multa-grave { background: rgba(239,68,68,0.15); color: var(--red); border: 1px solid rgba(239,68,68,0.3); }
+  .multa-media { background: rgba(234,179,8,0.15); color: var(--yellow); border: 1px solid rgba(234,179,8,0.3); }
+  .multa-leve { background: rgba(59,130,246,0.15); color: var(--blue); border: 1px solid rgba(59,130,246,0.3); }
+
+  .points-bar { background: var(--bg3); border-radius: 6px; height: 8px; margin-top: 8px; overflow: hidden; }
+  .points-fill { height: 100%; border-radius: 6px; transition: width 0.5s; }
+
+  /* FILTER */
+  .filter-row { display: flex; gap: 8px; margin-bottom: 12px; overflow-x: auto; padding-bottom: 4px; }
+  .filter-chip {
+    flex-shrink: 0;
+    padding: 6px 14px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
+    border: 1px solid var(--border);
+    background: var(--card);
+    color: var(--text2);
+    cursor: pointer;
+    white-space: nowrap;
+  }
+  .filter-chip.active { border-color: var(--accent); color: var(--accent); background: rgba(249,115,22,0.1); }
+
+  /* TOAST */
+  .toast {
+    position: fixed;
+    top: calc(70px + env(safe-area-inset-top,0px));
+    left: 12px; right: 12px;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 12px 16px;
+    font-size: 14px;
+    font-weight: 500;
+    z-index: 999;
+    transform: translateY(-20px);
+    opacity: 0;
+    transition: all 0.3s;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .toast.show { transform: translateY(0); opacity: 1; }
+  .toast.success { border-color: var(--green); }
+  .toast.error { border-color: var(--red); }
+
+  /* SCROLLBAR */
+  ::-webkit-scrollbar { width: 4px; }
+  ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
+
+  /* Delete button */
+  .btn-del {
+    background: none;
+    border: none;
+    font-size: 18px;
+    cursor: pointer;
+    padding: 4px;
+    opacity: 0.5;
+    flex-shrink: 0;
+  }
+  .btn-del:active { opacity: 1; }
+
+  .action-bar {
+    display: flex;
+    gap: 8px;
+    flex-direction: column;
+  }
+
+  .input-readonly {
+    background: var(--bg3);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 12px 14px;
+    color: var(--accent);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 15px;
+    font-weight: 700;
+  }
+</style>
+</head>
+<body>
+
+<!-- TOP BAR -->
+<div class="topbar">
+  <div class="logo">🏍 MotoControle</div>
+  <div class="page-title" id="pageTitle">Dashboard</div>
+  <div class="header-right">
+    <button onclick="showPage('config')" style="background:none;border:none;font-size:20px;cursor:pointer;padding:2px;">⚙️</button>
+  </div>
+</div>
+
+<!-- CONTENT -->
+<div class="content" id="mainContent">
+
+  <!-- DASHBOARD -->
+  <div class="page active" id="page-dashboard">
+    <div class="cards-grid" id="dashCards"></div>
+    <div class="section-header">
+      <div class="section-title">Últimas Entregas</div>
+    </div>
+    <div id="dashEntregas"></div>
+    <div class="section-header" style="margin-top:16px;">
+      <div class="section-title">Últimos Gastos</div>
+    </div>
+    <div id="dashGastos"></div>
+  </div>
+
+  <!-- ENTREGAS -->
+  <div class="page" id="page-entregas">
+    <div class="filter-row" id="filtrosPlat">
+      <div class="filter-chip active" onclick="setFiltroPlat('',this)">Todas</div>
+      <div class="filter-chip" onclick="setFiltroPlat('iFood',this)">🔴 iFood</div>
+      <div class="filter-chip" onclick="setFiltroPlat('99',this)">🟡 99</div>
+      <div class="filter-chip" onclick="setFiltroPlat('Particular',this)">🟢 Particular</div>
+    </div>
+    <div id="listaEntregas"></div>
+  </div>
+
+  <!-- GASTOS -->
+  <div class="page" id="page-gastos">
+    <div class="filter-row">
+      <div class="filter-chip active" onclick="setFiltroGasto('',this)">Todos</div>
+      <div class="filter-chip" onclick="setFiltroGasto('Gasolina',this)">⛽ Gasolina</div>
+      <div class="filter-chip" onclick="setFiltroGasto('Comida',this)">🍔 Comida</div>
+      <div class="filter-chip" onclick="setFiltroGasto('Manutenção',this)">🔧 Manutenção</div>
+      <div class="filter-chip" onclick="setFiltroGasto('Outros',this)">📦 Outros</div>
+    </div>
+    <div id="listaGastos"></div>
+  </div>
+
+  <!-- RENTABILIDADE -->
+  <div class="page" id="page-renta">
+    <div class="config-card">
+      <h3>⚙️ Configuração da Moto</h3>
+      <div class="form-row">
+        <div class="form-group">
+          <label>KM por litro</label>
+          <input type="number" id="rKm" placeholder="Ex: 35" step="0.1" oninput="salvarConfigRenta()">
+        </div>
+        <div class="form-group">
+          <label>Preço gasolina (R$)</label>
+          <input type="number" id="rGas" placeholder="Ex: 6.89" step="0.01" oninput="salvarConfigRenta()">
+        </div>
+      </div>
+      <div class="form-group">
+        <label>Custo por km</label>
+        <div class="input-readonly" id="rCusto">—</div>
+      </div>
+    </div>
+
+    <div class="config-card">
+      <h3>📅 Análise do Dia</h3>
+      <div class="form-group">
+        <label>Data</label>
+        <input type="date" id="rentaData" onchange="calcDia()">
+      </div>
+      <div id="rentaDiaResult"></div>
+    </div>
+
+    <div class="config-card">
+      <h3>📊 Período</h3>
+      <div class="form-row">
+        <div class="form-group">
+          <label>De</label>
+          <input type="date" id="rentaIni" onchange="calcPeriodo()">
+        </div>
+        <div class="form-group">
+          <label>Até</label>
+          <input type="date" id="rentaFim" onchange="calcPeriodo()">
+        </div>
+      </div>
+      <div id="rentaPeriodoResult"></div>
+    </div>
+  </div>
+
+  <!-- MULTAS -->
+  <div class="page" id="page-multas">
+    <div id="multasResumo" style="margin-bottom:16px;"></div>
+    <div id="listaMultas"></div>
+  </div>
+
+  <!-- CONFIG -->
+  <div class="page" id="page-config">
+    <div class="config-card">
+      <h3>🏍 Minha Moto</h3>
+      <div class="form-row">
+        <div class="form-group">
+          <label>KM por litro</label>
+          <input type="number" id="cfgKm" step="0.1" placeholder="Ex: 35">
+        </div>
+        <div class="form-group">
+          <label>Preço da Gasolina</label>
+          <input type="number" id="cfgGas" step="0.01" placeholder="Ex: 6.89">
+        </div>
+      </div>
+      <button class="btn btn-primary" style="width:100%;margin-top:8px;" onclick="salvarConfigFull()">💾 Salvar</button>
+    </div>
+
+    <div class="config-card">
+      <h3>💾 Backup dos Dados</h3>
+      <div class="action-bar">
+        <button class="btn btn-ghost" onclick="exportar()">📤 Exportar backup (JSON)</button>
+        <label class="btn btn-ghost" style="text-align:center;cursor:pointer;">
+          📥 Importar backup
+          <input type="file" accept=".json" style="display:none" onchange="importar(event)">
+        </label>
+        <button class="btn btn-danger" onclick="limparTudo()">🗑 Limpar todos os dados</button>
+      </div>
+    </div>
+
+    <div class="config-card">
+      <h3>ℹ️ Sobre</h3>
+      <p style="font-size:13px;color:var(--text3);line-height:1.7;">MotoControle v1.0<br>Dados salvos no próprio celular.<br>Faça backup regularmente!</p>
+    </div>
+  </div>
+
+</div>
+
+<!-- BOTTOM NAV -->
+<nav class="bottom-nav">
+  <button class="nav-item active" id="nav-dashboard" onclick="showPage('dashboard')">
+    <span class="icon">📊</span>
+    <span>Início</span>
+  </button>
+  <button class="nav-item" id="nav-entregas" onclick="showPage('entregas')">
+    <span class="icon">📦</span>
+    <span>Entregas</span>
+  </button>
+  <button class="nav-item" id="nav-gastos" onclick="showPage('gastos')">
+    <span class="icon">💸</span>
+    <span>Gastos</span>
+  </button>
+  <button class="nav-item" id="nav-renta" onclick="showPage('renta')">
+    <span class="icon">📈</span>
+    <span>Rentab.</span>
+  </button>
+  <button class="nav-item" id="nav-multas" onclick="showPage('multas')">
+    <span class="icon">🚨</span>
+    <span>Multas</span>
+  </button>
+</nav>
+
+<!-- FAB -->
+<button class="fab" id="fabBtn" onclick="openFab()">+</button>
+
+<!-- ===== SHEETS ===== -->
+
+<!-- ENTREGA SHEET -->
+<div class="sheet-overlay" id="sheetEntrega">
+  <div class="sheet">
+    <div class="sheet-handle"></div>
+    <h2>📦 <span>Nova</span> Entrega</h2>
+    <div class="form-row">
+      <div class="form-group">
+        <label>Data</label>
+        <input type="date" id="eData">
+      </div>
+      <div class="form-group">
+        <label>Hora</label>
+        <input type="time" id="eHora">
+      </div>
+    </div>
+    <div class="form-group">
+      <label>Plataforma</label>
+      <select id="ePlat" onchange="calcPreview()">
+        <option value="iFood">🔴 iFood</option>
+        <option value="99">🟡 99</option>
+        <option value="Particular">🟢 Particular</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label>Destino / Descrição</label>
+      <input type="text" id="eDest" placeholder="Ex: Perequê-Açu...">
+    </div>
+    <div class="form-row">
+      <div class="form-group">
+        <label>Valor recebido (R$)</label>
+        <input type="number" id="eVal" step="0.01" placeholder="0,00" oninput="calcPreview()">
+      </div>
+      <div class="form-group">
+        <label>KM percorrido</label>
+        <input type="number" id="eKm" step="0.1" placeholder="0.0" oninput="calcPreview()">
+      </div>
+    </div>
+    <div class="profit-preview" id="profitPreview">
+      <div class="profit-row">
+        <span class="lbl">Ganho bruto</span>
+        <span class="val money-neutral" id="pvBruto">R$ 0,00</span>
+      </div>
+      <div class="profit-row">
+        <span class="lbl">⛽ Custo km</span>
+        <span class="val money-negative" id="pvCusto">- R$ 0,00</span>
+      </div>
+      <div class="profit-row total">
+        <span class="lbl" style="font-weight:700;">💰 Ganho REAL</span>
+        <span class="val money-positive" id="pvReal">R$ 0,00</span>
+      </div>
+    </div>
+    <div class="form-actions">
+      <button class="btn btn-ghost" onclick="closeSheet('sheetEntrega')">Cancelar</button>
+      <button class="btn btn-primary" onclick="salvarEntrega()">Registrar</button>
+    </div>
+  </div>
+</div>
+
+<!-- GASTO SHEET -->
+<div class="sheet-overlay" id="sheetGasto">
+  <div class="sheet">
+    <div class="sheet-handle"></div>
+    <h2>💸 <span>Novo</span> Gasto</h2>
+    <div class="form-group">
+      <label>Data</label>
+      <input type="date" id="gData">
+    </div>
+    <div class="form-group">
+      <label>Categoria</label>
+      <select id="gCat">
+        <option value="Gasolina">⛽ Gasolina</option>
+        <option value="Comida">🍔 Comida</option>
+        <option value="Manutenção">🔧 Manutenção</option>
+        <option value="Seguro">🛡 Seguro</option>
+        <option value="Outros">📦 Outros</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label>Descrição</label>
+      <input type="text" id="gDesc" placeholder="Descreva o gasto...">
+    </div>
+    <div class="form-group">
+      <label>Valor (R$)</label>
+      <input type="number" id="gVal" step="0.01" placeholder="0,00">
+    </div>
+    <div class="form-actions">
+      <button class="btn btn-ghost" onclick="closeSheet('sheetGasto')">Cancelar</button>
+      <button class="btn btn-primary" onclick="salvarGasto()">Registrar</button>
+    </div>
+  </div>
+</div>
+
+<!-- MULTA SHEET -->
+<div class="sheet-overlay" id="sheetMulta">
+  <div class="sheet">
+    <div class="sheet-handle"></div>
+    <h2>🚨 <span>Nova</span> Multa</h2>
+    <div class="form-row">
+      <div class="form-group">
+        <label>Data</label>
+        <input type="date" id="mData">
+      </div>
+      <div class="form-group">
+        <label>Gravidade</label>
+        <select id="mGrav" onchange="preencherPts()">
+          <option value="Leve">🔵 Leve</option>
+          <option value="Média">🟡 Média</option>
+          <option value="Grave">🔴 Grave</option>
+          <option value="Gravíssima">🔴 Gravíssima</option>
+        </select>
+      </div>
+    </div>
+    <div class="form-group">
+      <label>Tipo de infração</label>
+      <input type="text" id="mInf" placeholder="Ex: Excesso de velocidade...">
+    </div>
+    <div class="form-row">
+      <div class="form-group">
+        <label>Pontos CNH</label>
+        <input type="number" id="mPts" placeholder="0">
+      </div>
+      <div class="form-group">
+        <label>Valor (R$)</label>
+        <input type="number" id="mVal" step="0.01" placeholder="0,00">
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="form-group">
+        <label>Vencimento</label>
+        <input type="date" id="mVenc">
+      </div>
+      <div class="form-group">
+        <label>Status</label>
+        <select id="mStat">
+          <option value="Pendente">⏳ Pendente</option>
+          <option value="Paga">✅ Paga</option>
+          <option value="Recorrendo">⚖️ Recorrendo</option>
+        </select>
+      </div>
+    </div>
+    <div class="form-actions">
+      <button class="btn btn-ghost" onclick="closeSheet('sheetMulta')">Cancelar</button>
+      <button class="btn btn-primary" onclick="salvarMulta()">Registrar</button>
+    </div>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+<script>
+// ===== DATA =====
+const get = () => ({
+  entregas: JSON.parse(localStorage.getItem('mc_entregas') || '[]'),
+  gastos: JSON.parse(localStorage.getItem('mc_gastos') || '[]'),
+  multas: JSON.parse(localStorage.getItem('mc_multas') || '[]'),
+  config: JSON.parse(localStorage.getItem('mc_config') || '{"kmPorLitro":35,"precoGas":6.89}')
+});
+
+const save = (k, v) => localStorage.setItem('mc_' + k, JSON.stringify(v));
+
+// ===== UTILS =====
+const uid = () => Date.now().toString(36) + Math.random().toString(36).slice(2);
+const fmtDate = s => { if (!s) return '—'; const [y,m,d] = s.split('-'); return `${d}/${m}/${y}`; };
+const fmtMoney = v => 'R$ ' + Number(v||0).toFixed(2).replace('.',',');
+const todayStr = () => new Date().toISOString().split('T')[0];
+const cpkm = () => { const d = get(); return (parseFloat(d.config.precoGas)||6.89) / (parseFloat(d.config.kmPorLitro)||35); };
+
+function toast(msg, type='success') {
+  const t = document.getElementById('toast');
+  t.textContent = (type==='success'?'✅ ':'❌ ') + msg;
+  t.className = 'toast show ' + type;
+  setTimeout(() => t.classList.remove('show'), 2800);
+}
+
+// ===== NAVIGATION =====
+let currentPage = 'dashboard';
+let filtroPlat = '';
+let filtroGasto = '';
+
+const pageTitles = { dashboard:'Início', entregas:'Entregas', gastos:'Gastos', renta:'Rentabilidade', multas:'Multas', config:'Configurações' };
+const fabPages = ['entregas','gastos','multas'];
+
+function showPage(id) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.getElementById('page-' + id).classList.add('active');
+  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+  const navEl = document.getElementById('nav-' + id);
+  if (navEl) navEl.classList.add('active');
+  document.getElementById('pageTitle').textContent = pageTitles[id] || id;
+  document.getElementById('fabBtn').style.display = fabPages.includes(id) ? 'flex' : 'none';
+  currentPage = id;
+  if (id==='dashboard') renderDash();
+  if (id==='entregas') renderEntregas();
+  if (id==='gastos') renderGastos();
+  if (id==='multas') renderMultas();
+  if (id==='renta') initRenta();
+  if (id==='config') initConfig();
+}
+
+function openFab() {
+  if (currentPage === 'entregas') openSheet('sheetEntrega');
+  else if (currentPage === 'gastos') openSheet('sheetGasto');
+  else if (currentPage === 'multas') openSheet('sheetMulta');
+}
+
+// ===== SHEETS =====
+function openSheet(id) {
+  const s = document.getElementById(id);
+  s.classList.add('open');
+  if (id === 'sheetEntrega') {
+    const now = new Date();
+    document.getElementById('eData').value = todayStr();
+    document.getElementById('eHora').value = now.toTimeString().slice(0,5);
+    document.getElementById('eVal').value = '';
+    document.getElementById('eDest').value = '';
+    document.getElementById('eKm').value = '';
+    document.getElementById('profitPreview').classList.remove('visible');
+  }
+  if (id === 'sheetGasto') {
+    document.getElementById('gData').value = todayStr();
+    document.getElementById('gDesc').value = '';
+    document.getElementById('gVal').value = '';
+  }
+  if (id === 'sheetMulta') {
+    document.getElementById('mData').value = todayStr();
+    document.getElementById('mInf').value = '';
+    document.getElementById('mVal').value = '';
+    document.getElementById('mVenc').value = '';
+    preencherPts();
+  }
+}
+
+function closeSheet(id) {
+  document.getElementById(id).classList.remove('open');
+}
+
+document.querySelectorAll('.sheet-overlay').forEach(o => {
+  o.addEventListener('click', e => { if (e.target === o) o.classList.remove('open'); });
+});
+
+// ===== PROFIT PREVIEW =====
+function calcPreview() {
+  const val = parseFloat(document.getElementById('eVal').value) || 0;
+  const km = parseFloat(document.getElementById('eKm').value) || 0;
+  if (!val && !km) { document.getElementById('profitPreview').classList.remove('visible'); return; }
+  const custo = cpkm() * km;
+  const real = val - custo;
+  document.getElementById('pvBruto').textContent = fmtMoney(val);
+  document.getElementById('pvCusto').textContent = '- ' + fmtMoney(custo);
+  document.getElementById('pvReal').textContent = fmtMoney(real);
+  document.getElementById('pvReal').className = 'val ' + (real >= 0 ? 'money-positive' : 'money-negative');
+  document.getElementById('profitPreview').classList.add('visible');
+}
+
+// ===== ENTREGAS =====
+function salvarEntrega() {
+  const data = document.getElementById('eData').value;
+  const hora = document.getElementById('eHora').value;
+  const plat = document.getElementById('ePlat').value;
+  const val = document.getElementById('eVal').value;
+  const dest = document.getElementById('eDest').value;
+  const km = document.getElementById('eKm').value;
+
+  if (!data || !val || isNaN(parseFloat(val)) || parseFloat(val) <= 0) {
+    toast('Preencha data e valor!', 'error'); return;
+  }
+  const d = get();
+  d.entregas.unshift({ id: uid(), data, hora, plataforma: plat, valor: parseFloat(val), destino: dest || '—', km: parseFloat(km) || 0 });
+  save('entregas', d.entregas);
+  closeSheet('sheetEntrega');
+  toast('Entrega registrada!');
+  renderEntregas();
+  renderDash();
+}
+
+function delEntrega(id) {
+  if (!confirm('Deletar esta entrega?')) return;
+  const d = get();
+  d.entregas = d.entregas.filter(e => e.id !== id);
+  save('entregas', d.entregas);
+  renderEntregas();
+  renderDash();
+  toast('Entrega removida.');
+}
+
+function setFiltroPlat(val, el) {
+  filtroPlat = val;
+  document.querySelectorAll('#filtrosPlat .filter-chip').forEach(c => c.classList.remove('active'));
+  el.classList.add('active');
+  renderEntregas();
+}
+
+function renderEntregas() {
+  const d = get();
+  let list = [...d.entregas];
+  if (filtroPlat) list = list.filter(e => e.plataforma === filtroPlat);
+  const c = cpkm();
+  const el = document.getElementById('listaEntregas');
+  if (!list.length) { el.innerHTML = '<div class="empty-state"><div class="emoji">📦</div><p>Nenhuma entrega ainda.<br>Toque + para adicionar!</p></div>'; return; }
+  el.innerHTML = list.map(e => {
+    const custo = c * (e.km||0);
+    const real = e.valor - custo;
+    const bc = e.plataforma==='iFood'?'badge-ifood':e.plataforma==='99'?'badge-99':'badge-particular';
+    return `<div class="list-item">
+      <div style="font-size:28px;flex-shrink:0">${e.plataforma==='iFood'?'🔴':e.plataforma==='99'?'🟡':'🟢'}</div>
+      <div class="list-item-main">
+        <div class="list-item-title">${e.destino}</div>
+        <div class="list-item-sub">${fmtDate(e.data)} ${e.hora||''} · <span class="badge ${bc}">${e.plataforma}</span>${e.km?' · '+e.km+'km':''}</div>
+        <div style="font-size:11px;color:var(--text3);margin-top:3px;">Bruto: ${fmtMoney(e.valor)}${e.km?' · Custo: -'+fmtMoney(custo):''}</div>
+      </div>
+      <div class="list-item-right">
+        <div class="list-item-value ${real>=0?'money-positive':'money-negative'}">${fmtMoney(real)}</div>
+        <div class="list-item-sub2">real</div>
+      </div>
+      <button class="btn-del" onclick="delEntrega('${e.id}')">🗑</button>
+    </div>`;
+  }).join('');
+}
+
+// ===== GASTOS =====
+const catEmoji = { Gasolina:'⛽', Comida:'🍔', Manutenção:'🔧', Seguro:'🛡', Outros:'📦' };
+
+function salvarGasto() {
+  const data = document.getElementById('gData').value;
+  const cat = document.getElementById('gCat').value;
+  const desc = document.getElementById('gDesc').value;
+  const val = document.getElementById('gVal').value;
+  if (!data || !val || isNaN(parseFloat(val)) || parseFloat(val) <= 0) {
+    toast('Preencha data e valor!', 'error'); return;
+  }
+  const d = get();
+  d.gastos.unshift({ id: uid(), data, categoria: cat, descricao: desc || cat, valor: parseFloat(val) });
+  save('gastos', d.gastos);
+  closeSheet('sheetGasto');
+  toast('Gasto registrado!');
+  renderGastos();
+  renderDash();
+}
+
+function delGasto(id) {
+  if (!confirm('Deletar este gasto?')) return;
+  const d = get();
+  d.gastos = d.gastos.filter(g => g.id !== id);
+  save('gastos', d.gastos);
+  renderGastos();
+  renderDash();
+  toast('Gasto removido.');
+}
+
+function setFiltroGasto(val, el) {
+  filtroGasto = val;
+  document.querySelectorAll('.filter-row .filter-chip').forEach(c => c.classList.remove('active'));
+  el.classList.add('active');
+  renderGastos();
+}
+
+function renderGastos() {
+  const d = get();
+  let list = [...d.gastos];
+  if (filtroGasto) list = list.filter(g => g.categoria === filtroGasto);
+  const el = document.getElementById('listaGastos');
+  if (!list.length) { el.innerHTML = '<div class="empty-state"><div class="emoji">💸</div><p>Nenhum gasto ainda.<br>Toque + para adicionar!</p></div>'; return; }
+  el.innerHTML = list.map(g => `<div class="list-item">
+    <div style="font-size:28px;flex-shrink:0">${catEmoji[g.categoria]||'📦'}</div>
+    <div class="list-item-main">
+      <div class="list-item-title">${g.descricao}</div>
+      <div class="list-item-sub">${fmtDate(g.data)} · <span class="badge badge-gasto">${g.categoria}</span></div>
+    </div>
+    <div class="list-item-right">
+      <div class="list-item-value money-negative">-${fmtMoney(g.valor)}</div>
+    </div>
+    <button class="btn-del" onclick="delGasto('${g.id}')">🗑</button>
+  </div>`).join('');
+}
+
+// ===== MULTAS =====
+function preencherPts() {
+  const g = document.getElementById('mGrav').value;
+  const pts = { Leve:3, Média:4, Grave:5, Gravíssima:7 };
+  document.getElementById('mPts').value = pts[g] || 3;
+}
+
+function salvarMulta() {
+  const data = document.getElementById('mData').value;
+  const inf = document.getElementById('mInf').value;
+  if (!data || !inf) { toast('Preencha data e infração!', 'error'); return; }
+  const d = get();
+  d.multas.unshift({
+    id: uid(), data,
+    infracao: inf,
+    gravidade: document.getElementById('mGrav').value,
+    pontos: parseInt(document.getElementById('mPts').value)||0,
+    valor: parseFloat(document.getElementById('mVal').value)||0,
+    vencimento: document.getElementById('mVenc').value,
+    status: document.getElementById('mStat').value
+  });
+  save('multas', d.multas);
+  closeSheet('sheetMulta');
+  toast('Multa registrada!');
+  renderMultas();
+}
+
+function delMulta(id) {
+  if (!confirm('Deletar esta multa?')) return;
+  const d = get();
+  d.multas = d.multas.filter(m => m.id !== id);
+  save('multas', d.multas);
+  renderMultas();
+  toast('Multa removida.');
+}
+
+function toggleStatusMulta(id) {
+  const d = get();
+  const m = d.multas.find(x => x.id === id);
+  if (!m) return;
+  const opts = ['Pendente','Paga','Recorrendo'];
+  m.status = opts[(opts.indexOf(m.status)+1) % opts.length];
+  save('multas', d.multas);
+  renderMultas();
+}
+
+function renderMultas() {
+  const d = get();
+  const list = d.multas;
+  const totalPts = list.reduce((s,m) => s+(m.pontos||0), 0);
+  const totalVal = list.reduce((s,m) => s+(m.valor||0), 0);
+  const limite = 20;
+  const pct = Math.min((totalPts/limite)*100, 100);
+  const barColor = pct<40?'var(--green)':pct<70?'var(--yellow)':'var(--red)';
+
+  document.getElementById('multasResumo').innerHTML = `
+    <div class="cards-grid">
+      <div class="stat-card red">
+        <div class="stat-label">Pontos CNH</div>
+        <div class="stat-value">${totalPts}<span style="font-size:14px"> / ${limite}</span></div>
+        <div class="points-bar"><div class="points-fill" style="width:${pct}%;background:${barColor}"></div></div>
+        <div class="stat-sub">${limite-totalPts} restantes</div>
+      </div>
+      <div class="stat-card orange">
+        <div class="stat-label">Total Multas</div>
+        <div class="stat-value" style="font-size:20px">${fmtMoney(totalVal)}</div>
+        <div class="stat-sub">${list.filter(m=>m.status==='Pendente').length} pendentes</div>
+      </div>
+    </div>`;
+
+  const el = document.getElementById('listaMultas');
+  if (!list.length) { el.innerHTML = '<div class="empty-state"><div class="emoji">🎉</div><p>Nenhuma multa!<br>Continue assim!</p></div>'; return; }
+  const statusEmoji = { Pendente:'⏳', Paga:'✅', Recorrendo:'⚖️' };
+  el.innerHTML = list.map(m => {
+    const bg = m.gravidade==='Leve'?'multa-leve':m.gravidade==='Média'?'multa-media':'multa-grave';
+    return `<div class="list-item">
+      <div style="font-size:26px;flex-shrink:0">🚨</div>
+      <div class="list-item-main">
+        <div class="list-item-title">${m.infracao}</div>
+        <div class="list-item-sub">${fmtDate(m.data)} · <span class="multa-badge ${bg}">${m.gravidade}</span> · ${m.pontos}pts</div>
+        ${m.vencimento?`<div style="font-size:11px;color:var(--text3)">Venc: ${fmtDate(m.vencimento)}</div>`:''}
+      </div>
+      <div class="list-item-right">
+        <div class="list-item-value money-negative">${m.valor?fmtMoney(m.valor):'—'}</div>
+        <button class="btn btn-ghost" style="padding:4px 8px;font-size:11px;margin-top:4px;border-radius:8px;" onclick="toggleStatusMulta('${m.id}')">${statusEmoji[m.status]||'⏳'} ${m.status}</button>
+      </div>
+      <button class="btn-del" onclick="delMulta('${m.id}')">🗑</button>
+    </div>`;
+  }).join('');
+}
+
+// ===== RENTABILIDADE =====
+function initRenta() {
+  const d = get();
+  document.getElementById('rKm').value = d.config.kmPorLitro || '';
+  document.getElementById('rGas').value = d.config.precoGas || '';
+  atualizarCusto();
+  document.getElementById('rentaData').value = todayStr();
+  calcDia();
+}
+
+function salvarConfigRenta() {
+  const km = parseFloat(document.getElementById('rKm').value);
+  const gas = parseFloat(document.getElementById('rGas').value);
+  const d = get();
+  if (km) d.config.kmPorLitro = km;
+  if (gas) d.config.precoGas = gas;
+  save('config', d.config);
+  atualizarCusto();
+}
+
+function atualizarCusto() {
+  document.getElementById('rCusto').textContent = 'R$ ' + cpkm().toFixed(4) + ' / km';
+}
+
+function calcDia() {
+  const data = document.getElementById('rentaData').value;
+  if (!data) return;
+  const d = get();
+  renderRenta(d.entregas.filter(e=>e.data===data), d.gastos.filter(g=>g.data===data), 'rentaDiaResult', `dia ${fmtDate(data)}`);
+}
+
+function calcPeriodo() {
+  const ini = document.getElementById('rentaIni').value;
+  const fim = document.getElementById('rentaFim').value;
+  if (!ini||!fim) return;
+  const d = get();
+  renderRenta(d.entregas.filter(e=>e.data>=ini&&e.data<=fim), d.gastos.filter(g=>g.data>=ini&&g.data<=fim), 'rentaPeriodoResult', `${fmtDate(ini)} a ${fmtDate(fim)}`);
+}
+
+function renderRenta(ents, gsts, id, label) {
+  const el = document.getElementById(id);
+  if (!ents.length && !gsts.length) { el.innerHTML = '<p style="color:var(--text3);font-size:13px;text-align:center;padding:16px;">Sem dados para este período.</p>'; return; }
+  const bruto = ents.reduce((s,e)=>s+e.valor,0);
+  const km = ents.reduce((s,e)=>s+(e.km||0),0);
+  const custoKm = cpkm() * km;
+  const gastos = gsts.reduce((s,g)=>s+g.valor,0);
+  const real = bruto - custoKm;
+  const liquido = real - gastos;
+  const ok = liquido >= 0;
+  el.innerHTML = `
+    <div class="renta-grid">
+      <div class="renta-result-card"><div class="rl">Entregas</div><div class="rv" style="color:var(--blue)">${ents.length}</div></div>
+      <div class="renta-result-card"><div class="rl">KM total</div><div class="rv">${km.toFixed(1)}km</div></div>
+      <div class="renta-result-card"><div class="rl">Ganho bruto</div><div class="rv" style="color:var(--text)">${fmtMoney(bruto)}</div></div>
+      <div class="renta-result-card"><div class="rl">Custo km</div><div class="rv" style="color:var(--red)">-${fmtMoney(custoKm)}</div></div>
+      <div class="renta-result-card"><div class="rl">Ganho real</div><div class="rv" style="color:var(--accent)">${fmtMoney(real)}</div></div>
+      <div class="renta-result-card"><div class="rl">Outros gastos</div><div class="rv" style="color:var(--red)">-${fmtMoney(gastos)}</div></div>
+    </div>
+    <div style="background:${ok?'rgba(34,197,94,0.1)':'rgba(239,68,68,0.1)'};border:1px solid ${ok?'rgba(34,197,94,0.3)':'rgba(239,68,68,0.3)'};border-radius:12px;padding:14px;display:flex;justify-content:space-between;align-items:center;">
+      <div>
+        <div style="font-size:12px;color:var(--text3);margin-bottom:4px;">Lucro líquido (${label})</div>
+        <div style="font-family:'Bebas Neue',sans-serif;font-size:30px;color:${ok?'var(--green)':'var(--red)'};">${fmtMoney(liquido)}</div>
+      </div>
+      <div style="font-size:36px">${ok?'✅':'❌'}</div>
+    </div>
+    <p style="text-align:center;font-size:13px;font-weight:700;color:${ok?'var(--green)':'var(--red)'};margin-top:10px;">${ok?'🤑 Compensou trabalhar!':'😞 Não compensou. Revise os gastos.'}</p>`;
+}
+
+// ===== DASHBOARD =====
+function renderDash() {
+  const d = get();
+  const hoje = todayStr();
+  const mes = hoje.slice(0,7);
+  const eHoje = d.entregas.filter(e=>e.data===hoje);
+  const eMes = d.entregas.filter(e=>e.data.startsWith(mes));
+  const gMes = d.gastos.filter(g=>g.data.startsWith(mes));
+  const brutoHoje = eHoje.reduce((s,e)=>s+e.valor,0);
+  const brutoMes = eMes.reduce((s,e)=>s+e.valor,0);
+  const gastosMes = gMes.reduce((s,g)=>s+g.valor,0);
+  const kmMes = eMes.reduce((s,e)=>s+(e.km||0),0);
+  const liquido = brutoMes - cpkm()*kmMes - gastosMes;
+
+  document.getElementById('dashCards').innerHTML = `
+    <div class="stat-card orange"><div class="stat-icon">☀️</div><div class="stat-label">Hoje (bruto)</div><div class="stat-value">${fmtMoney(brutoHoje)}</div><div class="stat-sub">${eHoje.length} entregas</div></div>
+    <div class="stat-card green"><div class="stat-icon">📅</div><div class="stat-label">Mês (bruto)</div><div class="stat-value">${fmtMoney(brutoMes)}</div><div class="stat-sub">${eMes.length} entregas</div></div>
+    <div class="stat-card red"><div class="stat-icon">💸</div><div class="stat-label">Gastos mês</div><div class="stat-value">${fmtMoney(gastosMes)}</div><div class="stat-sub">${gMes.length} lançamentos</div></div>
+    <div class="stat-card ${liquido>=0?'blue':'red'}"><div class="stat-icon">💰</div><div class="stat-label">Lucro mês</div><div class="stat-value">${fmtMoney(liquido)}</div><div class="stat-sub">${kmMes.toFixed(1)}km rodados</div></div>`;
+
+  const c = cpkm();
+  const ultE = d.entregas.slice(0,3);
+  document.getElementById('dashEntregas').innerHTML = ultE.length ? ultE.map(e=>{
+    const real = e.valor - c*(e.km||0);
+    const bc = e.plataforma==='iFood'?'badge-ifood':e.plataforma==='99'?'badge-99':'badge-particular';
+    return `<div class="list-item">
+      <div style="font-size:24px;flex-shrink:0">${e.plataforma==='iFood'?'🔴':e.plataforma==='99'?'🟡':'🟢'}</div>
+      <div class="list-item-main">
+        <div class="list-item-title">${e.destino}</div>
+        <div class="list-item-sub">${fmtDate(e.data)} · <span class="badge ${bc}">${e.plataforma}</span></div>
+      </div>
+      <div class="list-item-right"><div class="list-item-value ${real>=0?'money-positive':'money-negative'}">${fmtMoney(real)}</div><div class="list-item-sub2">real</div></div>
+    </div>`;
+  }).join('') : '<div class="empty-state" style="padding:24px"><div class="emoji" style="font-size:32px">📦</div><p style="font-size:13px">Nenhuma entrega ainda</p></div>';
+
+  const ultG = d.gastos.slice(0,3);
+  document.getElementById('dashGastos').innerHTML = ultG.length ? ultG.map(g=>
+    `<div class="list-item">
+      <div style="font-size:24px;flex-shrink:0">${catEmoji[g.categoria]||'📦'}</div>
+      <div class="list-item-main">
+        <div class="list-item-title">${g.descricao}</div>
+        <div class="list-item-sub">${fmtDate(g.data)}</div>
+      </div>
+      <div class="list-item-right"><div class="list-item-value money-negative">-${fmtMoney(g.valor)}</div></div>
+    </div>`
+  ).join('') : '<div class="empty-state" style="padding:24px"><div class="emoji" style="font-size:32px">💸</div><p style="font-size:13px">Nenhum gasto ainda</p></div>';
+}
+
+// ===== CONFIG =====
+function initConfig() {
+  const d = get();
+  document.getElementById('cfgKm').value = d.config.kmPorLitro || '';
+  document.getElementById('cfgGas').value = d.config.precoGas || '';
+}
+
+function salvarConfigFull() {
+  const km = parseFloat(document.getElementById('cfgKm').value);
+  const gas = parseFloat(document.getElementById('cfgGas').value);
+  if (!km||!gas) { toast('Preencha os campos!','error'); return; }
+  const d = get();
+  d.config.kmPorLitro = km;
+  d.config.precoGas = gas;
+  save('config', d.config);
+  toast('Configurações salvas!');
+}
+
+function exportar() {
+  const blob = new Blob([JSON.stringify(get(), null, 2)], { type: 'application/json' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = 'motocontrole_backup_' + todayStr() + '.json';
+  a.click();
+  URL.revokeObjectURL(url);
+  toast('Backup exportado!');
+}
+
+function importar(e) {
+  const file = e.target.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = ev => {
+    try {
+      const data = JSON.parse(ev.target.result);
+      if (data.entregas) save('entregas', data.entregas);
+      if (data.gastos) save('gastos', data.gastos);
+      if (data.multas) save('multas', data.multas);
+      if (data.config) save('config', data.config);
+      toast('Dados importados!');
+      renderDash();
+    } catch { toast('Arquivo inválido!','error'); }
+  };
+  reader.readAsText(file);
+}
+
+function limparTudo() {
+  if (!confirm('Apagar TODOS os dados?')) return;
+  if (!confirm('Tem certeza? Faça um backup antes!')) return;
+  ['entregas','gastos','multas','config'].forEach(k => localStorage.removeItem('mc_'+k));
+  toast('Dados apagados.');
+  renderDash();
+}
+
+// ===== SW REGISTER =====
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.register('sw.js').catch(() => {});
+}
+
+// ===== INIT =====
+document.getElementById('fabBtn').style.display = 'none';
+renderDash();
+</script>
+</body>
+</html>
