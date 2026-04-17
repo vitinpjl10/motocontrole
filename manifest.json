@@ -2,7 +2,7 @@
   "name": "MotoControle",
   "short_name": "MotoControle",
   "description": "Painel do Motoboy - Controle de entregas, gastos e multas",
-  "start_url": "/",
+  "start_url": "/motocontrole/",
   "display": "standalone",
   "background_color": "#0d0f14",
   "theme_color": "#f97316",
