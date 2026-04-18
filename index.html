@@ -474,6 +474,224 @@
     font-size: 15px;
     font-weight: 700;
   }
+
+  /* ===== CALCULADORA RÁPIDA ===== */
+  .calc-input-wrap {
+    position: relative;
+    margin-bottom: 10px;
+  }
+  .calc-input-wrap label {
+    position: absolute;
+    top: 10px; left: 14px;
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--text3);
+    z-index: 1;
+    pointer-events: none;
+  }
+  .calc-input-wrap .prefix {
+    position: absolute;
+    bottom: 14px; left: 14px;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 22px;
+    color: var(--text3);
+    pointer-events: none;
+    z-index: 1;
+  }
+  .calc-big-input {
+    width: 100%;
+    background: var(--bg3);
+    border: 2px solid var(--border);
+    border-radius: 14px;
+    padding: 32px 16px 14px 38px;
+    color: var(--text);
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 38px;
+    letter-spacing: 1px;
+    outline: none;
+    transition: border-color 0.2s, background 0.2s;
+    -webkit-appearance: none;
+    caret-color: var(--accent);
+  }
+  .calc-big-input:focus { border-color: var(--accent); background: #1f2438; }
+  .calc-big-input.no-prefix { padding-left: 16px; }
+  .calc-big-input::placeholder { color: var(--text3); opacity: 0.5; }
+
+  .toggle-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: var(--bg3);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 13px 16px;
+    margin-bottom: 10px;
+    cursor: pointer;
+    user-select: none;
+  }
+  .toggle-row-left { display: flex; flex-direction: column; gap: 2px; }
+  .toggle-label { font-size: 14px; font-weight: 700; color: var(--text); }
+  .toggle-sub { font-size: 11px; color: var(--text3); }
+
+  .switch {
+    width: 50px; height: 28px;
+    background: var(--border);
+    border-radius: 14px;
+    position: relative;
+    transition: background 0.25s;
+    flex-shrink: 0;
+  }
+  .switch::after {
+    content: '';
+    position: absolute;
+    width: 22px; height: 22px;
+    background: #fff;
+    border-radius: 50%;
+    top: 3px; left: 3px;
+    transition: transform 0.25s;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.4);
+  }
+  .switch.on { background: var(--accent); }
+  .switch.on::after { transform: translateX(22px); }
+
+  .calc-result {
+    border-radius: 16px;
+    padding: 16px;
+    margin-bottom: 12px;
+    transition: all 0.3s;
+    border: 2px solid transparent;
+  }
+  .calc-result.empty { background: var(--bg3); border-color: var(--border); }
+  .calc-result.ok { background: rgba(34,197,94,0.08); border-color: rgba(34,197,94,0.4); animation: pulse-green 2s ease infinite; }
+  .calc-result.nok { background: rgba(239,68,68,0.08); border-color: rgba(239,68,68,0.4); }
+
+  @keyframes pulse-green {
+    0%, 100% { box-shadow: 0 0 0 0 rgba(34,197,94,0.3); }
+    50% { box-shadow: 0 0 0 8px rgba(34,197,94,0); }
+  }
+
+  .calc-verdict {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 22px;
+    letter-spacing: 1px;
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .calc-verdict.ok { color: var(--green); }
+  .calc-verdict.nok { color: var(--red); }
+  .calc-verdict.empty { color: var(--text3); }
+
+  .calc-rows { display: flex; flex-direction: column; gap: 5px; }
+  .calc-row { display: flex; justify-content: space-between; align-items: center; font-size: 13px; }
+  .calc-row .cl { color: var(--text3); }
+  .calc-row .cv { font-family: 'JetBrains Mono', monospace; font-weight: 700; font-size: 14px; }
+
+  .calc-real-value {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 52px;
+    line-height: 1;
+    text-align: center;
+    margin: 6px 0 2px;
+    letter-spacing: 1px;
+  }
+  .calc-real-value.ok { color: var(--green); }
+  .calc-real-value.nok { color: var(--red); }
+  .calc-real-value.empty { color: var(--text3); }
+
+  .calc-perkm { text-align: center; font-size: 12px; color: var(--text3); margin-bottom: 8px; font-family: 'JetBrains Mono', monospace; }
+  .calc-divider { height: 1px; background: var(--border); margin: 10px 0; }
+
+  .calc-meta-row { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }
+  .calc-meta-label { font-size: 12px; color: var(--text3); flex: 1; font-weight: 600; }
+  .calc-meta-input {
+    width: 90px;
+    background: var(--bg3);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 7px 10px;
+    color: var(--accent);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 14px;
+    font-weight: 700;
+    text-align: right;
+    outline: none;
+    -webkit-appearance: none;
+  }
+  .calc-meta-input:focus { border-color: var(--accent); }
+
+  .plat-tabs { display: flex; gap: 6px; margin-bottom: 10px; }
+  .plat-tab {
+    flex: 1;
+    padding: 9px 4px;
+    border-radius: 10px;
+    font-size: 12px;
+    font-weight: 700;
+    border: 2px solid var(--border);
+    background: var(--bg3);
+    color: var(--text3);
+    cursor: pointer;
+    text-align: center;
+    transition: all 0.2s;
+  }
+  .plat-tab.active-ifood { border-color: var(--ifood); color: var(--ifood); background: rgba(234,29,44,0.1); }
+  .plat-tab.active-99 { border-color: var(--n99); color: var(--n99); background: rgba(245,166,35,0.1); }
+  .plat-tab.active-particular { border-color: var(--particular); color: var(--particular); background: rgba(34,197,94,0.1); }
+
+  .btn-aceitar {
+    width: 100%;
+    padding: 16px;
+    border-radius: 14px;
+    background: var(--accent);
+    color: #fff;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 22px;
+    letter-spacing: 2px;
+    border: none;
+    cursor: pointer;
+    transition: all 0.2s;
+    margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+  }
+  .btn-aceitar:active { transform: scale(0.97); background: var(--accent2); }
+  .btn-aceitar:disabled { background: var(--bg3); color: var(--text3); border: 1px solid var(--border); cursor: not-allowed; }
+
+  .btn-recusar {
+    width: 100%;
+    padding: 13px;
+    border-radius: 14px;
+    background: transparent;
+    color: var(--text3);
+    font-size: 14px;
+    font-weight: 600;
+    border: 1px solid var(--border);
+    cursor: pointer;
+    font-family: 'DM Sans', sans-serif;
+  }
+  .btn-recusar:active { opacity: 0.7; }
+
+  .calc-dest-input {
+    width: 100%;
+    background: var(--bg3);
+    border: 2px solid var(--border);
+    border-radius: 14px;
+    padding: 14px 16px;
+    color: var(--text);
+    font-size: 16px;
+    font-family: 'DM Sans', sans-serif;
+    outline: none;
+    -webkit-appearance: none;
+    transition: border-color 0.2s;
+    margin-bottom: 10px;
+  }
+  .calc-dest-input:focus { border-color: var(--accent); }
+  .calc-dest-input::placeholder { color: var(--text3); }
 </style>
 </head>
 <body>
@@ -497,7 +715,12 @@
       <div class="section-title">Últimas Entregas</div>
     </div>
     <div id="dashEntregas"></div>
-    <div class="section-header" style="margin-top:16px;">
+    <div style="margin: 4px 0 20px;">
+      <button onclick="openSheet('sheetCalc')" style="width:100%;padding:14px;border-radius:14px;background:linear-gradient(135deg,#f97316,#fb923c);border:none;color:#fff;font-family:'Bebas Neue',sans-serif;font-size:20px;letter-spacing:2px;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;box-shadow:0 4px 20px rgba(249,115,22,0.35);">
+        ⚡ CALCULAR SE VALE A PENA
+      </button>
+    </div>
+    <div class="section-header" style="margin-top:4px;">
       <div class="section-title">Últimos Gastos</div>
     </div>
     <div id="dashGastos"></div>
@@ -635,6 +858,10 @@
   <button class="nav-item" id="nav-multas" onclick="showPage('multas')">
     <span class="icon">🚨</span>
     <span>Multas</span>
+  </button>
+  <button class="nav-item" id="nav-calc" onclick="openSheet('sheetCalc')">
+    <span class="icon" style="position:relative;">⚡<span style="position:absolute;top:-2px;right:-4px;width:7px;height:7px;background:var(--accent);border-radius:50%;display:block;"></span></span>
+    <span>Calcular</span>
   </button>
 </nav>
 
@@ -790,6 +1017,74 @@
   </div>
 </div>
 
+<!-- CALCULADORA RÁPIDA SHEET -->
+<div class="sheet-overlay" id="sheetCalc">
+  <div class="sheet" style="padding-bottom: calc(24px + var(--safe-bottom));">
+    <div class="sheet-handle"></div>
+    <h2>⚡ <span>Calculadora</span> Rápida</h2>
+
+    <!-- Plataforma tabs -->
+    <div class="plat-tabs">
+      <div class="plat-tab active-ifood" id="ctab-iFood" onclick="selectCalcPlat('iFood')">🔴 iFood</div>
+      <div class="plat-tab" id="ctab-99" onclick="selectCalcPlat('99')">🟡 99</div>
+      <div class="plat-tab" id="ctab-Particular" onclick="selectCalcPlat('Particular')">🟢 Particular</div>
+    </div>
+
+    <!-- Big Valor input -->
+    <div class="calc-input-wrap">
+      <label>Valor da oferta</label>
+      <span class="prefix">R$</span>
+      <input class="calc-big-input" type="number" id="cVal" inputmode="decimal" placeholder="0.00" step="0.01" oninput="calcRapida()">
+    </div>
+
+    <!-- Big KM input -->
+    <div class="calc-input-wrap">
+      <label>KM da entrega</label>
+      <span class="prefix" style="font-size:16px;bottom:16px;">km</span>
+      <input class="calc-big-input" type="number" id="cKm" inputmode="decimal" placeholder="0.0" step="0.1" oninput="calcRapida()">
+    </div>
+
+    <!-- Toggle retorno maquininha -->
+    <div class="toggle-row" onclick="toggleRetorno()">
+      <div class="toggle-row-left">
+        <span class="toggle-label">🔄 Retorno com maquininha</span>
+        <span class="toggle-sub">Dobra o km para calcular o custo real</span>
+      </div>
+      <div class="switch" id="switchRetorno"></div>
+    </div>
+
+    <!-- Meta por km -->
+    <div class="calc-meta-row">
+      <span class="calc-meta-label">💡 Meta mínima por km rodado</span>
+      <div style="display:flex;align-items:center;gap:4px;">
+        <span style="font-size:12px;color:var(--text3);">R$</span>
+        <input class="calc-meta-input" type="number" id="cMeta" value="1.00" step="0.10" inputmode="decimal" oninput="calcRapida()">
+        <span style="font-size:12px;color:var(--text3);">/km</span>
+      </div>
+    </div>
+
+    <!-- RESULTADO -->
+    <div class="calc-result empty" id="calcResult">
+      <div class="calc-verdict empty" id="calcVerdict">⚡ Digite o valor e os km</div>
+      <div class="calc-real-value empty" id="calcRealVal">R$ —</div>
+      <div class="calc-perkm" id="calcPerKm">— por km rodado</div>
+      <div class="calc-divider"></div>
+      <div class="calc-rows">
+        <div class="calc-row"><span class="cl">Ganho bruto</span><span class="cv" id="crBruto">—</span></div>
+        <div class="calc-row"><span class="cl">⛽ Custo combustível</span><span class="cv money-negative" id="crCusto">—</span></div>
+        <div class="calc-row"><span class="cl">KM considerado</span><span class="cv" id="crKm">—</span></div>
+      </div>
+    </div>
+
+    <!-- Destino opcional -->
+    <input class="calc-dest-input" type="text" id="cDest" placeholder="Destino (opcional, ex: Perequê-Açu)">
+
+    <!-- Botões -->
+    <button class="btn-aceitar" id="btnAceitar" onclick="aceitarEntrega()" disabled>✅ ACEITAR E SALVAR</button>
+    <button class="btn-recusar" onclick="closeSheet('sheetCalc')">❌ Recusar / Fechar</button>
+  </div>
+</div>
+
 <!-- TOAST -->
 <div class="toast" id="toast"></div>
 
@@ -823,7 +1118,7 @@ let currentPage = 'dashboard';
 let filtroPlat = '';
 let filtroGasto = '';
 
-const pageTitles = { dashboard:'Início', entregas:'Entregas', gastos:'Gastos', renta:'Rentabilidade', multas:'Multas', config:'Configurações' };
+const pageTitles = { dashboard:'Início', entregas:'Entregas', gastos:'Gastos', renta:'Rentabilidade', multas:'Multas', config:'Configurações', calc:'Calculadora' };
 const fabPages = ['entregas','gastos','multas'];
 
 function showPage(id) {
@@ -853,6 +1148,13 @@ function openFab() {
 function openSheet(id) {
   const s = document.getElementById(id);
   s.classList.add('open');
+  if (id === 'sheetCalc') {
+    setTimeout(() => {
+      const el = document.getElementById('cVal');
+      if (el) el.focus();
+    }, 350);
+    calcRapida();
+  }
   if (id === 'sheetEntrega') {
     const now = new Date();
     document.getElementById('eData').value = todayStr();
@@ -1279,6 +1581,117 @@ function limparTudo() {
   ['entregas','gastos','multas','config'].forEach(k => localStorage.removeItem('mc_'+k));
   toast('Dados apagados.');
   renderDash();
+}
+
+// ===== CALCULADORA RÁPIDA =====
+let calcPlat = 'iFood';
+let retornoOn = false;
+
+function selectCalcPlat(plat) {
+  calcPlat = plat;
+  document.querySelectorAll('.plat-tab').forEach(t => {
+    t.className = 'plat-tab';
+  });
+  const cls = plat === 'iFood' ? 'active-ifood' : plat === '99' ? 'active-99' : 'active-particular';
+  document.getElementById('ctab-' + plat).classList.add(cls);
+  calcRapida();
+}
+
+function toggleRetorno() {
+  retornoOn = !retornoOn;
+  const sw = document.getElementById('switchRetorno');
+  sw.classList.toggle('on', retornoOn);
+  calcRapida();
+}
+
+function calcRapida() {
+  const val = parseFloat(document.getElementById('cVal').value) || 0;
+  const kmBase = parseFloat(document.getElementById('cKm').value) || 0;
+  const meta = parseFloat(document.getElementById('cMeta').value) || 1.0;
+  const kmReal = retornoOn ? kmBase * 2 : kmBase;
+  const custo = cpkm() * kmReal;
+  const ganhoReal = val - custo;
+  const porkm = kmReal > 0 ? ganhoReal / kmReal : 0;
+
+  const result = document.getElementById('calcResult');
+  const verdict = document.getElementById('calcVerdict');
+  const realVal = document.getElementById('calcRealVal');
+  const perKm = document.getElementById('calcPerKm');
+  const crBruto = document.getElementById('crBruto');
+  const crCusto = document.getElementById('crCusto');
+  const crKm = document.getElementById('crKm');
+  const btnAceitar = document.getElementById('btnAceitar');
+
+  if (!val && !kmBase) {
+    result.className = 'calc-result empty';
+    verdict.className = 'calc-verdict empty';
+    verdict.textContent = '⚡ Digite o valor e os km';
+    realVal.className = 'calc-real-value empty';
+    realVal.textContent = 'R$ —';
+    perKm.textContent = '— por km rodado';
+    crBruto.textContent = '—';
+    crCusto.textContent = '—';
+    crKm.textContent = '—';
+    btnAceitar.disabled = true;
+    return;
+  }
+
+  const ok = kmReal > 0 ? (porkm >= meta) : (ganhoReal >= 0);
+
+  result.className = 'calc-result ' + (ok ? 'ok' : 'nok');
+  verdict.className = 'calc-verdict ' + (ok ? 'ok' : 'nok');
+  verdict.textContent = ok ? '✅ VALE A PENA!' : '❌ NÃO VALE';
+  realVal.className = 'calc-real-value ' + (ok ? 'ok' : 'nok');
+  realVal.textContent = fmtMoney(ganhoReal);
+  perKm.textContent = kmReal > 0 ? (fmtMoney(porkm) + ' por km · meta: ' + fmtMoney(meta) + '/km') : 'KM não informado';
+  crBruto.textContent = fmtMoney(val);
+  crCusto.textContent = '- ' + fmtMoney(custo);
+  crKm.textContent = kmReal.toFixed(1) + ' km' + (retornoOn ? ' (ida+volta)' : '');
+
+  btnAceitar.disabled = !val;
+  btnAceitar.textContent = ok ? '✅ ACEITAR E SALVAR' : '⚠️ SALVAR MESMO ASSIM';
+}
+
+function aceitarEntrega() {
+  const val = parseFloat(document.getElementById('cVal').value);
+  const kmBase = parseFloat(document.getElementById('cKm').value) || 0;
+  const dest = document.getElementById('cDest').value || '—';
+  if (!val || val <= 0) { toast('Digite o valor da entrega!', 'error'); return; }
+
+  const now = new Date();
+  const d = get();
+  d.entregas.unshift({
+    id: uid(),
+    data: todayStr(),
+    hora: now.toTimeString().slice(0,5),
+    plataforma: calcPlat,
+    valor: val,
+    destino: dest,
+    km: kmBase
+  });
+  save('entregas', d.entregas);
+  closeSheet('sheetCalc');
+  toast('Entrega salva com sucesso! 🏍');
+
+  // reset
+  document.getElementById('cVal').value = '';
+  document.getElementById('cKm').value = '';
+  document.getElementById('cDest').value = '';
+  retornoOn = false;
+  document.getElementById('switchRetorno').classList.remove('on');
+  calcRapida();
+
+  if (currentPage === 'dashboard') renderDash();
+  if (currentPage === 'entregas') renderEntregas();
+}
+
+function openCalcSheet() {
+  openSheet('sheetCalc');
+  // auto focus valor after animation
+  setTimeout(() => {
+    const el = document.getElementById('cVal');
+    if (el) el.focus();
+  }, 350);
 }
 
 // ===== SW REGISTER =====
