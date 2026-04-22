@@ -11,1696 +11,725 @@
 <title>MotoControle</title>
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
 <style>
-  :root {
-    --bg: #0d0f14;
-    --bg2: #13161e;
-    --bg3: #1a1e2a;
-    --card: #1e2230;
-    --card2: #252a3a;
-    --border: #2e3347;
-    --accent: #f97316;
-    --accent2: #fb923c;
-    --green: #22c55e;
-    --red: #ef4444;
-    --blue: #3b82f6;
-    --yellow: #eab308;
-    --purple: #a855f7;
-    --text: #e8eaf0;
-    --text2: #9aa0b8;
-    --text3: #5c6280;
-    --ifood: #ea1d2c;
-    --n99: #f5a623;
-    --particular: #22c55e;
-    --safe-bottom: env(safe-area-inset-bottom, 0px);
-  }
-
-  * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
-
-  html, body {
-    height: 100%;
-    overflow: hidden;
-  }
-
-  body {
-    font-family: 'DM Sans', sans-serif;
-    background: var(--bg);
-    color: var(--text);
-    display: flex;
-    flex-direction: column;
-  }
-
-  /* TOP HEADER */
-  .topbar {
-    background: var(--bg2);
-    border-bottom: 1px solid var(--border);
-    padding: 14px 16px 12px;
-    padding-top: calc(14px + env(safe-area-inset-top, 0px));
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    flex-shrink: 0;
-    z-index: 10;
-  }
-
-  .logo {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: 22px;
-    letter-spacing: 2px;
-    color: var(--accent);
-  }
-
-  .page-title {
-    font-size: 13px;
-    color: var(--text3);
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-  }
-
-  .header-right {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-  }
-
-  /* SCROLL CONTENT */
-  .content {
-    flex: 1;
-    overflow-y: auto;
-    -webkit-overflow-scrolling: touch;
-    padding: 16px;
-    padding-bottom: calc(80px + var(--safe-bottom));
-  }
-
-  /* BOTTOM NAV */
-  .bottom-nav {
-    position: fixed;
-    bottom: 0;
-    left: 0; right: 0;
-    background: var(--bg2);
-    border-top: 1px solid var(--border);
-    display: flex;
-    padding-bottom: var(--safe-bottom);
-    z-index: 100;
-  }
-
-  .nav-item {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 3px;
-    padding: 10px 4px;
-    cursor: pointer;
-    color: var(--text3);
-    font-size: 10px;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-    transition: color 0.2s;
-    border: none;
-    background: none;
-    font-family: 'DM Sans', sans-serif;
-  }
-
-  .nav-item .icon { font-size: 22px; line-height: 1; }
-  .nav-item.active { color: var(--accent); }
-
-  /* PAGES */
-  .page { display: none; }
-  .page.active { display: block; }
-
-  /* CARDS */
-  .cards-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 10px;
-    margin-bottom: 20px;
-  }
-
-  .stat-card {
-    background: var(--card);
-    border: 1px solid var(--border);
-    border-radius: 14px;
-    padding: 14px;
-    position: relative;
-    overflow: hidden;
-  }
-
-  .stat-card::before {
-    content: '';
-    position: absolute;
-    top: 0; left: 0; right: 0;
-    height: 3px;
-  }
-  .stat-card.orange::before { background: linear-gradient(90deg, var(--accent), var(--accent2)); }
-  .stat-card.green::before { background: linear-gradient(90deg, var(--green), #4ade80); }
-  .stat-card.red::before { background: linear-gradient(90deg, var(--red), #f87171); }
-  .stat-card.blue::before { background: linear-gradient(90deg, var(--blue), #60a5fa); }
-
-  .stat-label { font-size: 10px; text-transform: uppercase; letter-spacing: 1px; color: var(--text3); font-weight: 600; margin-bottom: 6px; }
-  .stat-value { font-family: 'Bebas Neue', sans-serif; font-size: 26px; color: var(--text); letter-spacing: 0.5px; line-height: 1; }
-  .stat-sub { font-size: 11px; color: var(--text3); margin-top: 4px; }
-  .stat-icon { position: absolute; right: 10px; top: 12px; font-size: 22px; opacity: 0.15; }
-
-  /* SECTION */
-  .section-header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-bottom: 12px;
-  }
-
-  .section-title {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: 19px;
-    letter-spacing: 1px;
-  }
-
-  /* FAB */
-  .fab {
-    position: fixed;
-    bottom: calc(70px + var(--safe-bottom) + 12px);
-    right: 16px;
-    width: 52px;
-    height: 52px;
-    border-radius: 50%;
-    background: var(--accent);
-    color: #fff;
-    font-size: 26px;
-    border: none;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    box-shadow: 0 4px 20px rgba(249,115,22,0.5);
-    z-index: 90;
-    transition: transform 0.2s;
-  }
-  .fab:active { transform: scale(0.92); }
-
-  /* TABLE CARDS (mobile-friendly) */
-  .list-item {
-    background: var(--card);
-    border: 1px solid var(--border);
-    border-radius: 12px;
-    padding: 13px 14px;
-    margin-bottom: 8px;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-  }
-
-  .list-item-main { flex: 1; min-width: 0; }
-  .list-item-title { font-size: 14px; font-weight: 600; color: var(--text); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-  .list-item-sub { font-size: 12px; color: var(--text3); margin-top: 2px; }
-  .list-item-right { text-align: right; flex-shrink: 0; }
-  .list-item-value { font-family: 'JetBrains Mono', monospace; font-size: 15px; font-weight: 700; }
-  .list-item-sub2 { font-size: 11px; color: var(--text3); margin-top: 2px; }
-
-  .money-positive { color: var(--green); }
-  .money-negative { color: var(--red); }
-  .money-neutral { color: var(--text); }
-
-  /* BADGES */
-  .badge {
-    display: inline-flex;
-    align-items: center;
-    padding: 2px 8px;
-    border-radius: 20px;
-    font-size: 10px;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-  }
-  .badge-ifood { background: rgba(234,29,44,0.15); color: var(--ifood); border: 1px solid rgba(234,29,44,0.3); }
-  .badge-99 { background: rgba(245,166,35,0.15); color: var(--n99); border: 1px solid rgba(245,166,35,0.3); }
-  .badge-particular { background: rgba(34,197,94,0.15); color: var(--particular); border: 1px solid rgba(34,197,94,0.3); }
-  .badge-gasto { background: rgba(168,85,247,0.15); color: var(--purple); border: 1px solid rgba(168,85,247,0.3); }
-
-  /* MODAL / BOTTOM SHEET */
-  .sheet-overlay {
-    position: fixed;
-    inset: 0;
-    background: rgba(0,0,0,0.6);
-    backdrop-filter: blur(3px);
-    z-index: 200;
-    display: none;
-    align-items: flex-end;
-  }
-  .sheet-overlay.open { display: flex; }
-
-  .sheet {
-    background: var(--card);
-    border-radius: 20px 20px 0 0;
-    width: 100%;
-    max-height: 92vh;
-    overflow-y: auto;
-    padding: 0 16px calc(16px + var(--safe-bottom));
-    animation: slideUp 0.3s ease;
-  }
-
-  @keyframes slideUp {
-    from { transform: translateY(100%); }
-    to { transform: translateY(0); }
-  }
-
-  .sheet-handle {
-    width: 36px;
-    height: 4px;
-    background: var(--border);
-    border-radius: 2px;
-    margin: 10px auto 16px;
-  }
-
-  .sheet h2 {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: 22px;
-    letter-spacing: 1px;
-    margin-bottom: 16px;
-    color: var(--text);
-  }
-
-  .sheet h2 span { color: var(--accent); }
-
-  /* FORM */
-  .form-group { display: flex; flex-direction: column; gap: 5px; margin-bottom: 12px; }
-  .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-
-  label {
-    font-size: 11px;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    color: var(--text3);
-  }
-
-  input, select, textarea {
-    background: var(--bg3);
-    border: 1px solid var(--border);
-    border-radius: 10px;
-    padding: 12px 14px;
-    color: var(--text);
-    font-size: 16px; /* 16px evita zoom no iOS */
-    font-family: 'DM Sans', sans-serif;
-    outline: none;
-    width: 100%;
-    transition: border-color 0.2s;
-    -webkit-appearance: none;
-  }
-
-  input:focus, select:focus { border-color: var(--accent); }
-  select option { background: var(--card); }
-
-  .form-actions {
-    display: flex;
-    gap: 10px;
-    margin-top: 16px;
-  }
-
-  .btn {
-    flex: 1;
-    padding: 14px;
-    border-radius: 12px;
-    font-family: 'DM Sans', sans-serif;
-    font-size: 15px;
-    font-weight: 700;
-    cursor: pointer;
-    border: none;
-    transition: all 0.2s;
-  }
-
-  .btn-primary { background: var(--accent); color: #fff; }
-  .btn-primary:active { background: var(--accent2); transform: scale(0.98); }
-  .btn-ghost { background: var(--bg3); color: var(--text2); border: 1px solid var(--border); }
-  .btn-ghost:active { opacity: 0.7; }
-  .btn-danger { background: rgba(239,68,68,0.15); color: var(--red); border: 1px solid rgba(239,68,68,0.3); }
-
-  /* PROFIT PREVIEW */
-  .profit-preview {
-    background: var(--bg3);
-    border: 1px solid var(--border);
-    border-radius: 12px;
-    padding: 12px;
-    margin-bottom: 12px;
-    display: none;
-  }
-  .profit-preview.visible { display: block; }
-
-  .profit-row {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 4px 0;
-    font-size: 13px;
-  }
-  .profit-row .lbl { color: var(--text3); }
-  .profit-row .val { font-family: 'JetBrains Mono', monospace; font-weight: 700; font-size: 14px; }
-  .profit-row.total { border-top: 1px solid var(--border); margin-top: 6px; padding-top: 10px; }
-
-  /* EMPTY */
-  .empty-state {
-    text-align: center;
-    padding: 50px 20px;
-    color: var(--text3);
-  }
-  .empty-state .emoji { font-size: 44px; margin-bottom: 10px; }
-
-  /* RENTA CARD */
-  .renta-result-card {
-    background: var(--bg3);
-    border-radius: 12px;
-    padding: 14px;
-    margin-bottom: 10px;
-  }
-  .renta-result-card .rl { font-size: 11px; text-transform: uppercase; letter-spacing: 1px; color: var(--text3); margin-bottom: 4px; }
-  .renta-result-card .rv { font-family: 'Bebas Neue', sans-serif; font-size: 26px; }
-
-  .renta-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 12px; }
-
-  /* CONFIG */
-  .config-card {
-    background: var(--card);
-    border: 1px solid var(--border);
-    border-radius: 14px;
-    padding: 16px;
-    margin-bottom: 14px;
-  }
-  .config-card h3 { font-size: 15px; font-weight: 700; margin-bottom: 14px; padding-bottom: 10px; border-bottom: 1px solid var(--border); }
-
-  /* MULTAS */
-  .multa-badge {
-    display: inline-flex;
-    padding: 2px 8px;
-    border-radius: 20px;
-    font-size: 10px;
-    font-weight: 700;
-  }
-  .multa-grave { background: rgba(239,68,68,0.15); color: var(--red); border: 1px solid rgba(239,68,68,0.3); }
-  .multa-media { background: rgba(234,179,8,0.15); color: var(--yellow); border: 1px solid rgba(234,179,8,0.3); }
-  .multa-leve { background: rgba(59,130,246,0.15); color: var(--blue); border: 1px solid rgba(59,130,246,0.3); }
-
-  .points-bar { background: var(--bg3); border-radius: 6px; height: 8px; margin-top: 8px; overflow: hidden; }
-  .points-fill { height: 100%; border-radius: 6px; transition: width 0.5s; }
-
-  /* FILTER */
-  .filter-row { display: flex; gap: 8px; margin-bottom: 12px; overflow-x: auto; padding-bottom: 4px; }
-  .filter-chip {
-    flex-shrink: 0;
-    padding: 6px 14px;
-    border-radius: 20px;
-    font-size: 12px;
-    font-weight: 600;
-    border: 1px solid var(--border);
-    background: var(--card);
-    color: var(--text2);
-    cursor: pointer;
-    white-space: nowrap;
-  }
-  .filter-chip.active { border-color: var(--accent); color: var(--accent); background: rgba(249,115,22,0.1); }
-
-  /* TOAST */
-  .toast {
-    position: fixed;
-    top: calc(70px + env(safe-area-inset-top,0px));
-    left: 12px; right: 12px;
-    background: var(--card);
-    border: 1px solid var(--border);
-    border-radius: 12px;
-    padding: 12px 16px;
-    font-size: 14px;
-    font-weight: 500;
-    z-index: 999;
-    transform: translateY(-20px);
-    opacity: 0;
-    transition: all 0.3s;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-  }
-  .toast.show { transform: translateY(0); opacity: 1; }
-  .toast.success { border-color: var(--green); }
-  .toast.error { border-color: var(--red); }
-
-  /* SCROLLBAR */
-  ::-webkit-scrollbar { width: 4px; }
-  ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
-
-  /* Delete button */
-  .btn-del {
-    background: none;
-    border: none;
-    font-size: 18px;
-    cursor: pointer;
-    padding: 4px;
-    opacity: 0.5;
-    flex-shrink: 0;
-  }
-  .btn-del:active { opacity: 1; }
-
-  .action-bar {
-    display: flex;
-    gap: 8px;
-    flex-direction: column;
-  }
-
-  .input-readonly {
-    background: var(--bg3);
-    border: 1px solid var(--border);
-    border-radius: 10px;
-    padding: 12px 14px;
-    color: var(--accent);
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 15px;
-    font-weight: 700;
-  }
-
-  /* ===== CALCULADORA RÁPIDA ===== */
-  .calc-input-wrap {
-    position: relative;
-    margin-bottom: 10px;
-  }
-  .calc-input-wrap label {
-    position: absolute;
-    top: 10px; left: 14px;
-    font-size: 10px;
-    font-weight: 800;
-    letter-spacing: 1.5px;
-    text-transform: uppercase;
-    color: var(--text3);
-    z-index: 1;
-    pointer-events: none;
-  }
-  .calc-input-wrap .prefix {
-    position: absolute;
-    bottom: 14px; left: 14px;
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: 22px;
-    color: var(--text3);
-    pointer-events: none;
-    z-index: 1;
-  }
-  .calc-big-input {
-    width: 100%;
-    background: var(--bg3);
-    border: 2px solid var(--border);
-    border-radius: 14px;
-    padding: 32px 16px 14px 38px;
-    color: var(--text);
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: 38px;
-    letter-spacing: 1px;
-    outline: none;
-    transition: border-color 0.2s, background 0.2s;
-    -webkit-appearance: none;
-    caret-color: var(--accent);
-  }
-  .calc-big-input:focus { border-color: var(--accent); background: #1f2438; }
-  .calc-big-input.no-prefix { padding-left: 16px; }
-  .calc-big-input::placeholder { color: var(--text3); opacity: 0.5; }
-
-  .toggle-row {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    background: var(--bg3);
-    border: 1px solid var(--border);
-    border-radius: 14px;
-    padding: 13px 16px;
-    margin-bottom: 10px;
-    cursor: pointer;
-    user-select: none;
-  }
-  .toggle-row-left { display: flex; flex-direction: column; gap: 2px; }
-  .toggle-label { font-size: 14px; font-weight: 700; color: var(--text); }
-  .toggle-sub { font-size: 11px; color: var(--text3); }
-
-  .switch {
-    width: 50px; height: 28px;
-    background: var(--border);
-    border-radius: 14px;
-    position: relative;
-    transition: background 0.25s;
-    flex-shrink: 0;
-  }
-  .switch::after {
-    content: '';
-    position: absolute;
-    width: 22px; height: 22px;
-    background: #fff;
-    border-radius: 50%;
-    top: 3px; left: 3px;
-    transition: transform 0.25s;
-    box-shadow: 0 1px 4px rgba(0,0,0,0.4);
-  }
-  .switch.on { background: var(--accent); }
-  .switch.on::after { transform: translateX(22px); }
-
-  .calc-result {
-    border-radius: 16px;
-    padding: 16px;
-    margin-bottom: 12px;
-    transition: all 0.3s;
-    border: 2px solid transparent;
-  }
-  .calc-result.empty { background: var(--bg3); border-color: var(--border); }
-  .calc-result.ok { background: rgba(34,197,94,0.08); border-color: rgba(34,197,94,0.4); animation: pulse-green 2s ease infinite; }
-  .calc-result.nok { background: rgba(239,68,68,0.08); border-color: rgba(239,68,68,0.4); }
-
-  @keyframes pulse-green {
-    0%, 100% { box-shadow: 0 0 0 0 rgba(34,197,94,0.3); }
-    50% { box-shadow: 0 0 0 8px rgba(34,197,94,0); }
-  }
-
-  .calc-verdict {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: 22px;
-    letter-spacing: 1px;
-    margin-bottom: 10px;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-  }
-  .calc-verdict.ok { color: var(--green); }
-  .calc-verdict.nok { color: var(--red); }
-  .calc-verdict.empty { color: var(--text3); }
-
-  .calc-rows { display: flex; flex-direction: column; gap: 5px; }
-  .calc-row { display: flex; justify-content: space-between; align-items: center; font-size: 13px; }
-  .calc-row .cl { color: var(--text3); }
-  .calc-row .cv { font-family: 'JetBrains Mono', monospace; font-weight: 700; font-size: 14px; }
-
-  .calc-real-value {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: 52px;
-    line-height: 1;
-    text-align: center;
-    margin: 6px 0 2px;
-    letter-spacing: 1px;
-  }
-  .calc-real-value.ok { color: var(--green); }
-  .calc-real-value.nok { color: var(--red); }
-  .calc-real-value.empty { color: var(--text3); }
-
-  .calc-perkm { text-align: center; font-size: 12px; color: var(--text3); margin-bottom: 8px; font-family: 'JetBrains Mono', monospace; }
-  .calc-divider { height: 1px; background: var(--border); margin: 10px 0; }
-
-  .calc-meta-row { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }
-  .calc-meta-label { font-size: 12px; color: var(--text3); flex: 1; font-weight: 600; }
-  .calc-meta-input {
-    width: 90px;
-    background: var(--bg3);
-    border: 1px solid var(--border);
-    border-radius: 8px;
-    padding: 7px 10px;
-    color: var(--accent);
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 14px;
-    font-weight: 700;
-    text-align: right;
-    outline: none;
-    -webkit-appearance: none;
-  }
-  .calc-meta-input:focus { border-color: var(--accent); }
-
-  .plat-tabs { display: flex; gap: 6px; margin-bottom: 10px; }
-  .plat-tab {
-    flex: 1;
-    padding: 9px 4px;
-    border-radius: 10px;
-    font-size: 12px;
-    font-weight: 700;
-    border: 2px solid var(--border);
-    background: var(--bg3);
-    color: var(--text3);
-    cursor: pointer;
-    text-align: center;
-    transition: all 0.2s;
-  }
-  .plat-tab.active-ifood { border-color: var(--ifood); color: var(--ifood); background: rgba(234,29,44,0.1); }
-  .plat-tab.active-99 { border-color: var(--n99); color: var(--n99); background: rgba(245,166,35,0.1); }
-  .plat-tab.active-particular { border-color: var(--particular); color: var(--particular); background: rgba(34,197,94,0.1); }
-
-  .btn-aceitar {
-    width: 100%;
-    padding: 16px;
-    border-radius: 14px;
-    background: var(--accent);
-    color: #fff;
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: 22px;
-    letter-spacing: 2px;
-    border: none;
-    cursor: pointer;
-    transition: all 0.2s;
-    margin-bottom: 8px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 8px;
-  }
-  .btn-aceitar:active { transform: scale(0.97); background: var(--accent2); }
-  .btn-aceitar:disabled { background: var(--bg3); color: var(--text3); border: 1px solid var(--border); cursor: not-allowed; }
-
-  .btn-recusar {
-    width: 100%;
-    padding: 13px;
-    border-radius: 14px;
-    background: transparent;
-    color: var(--text3);
-    font-size: 14px;
-    font-weight: 600;
-    border: 1px solid var(--border);
-    cursor: pointer;
-    font-family: 'DM Sans', sans-serif;
-  }
-  .btn-recusar:active { opacity: 0.7; }
-
-  .calc-dest-input {
-    width: 100%;
-    background: var(--bg3);
-    border: 2px solid var(--border);
-    border-radius: 14px;
-    padding: 14px 16px;
-    color: var(--text);
-    font-size: 16px;
-    font-family: 'DM Sans', sans-serif;
-    outline: none;
-    -webkit-appearance: none;
-    transition: border-color 0.2s;
-    margin-bottom: 10px;
-  }
-  .calc-dest-input:focus { border-color: var(--accent); }
-  .calc-dest-input::placeholder { color: var(--text3); }
+:root{--bg:#0d0f14;--bg2:#13161e;--bg3:#1a1e2a;--card:#1e2230;--border:#2e3347;--accent:#f97316;--accent2:#fb923c;--green:#22c55e;--red:#ef4444;--blue:#3b82f6;--yellow:#eab308;--purple:#a855f7;--text:#e8eaf0;--text2:#9aa0b8;--text3:#5c6280;--ifood:#ea1d2c;--n99:#f5a623;--particular:#22c55e;--sb:env(safe-area-inset-bottom,0px);--st:env(safe-area-inset-top,0px);}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+html,body{height:100%;overflow:hidden;}
+body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);display:flex;flex-direction:column;}
+.topbar{background:var(--bg2);border-bottom:1px solid var(--border);padding:12px 16px;padding-top:calc(12px + var(--st));display:flex;align-items:center;justify-content:space-between;flex-shrink:0;z-index:10;}
+.logo{font-family:'Bebas Neue',sans-serif;font-size:20px;letter-spacing:2px;color:var(--accent);}
+.page-title{font-size:12px;color:var(--text3);font-weight:700;text-transform:uppercase;letter-spacing:1px;}
+.icon-btn{background:none;border:none;font-size:20px;cursor:pointer;padding:2px;}
+.content{flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;padding:14px;padding-bottom:calc(72px + var(--sb));}
+.bottom-nav{position:fixed;bottom:0;left:0;right:0;background:var(--bg2);border-top:1px solid var(--border);display:flex;padding-bottom:var(--sb);z-index:100;}
+.nav-item{flex:1;display:flex;flex-direction:column;align-items:center;gap:2px;padding:8px 2px;cursor:pointer;color:var(--text3);font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:0.5px;border:none;background:none;font-family:'DM Sans',sans-serif;transition:color 0.2s;}
+.nav-item .ni{font-size:20px;line-height:1;}
+.nav-item.active{color:var(--accent);}
+.page{display:none;}.page.active{display:block;}
+.cards-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px;}
+.stat-card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:13px;position:relative;overflow:hidden;}
+.stat-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;}
+.sc-orange::before{background:linear-gradient(90deg,var(--accent),var(--accent2));}
+.sc-green::before{background:linear-gradient(90deg,var(--green),#4ade80);}
+.sc-red::before{background:linear-gradient(90deg,var(--red),#f87171);}
+.sc-blue::before{background:linear-gradient(90deg,var(--blue),#60a5fa);}
+.sc-purple::before{background:linear-gradient(90deg,var(--purple),#c084fc);}
+.sc-yellow::before{background:linear-gradient(90deg,var(--yellow),#facc15);}
+.stat-lbl{font-size:10px;text-transform:uppercase;letter-spacing:1px;color:var(--text3);font-weight:700;margin-bottom:5px;}
+.stat-val{font-family:'Bebas Neue',sans-serif;font-size:24px;color:var(--text);letter-spacing:0.5px;line-height:1;}
+.stat-sub{font-size:11px;color:var(--text3);margin-top:3px;}
+.stat-ico{position:absolute;right:10px;top:12px;font-size:22px;opacity:0.12;}
+.progress-wrap{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:14px;margin-bottom:10px;}
+.progress-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;}
+.progress-title{font-size:13px;font-weight:700;color:var(--text);}
+.progress-vals{font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--text2);}
+.progress-bar-bg{background:var(--bg3);border-radius:6px;height:10px;overflow:hidden;}
+.progress-bar-fill{height:100%;border-radius:6px;transition:width 0.6s ease;background:linear-gradient(90deg,var(--accent),var(--accent2));}
+.progress-bar-fill.done{background:linear-gradient(90deg,var(--green),#4ade80);}
+.progress-sub{font-size:11px;color:var(--text3);margin-top:5px;}
+.sec-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;margin-top:4px;}
+.sec-title{font-family:'Bebas Neue',sans-serif;font-size:18px;letter-spacing:1px;}
+.sec-btn{font-size:12px;color:var(--accent);background:none;border:none;cursor:pointer;font-family:'DM Sans',sans-serif;font-weight:600;}
+.list-item{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:12px 13px;margin-bottom:7px;display:flex;align-items:center;gap:10px;}
+.li-icon{font-size:26px;flex-shrink:0;}
+.li-main{flex:1;min-width:0;}
+.li-title{font-size:14px;font-weight:600;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.li-sub{font-size:11px;color:var(--text3);margin-top:2px;}
+.li-right{text-align:right;flex-shrink:0;}
+.li-val{font-family:'JetBrains Mono',monospace;font-size:14px;font-weight:700;}
+.li-sub2{font-size:10px;color:var(--text3);margin-top:2px;}
+.btn-del{background:none;border:none;font-size:17px;cursor:pointer;padding:3px;opacity:0.4;flex-shrink:0;}
+.btn-del:active{opacity:1;}
+.c-green{color:var(--green);}.c-red{color:var(--red);}.c-orange{color:var(--accent);}.c-blue{color:var(--blue);}.c-text{color:var(--text);}
+.badge{display:inline-flex;padding:2px 8px;border-radius:20px;font-size:10px;font-weight:700;text-transform:uppercase;}
+.b-ifood{background:rgba(234,29,44,.15);color:var(--ifood);border:1px solid rgba(234,29,44,.3);}
+.b-99{background:rgba(245,166,35,.15);color:var(--n99);border:1px solid rgba(245,166,35,.3);}
+.b-particular{background:rgba(34,197,94,.15);color:var(--particular);border:1px solid rgba(34,197,94,.3);}
+.b-gasto{background:rgba(168,85,247,.15);color:var(--purple);border:1px solid rgba(168,85,247,.3);}
+.filter-row{display:flex;gap:6px;margin-bottom:12px;overflow-x:auto;padding-bottom:3px;}
+.chip{flex-shrink:0;padding:5px 13px;border-radius:20px;font-size:12px;font-weight:600;border:1px solid var(--border);background:var(--card);color:var(--text2);cursor:pointer;white-space:nowrap;}
+.chip.on{border-color:var(--accent);color:var(--accent);background:rgba(249,115,22,.1);}
+.sheet-overlay{position:fixed;inset:0;background:rgba(0,0,0,.65);backdrop-filter:blur(3px);z-index:200;display:none;align-items:flex-end;}
+.sheet-overlay.open{display:flex;}
+.sheet{background:var(--card);border-radius:20px 20px 0 0;width:100%;max-height:93vh;overflow-y:auto;padding:0 16px calc(16px + var(--sb));animation:slideUp 0.3s ease;}
+@keyframes slideUp{from{transform:translateY(100%);}to{transform:translateY(0);}}
+.sheet-handle{width:36px;height:4px;background:var(--border);border-radius:2px;margin:10px auto 14px;}
+.sheet h2{font-family:'Bebas Neue',sans-serif;font-size:22px;letter-spacing:1px;margin-bottom:14px;}
+.sheet h2 span{color:var(--accent);}
+.fg{display:flex;flex-direction:column;gap:5px;margin-bottom:11px;}
+.fr{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+label{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--text3);}
+input,select,textarea{background:var(--bg3);border:1px solid var(--border);border-radius:10px;padding:11px 13px;color:var(--text);font-size:16px;font-family:'DM Sans',sans-serif;outline:none;width:100%;transition:border-color .2s;-webkit-appearance:none;}
+input:focus,select:focus{border-color:var(--accent);}
+select option{background:var(--card);}
+.form-actions{display:flex;gap:8px;margin-top:14px;}
+.btn{flex:1;padding:13px;border-radius:12px;font-family:'DM Sans',sans-serif;font-size:15px;font-weight:700;cursor:pointer;border:none;transition:all .2s;}
+.btn-p{background:var(--accent);color:#fff;}
+.btn-p:active{background:var(--accent2);transform:scale(.98);}
+.btn-g{background:var(--bg3);color:var(--text2);border:1px solid var(--border);}
+.btn-g:active{opacity:.7;}
+.btn-d{background:rgba(239,68,68,.15);color:var(--red);border:1px solid rgba(239,68,68,.3);}
+.chart-wrap{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:14px;margin-bottom:14px;}
+.chart-title{font-family:'Bebas Neue',sans-serif;font-size:17px;letter-spacing:1px;margin-bottom:12px;}
+.bar-chart{display:flex;align-items:flex-end;gap:5px;height:110px;padding-bottom:22px;position:relative;}
+.bar-col{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;height:100%;position:relative;}
+.bar{width:100%;border-radius:4px 4px 0 0;min-height:3px;transition:height .5s ease;position:relative;}
+.bar-label{position:absolute;bottom:-20px;font-size:9px;color:var(--text3);white-space:nowrap;font-weight:600;}
+.bar-val{position:absolute;top:-15px;font-size:9px;font-weight:700;white-space:nowrap;color:var(--text2);}
+.bar-total{background:linear-gradient(180deg,var(--accent),rgba(249,115,22,.4));}
+.chart-base{position:absolute;bottom:22px;left:0;right:0;height:1px;background:var(--border);}
+.rank-item{display:flex;align-items:center;gap:10px;padding:10px 12px;background:var(--bg3);border-radius:10px;margin-bottom:6px;}
+.rank-pos{font-family:'Bebas Neue',sans-serif;font-size:22px;color:var(--text3);width:24px;text-align:center;flex-shrink:0;}
+.rank-pos.gold{color:#fbbf24;}.rank-pos.silver{color:#9ca3af;}.rank-pos.bronze{color:#92400e;}
+.rank-info{flex:1;}
+.rank-name{font-size:13px;font-weight:700;color:var(--text);}
+.rank-sub{font-size:11px;color:var(--text3);}
+.rank-val{font-family:'JetBrains Mono',monospace;font-size:14px;font-weight:700;color:var(--green);}
+.config-card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:15px;margin-bottom:13px;}
+.config-card h3{font-size:15px;font-weight:700;margin-bottom:13px;padding-bottom:9px;border-bottom:1px solid var(--border);}
+.toast{position:fixed;top:calc(64px + var(--st));left:12px;right:12px;background:var(--card);border:1px solid var(--border);border-radius:12px;padding:11px 15px;font-size:14px;font-weight:500;z-index:999;transform:translateY(-20px);opacity:0;transition:all .3s;display:flex;align-items:center;gap:8px;}
+.toast.show{transform:translateY(0);opacity:1;}
+.toast.ok{border-color:var(--green);}.toast.err{border-color:var(--red);}
+.gtabs{display:flex;margin-bottom:14px;border-bottom:1px solid var(--border);}
+.gtab{flex:1;padding:10px 4px;text-align:center;font-size:13px;font-weight:700;color:var(--text3);cursor:pointer;border-bottom:2px solid transparent;transition:all .2s;}
+.gtab.active{color:var(--accent);border-bottom-color:var(--accent);}
+.gtab-content{display:none;}.gtab-content.active{display:block;}
+.ro-display{background:var(--bg3);border:1px solid var(--border);border-radius:10px;padding:11px 13px;color:var(--accent);font-family:'JetBrains Mono',monospace;font-size:14px;font-weight:700;}
+.pts-bar{background:var(--bg3);border-radius:5px;height:7px;margin-top:6px;overflow:hidden;}
+.pts-fill{height:100%;border-radius:5px;transition:width .5s;}
+.alert-banner{background:rgba(239,68,68,.1);border:1px solid rgba(239,68,44,.3);border-radius:12px;padding:10px 13px;margin-bottom:8px;display:flex;align-items:center;gap:8px;font-size:13px;font-weight:600;color:var(--red);}
+.warn-banner{background:rgba(234,179,8,.1);border:1px solid rgba(234,179,8,.3);border-radius:12px;padding:10px 13px;margin-bottom:8px;display:flex;align-items:center;gap:8px;font-size:13px;font-weight:600;color:var(--yellow);}
+/* CALCULADORA */
+.calc-big-wrap{position:relative;margin-bottom:9px;}
+.calc-big-wrap label{position:absolute;top:9px;left:13px;font-size:10px;font-weight:800;letter-spacing:1.5px;text-transform:uppercase;color:var(--text3);z-index:1;pointer-events:none;}
+.calc-pfx{position:absolute;bottom:12px;left:13px;font-family:'Bebas Neue',sans-serif;font-size:20px;color:var(--text3);pointer-events:none;z-index:1;}
+.calc-big{width:100%;background:var(--bg3);border:2px solid var(--border);border-radius:13px;padding:30px 14px 12px 36px;color:var(--text);font-family:'Bebas Neue',sans-serif;font-size:36px;outline:none;transition:border-color .2s;-webkit-appearance:none;caret-color:var(--accent);}
+.calc-big:focus{border-color:var(--accent);background:#1f2438;}
+.calc-big::placeholder{color:var(--text3);opacity:.4;}
+.toggle-row{display:flex;align-items:center;justify-content:space-between;background:var(--bg3);border:1px solid var(--border);border-radius:13px;padding:12px 15px;margin-bottom:9px;cursor:pointer;user-select:none;}
+.toggle-left{display:flex;flex-direction:column;gap:2px;}
+.toggle-lbl{font-size:13px;font-weight:700;color:var(--text);}
+.toggle-sub{font-size:11px;color:var(--text3);}
+.sw{width:48px;height:26px;background:var(--border);border-radius:13px;position:relative;transition:background .25s;flex-shrink:0;}
+.sw::after{content:'';position:absolute;width:20px;height:20px;background:#fff;border-radius:50%;top:3px;left:3px;transition:transform .25s;box-shadow:0 1px 4px rgba(0,0,0,.4);}
+.sw.on{background:var(--accent);}.sw.on::after{transform:translateX(22px);}
+.plat-tabs{display:flex;gap:5px;margin-bottom:9px;}
+.plat-tab{flex:1;padding:8px 2px;border-radius:9px;font-size:11px;font-weight:700;border:2px solid var(--border);background:var(--bg3);color:var(--text3);cursor:pointer;text-align:center;transition:all .2s;}
+.pt-ifood.on{border-color:var(--ifood);color:var(--ifood);background:rgba(234,29,44,.1);}
+.pt-99.on{border-color:var(--n99);color:var(--n99);background:rgba(245,166,35,.1);}
+.pt-part.on{border-color:var(--particular);color:var(--particular);background:rgba(34,197,94,.1);}
+.calc-meta-row{display:flex;align-items:center;gap:8px;margin-bottom:9px;}
+.calc-meta-lbl{font-size:12px;color:var(--text3);flex:1;font-weight:600;}
+.calc-meta-in{width:80px;background:var(--bg3);border:1px solid var(--border);border-radius:8px;padding:7px 9px;color:var(--accent);font-family:'JetBrains Mono',monospace;font-size:14px;font-weight:700;text-align:right;outline:none;-webkit-appearance:none;}
+.calc-meta-in:focus{border-color:var(--accent);}
+.calc-result{border-radius:14px;padding:14px;margin-bottom:10px;transition:all .3s;border:2px solid transparent;}
+.cr-empty{background:var(--bg3);border-color:var(--border);}
+.cr-ok{background:rgba(34,197,94,.08);border-color:rgba(34,197,94,.4);animation:pulse-g 2s ease infinite;}
+.cr-nok{background:rgba(239,68,68,.08);border-color:rgba(239,68,68,.4);}
+@keyframes pulse-g{0%,100%{box-shadow:0 0 0 0 rgba(34,197,94,.3);}50%{box-shadow:0 0 0 8px rgba(34,197,94,0);}}
+.cr-verdict{font-family:'Bebas Neue',sans-serif;font-size:20px;letter-spacing:1px;margin-bottom:8px;display:flex;align-items:center;gap:6px;}
+.cr-real{font-family:'Bebas Neue',sans-serif;font-size:48px;line-height:1;text-align:center;margin:4px 0 2px;letter-spacing:1px;}
+.cr-perkm{text-align:center;font-size:11px;color:var(--text3);margin-bottom:7px;font-family:'JetBrains Mono',monospace;}
+.cr-divider{height:1px;background:var(--border);margin:8px 0;}
+.cr-rows{display:flex;flex-direction:column;gap:4px;}
+.cr-row{display:flex;justify-content:space-between;font-size:12px;}
+.cr-row .cl{color:var(--text3);}
+.cr-row .cv{font-family:'JetBrains Mono',monospace;font-weight:700;font-size:13px;}
+.crono-wrap{background:var(--bg3);border:1px solid var(--border);border-radius:13px;padding:12px 15px;margin-bottom:9px;}
+.crono-title{font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--text3);margin-bottom:8px;}
+.crono-display{font-family:'JetBrains Mono',monospace;font-size:32px;font-weight:600;color:var(--text);text-align:center;margin-bottom:8px;}
+.crono-btns{display:flex;gap:6px;}
+.crono-btn{flex:1;padding:9px;border-radius:9px;font-size:12px;font-weight:700;border:none;cursor:pointer;font-family:'DM Sans',sans-serif;}
+.cb-start{background:var(--green);color:#fff;}
+.cb-stop{background:var(--red);color:#fff;}
+.cb-reset{background:var(--bg);color:var(--text2);border:1px solid var(--border);}
+.crono-result{font-size:11px;color:var(--text3);text-align:center;margin-top:6px;font-family:'JetBrains Mono',monospace;}
+.calc-dest{width:100%;background:var(--bg3);border:2px solid var(--border);border-radius:13px;padding:13px 15px;color:var(--text);font-size:16px;font-family:'DM Sans',sans-serif;outline:none;-webkit-appearance:none;transition:border-color .2s;margin-bottom:9px;}
+.calc-dest:focus{border-color:var(--accent);}
+.calc-dest::placeholder{color:var(--text3);}
+.btn-aceitar{width:100%;padding:15px;border-radius:13px;background:var(--accent);color:#fff;font-family:'Bebas Neue',sans-serif;font-size:21px;letter-spacing:2px;border:none;cursor:pointer;transition:all .2s;margin-bottom:7px;display:flex;align-items:center;justify-content:center;gap:6px;}
+.btn-aceitar:active{transform:scale(.97);background:var(--accent2);}
+.btn-aceitar:disabled{background:var(--bg3);color:var(--text3);border:1px solid var(--border);cursor:not-allowed;}
+.btn-recusar{width:100%;padding:12px;border-radius:13px;background:transparent;color:var(--text3);font-size:14px;font-weight:600;border:1px solid var(--border);cursor:pointer;font-family:'DM Sans',sans-serif;}
+::-webkit-scrollbar{width:4px;}::-webkit-scrollbar-thumb{background:var(--border);border-radius:2px;}
 </style>
 </head>
 <body>
-
-<!-- TOP BAR -->
 <div class="topbar">
-  <div class="logo">🏍 MotoControle</div>
-  <div class="page-title" id="pageTitle">Dashboard</div>
-  <div class="header-right">
-    <button onclick="showPage('config')" style="background:none;border:none;font-size:20px;cursor:pointer;padding:2px;">⚙️</button>
-  </div>
+  <div class="logo">&#127949; MotoControle</div>
+  <div class="page-title" id="pageTitle">INICIO</div>
+  <div><button class="icon-btn" onclick="showPage('config')">&#9881;&#65039;</button></div>
 </div>
-
-<!-- CONTENT -->
-<div class="content" id="mainContent">
-
+<div class="content">
   <!-- DASHBOARD -->
   <div class="page active" id="page-dashboard">
+    <div id="metasSection"></div>
     <div class="cards-grid" id="dashCards"></div>
-    <div class="section-header">
-      <div class="section-title">Últimas Entregas</div>
+    <button onclick="openSheet('sheetCalc')" style="width:100%;padding:13px;border-radius:13px;background:linear-gradient(135deg,#f97316,#fb923c);border:none;color:#fff;font-family:'Bebas Neue',sans-serif;font-size:19px;letter-spacing:2px;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;box-shadow:0 4px 20px rgba(249,115,22,.4);margin-bottom:14px;">
+      &#9889; CALCULAR SE VALE A PENA
+    </button>
+    <div class="chart-wrap">
+      <div class="chart-title">&#128202; Ganhos &mdash; Ultimos 7 Dias</div>
+      <div class="bar-chart" id="chartSemanal"></div>
     </div>
+    <div class="chart-wrap">
+      <div class="chart-title">&#127942; Ranking de Plataformas</div>
+      <div id="rankingPlat"></div>
+    </div>
+    <div class="sec-header"><div class="sec-title">Ultimas Entregas</div><button class="sec-btn" onclick="showPage('entregas')">Ver todas &rarr;</button></div>
     <div id="dashEntregas"></div>
-    <div style="margin: 4px 0 20px;">
-      <button onclick="openSheet('sheetCalc')" style="width:100%;padding:14px;border-radius:14px;background:linear-gradient(135deg,#f97316,#fb923c);border:none;color:#fff;font-family:'Bebas Neue',sans-serif;font-size:20px;letter-spacing:2px;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;box-shadow:0 4px 20px rgba(249,115,22,0.35);">
-        ⚡ CALCULAR SE VALE A PENA
-      </button>
-    </div>
-    <div class="section-header" style="margin-top:4px;">
-      <div class="section-title">Últimos Gastos</div>
-    </div>
-    <div id="dashGastos"></div>
   </div>
-
   <!-- ENTREGAS -->
   <div class="page" id="page-entregas">
     <div class="filter-row" id="filtrosPlat">
-      <div class="filter-chip active" onclick="setFiltroPlat('',this)">Todas</div>
-      <div class="filter-chip" onclick="setFiltroPlat('iFood',this)">🔴 iFood</div>
-      <div class="filter-chip" onclick="setFiltroPlat('99',this)">🟡 99</div>
-      <div class="filter-chip" onclick="setFiltroPlat('Particular',this)">🟢 Particular</div>
+      <div class="chip on" onclick="setFP('',this)">Todas</div>
+      <div class="chip" onclick="setFP('iFood',this)">&#128308; iFood</div>
+      <div class="chip" onclick="setFP('99',this)">&#128993; 99</div>
+      <div class="chip" onclick="setFP('Particular',this)">&#128994; Particular</div>
     </div>
     <div id="listaEntregas"></div>
   </div>
-
-  <!-- GASTOS -->
-  <div class="page" id="page-gastos">
-    <div class="filter-row">
-      <div class="filter-chip active" onclick="setFiltroGasto('',this)">Todos</div>
-      <div class="filter-chip" onclick="setFiltroGasto('Gasolina',this)">⛽ Gasolina</div>
-      <div class="filter-chip" onclick="setFiltroGasto('Comida',this)">🍔 Comida</div>
-      <div class="filter-chip" onclick="setFiltroGasto('Manutenção',this)">🔧 Manutenção</div>
-      <div class="filter-chip" onclick="setFiltroGasto('Outros',this)">📦 Outros</div>
+  <!-- GARAGEM -->
+  <div class="page" id="page-garagem">
+    <div class="gtabs">
+      <div class="gtab active" id="gtab-manut" onclick="switchGtab('manut')">&#128295; Manutencao</div>
+      <div class="gtab" id="gtab-abast" onclick="switchGtab('abast')">&#9981;&#65039; Abastecimento</div>
     </div>
-    <div id="listaGastos"></div>
-  </div>
-
-  <!-- RENTABILIDADE -->
-  <div class="page" id="page-renta">
-    <div class="config-card">
-      <h3>⚙️ Configuração da Moto</h3>
-      <div class="form-row">
-        <div class="form-group">
-          <label>KM por litro</label>
-          <input type="number" id="rKm" placeholder="Ex: 35" step="0.1" oninput="salvarConfigRenta()">
-        </div>
-        <div class="form-group">
-          <label>Preço gasolina (R$)</label>
-          <input type="number" id="rGas" placeholder="Ex: 6.89" step="0.01" oninput="salvarConfigRenta()">
-        </div>
-      </div>
-      <div class="form-group">
-        <label>Custo por km</label>
-        <div class="input-readonly" id="rCusto">—</div>
-      </div>
+    <div class="gtab-content active" id="gc-manut">
+      <div id="manutAlertas"></div>
+      <div id="listaManut"></div>
     </div>
-
-    <div class="config-card">
-      <h3>📅 Análise do Dia</h3>
-      <div class="form-group">
-        <label>Data</label>
-        <input type="date" id="rentaData" onchange="calcDia()">
-      </div>
-      <div id="rentaDiaResult"></div>
-    </div>
-
-    <div class="config-card">
-      <h3>📊 Período</h3>
-      <div class="form-row">
-        <div class="form-group">
-          <label>De</label>
-          <input type="date" id="rentaIni" onchange="calcPeriodo()">
-        </div>
-        <div class="form-group">
-          <label>Até</label>
-          <input type="date" id="rentaFim" onchange="calcPeriodo()">
-        </div>
-      </div>
-      <div id="rentaPeriodoResult"></div>
+    <div class="gtab-content" id="gc-abast">
+      <div class="cards-grid" id="abastCards"></div>
+      <div id="listaAbast"></div>
     </div>
   </div>
-
-  <!-- MULTAS -->
-  <div class="page" id="page-multas">
-    <div id="multasResumo" style="margin-bottom:16px;"></div>
-    <div id="listaMultas"></div>
+  <!-- MAIS -->
+  <div class="page" id="page-mais">
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:16px;">
+      <button onclick="switchMais('gastos')" style="padding:12px 4px;border-radius:12px;background:rgba(168,85,247,.15);border:1px solid rgba(168,85,247,.3);color:var(--purple);font-size:12px;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif;display:flex;flex-direction:column;align-items:center;gap:4px;"><span style="font-size:22px;">&#128184;</span>Gastos</button>
+      <button onclick="switchMais('multas')" style="padding:12px 4px;border-radius:12px;background:rgba(239,68,68,.15);border:1px solid rgba(239,68,68,.3);color:var(--red);font-size:12px;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif;display:flex;flex-direction:column;align-items:center;gap:4px;"><span style="font-size:22px;">&#128680;</span>Multas</button>
+      <button onclick="switchMais('renta')" style="padding:12px 4px;border-radius:12px;background:rgba(34,197,94,.15);border:1px solid rgba(34,197,94,.3);color:var(--green);font-size:12px;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif;display:flex;flex-direction:column;align-items:center;gap:4px;"><span style="font-size:22px;">&#128200;</span>Rentab.</button>
+    </div>
+    <div class="gtab-content active" id="mc-gastos">
+      <div class="filter-row">
+        <div class="chip on" onclick="setFG('',this)">Todos</div>
+        <div class="chip" onclick="setFG('Gasolina',this)">&#9981;&#65039;</div>
+        <div class="chip" onclick="setFG('Comida',this)">&#127828;</div>
+        <div class="chip" onclick="setFG('Manutencao',this)">&#128295;</div>
+        <div class="chip" onclick="setFG('Outros',this)">&#128230;</div>
+      </div>
+      <button class="btn btn-p" style="width:100%;margin-bottom:10px;" onclick="openSheet('sheetGasto')">+ Novo Gasto</button>
+      <div id="listaGastos"></div>
+    </div>
+    <div class="gtab-content" id="mc-multas">
+      <div id="multasResumo" style="margin-bottom:10px;"></div>
+      <div id="listaMultas"></div>
+    </div>
+    <div class="gtab-content" id="mc-renta">
+      <div class="config-card" style="margin-top:4px;">
+        <h3>&#9881;&#65039; Moto</h3>
+        <div class="fr">
+          <div class="fg"><label>KM/litro</label><input type="number" id="rKm" placeholder="35" step="0.1" oninput="salvarCfgRenta()"></div>
+          <div class="fg"><label>Preco gasolina</label><input type="number" id="rGas" placeholder="6.89" step="0.01" oninput="salvarCfgRenta()"></div>
+        </div>
+        <div class="fg"><label>Custo/km</label><div class="ro-display" id="rCusto">--</div></div>
+      </div>
+      <div class="config-card">
+        <h3>&#128197; Analise do Dia</h3>
+        <div class="fg"><label>Data</label><input type="date" id="rentaData" onchange="calcDia()"></div>
+        <div id="rentaDiaResult"></div>
+      </div>
+      <div class="config-card">
+        <h3>&#128202; Periodo</h3>
+        <div class="fr">
+          <div class="fg"><label>De</label><input type="date" id="rentaIni" onchange="calcPeriodo()"></div>
+          <div class="fg"><label>Ate</label><input type="date" id="rentaFim" onchange="calcPeriodo()"></div>
+        </div>
+        <div id="rentaPeriodoResult"></div>
+      </div>
+    </div>
   </div>
-
   <!-- CONFIG -->
   <div class="page" id="page-config">
     <div class="config-card">
-      <h3>🏍 Minha Moto</h3>
-      <div class="form-row">
-        <div class="form-group">
-          <label>KM por litro</label>
-          <input type="number" id="cfgKm" step="0.1" placeholder="Ex: 35">
-        </div>
-        <div class="form-group">
-          <label>Preço da Gasolina</label>
-          <input type="number" id="cfgGas" step="0.01" placeholder="Ex: 6.89">
-        </div>
+      <h3>&#127949; Minha Moto</h3>
+      <div class="fr">
+        <div class="fg"><label>KM por litro</label><input type="number" id="cfgKm" step="0.1" placeholder="35"></div>
+        <div class="fg"><label>Preco Gasolina</label><input type="number" id="cfgGas" step="0.01" placeholder="6.89"></div>
       </div>
-      <button class="btn btn-primary" style="width:100%;margin-top:8px;" onclick="salvarConfigFull()">💾 Salvar</button>
+      <div class="fg"><label>KM atual hodometro</label><input type="number" id="cfgHodo" step="1" placeholder="Ex: 15420"></div>
+      <button class="btn btn-p" style="width:100%;margin-top:8px;" onclick="salvarCfgFull()">&#128190; Salvar</button>
     </div>
-
     <div class="config-card">
-      <h3>💾 Backup dos Dados</h3>
-      <div class="action-bar">
-        <button class="btn btn-ghost" onclick="exportar()">📤 Exportar backup (JSON)</button>
-        <label class="btn btn-ghost" style="text-align:center;cursor:pointer;">
-          📥 Importar backup
-          <input type="file" accept=".json" style="display:none" onchange="importar(event)">
-        </label>
-        <button class="btn btn-danger" onclick="limparTudo()">🗑 Limpar todos os dados</button>
+      <h3>&#127919; Metas</h3>
+      <div class="fr">
+        <div class="fg"><label>Meta diaria (R$)</label><input type="number" id="cfgMetaDia" step="1" placeholder="200"></div>
+        <div class="fg"><label>Meta mensal (R$)</label><input type="number" id="cfgMetaMes" step="10" placeholder="4000"></div>
+      </div>
+      <button class="btn btn-p" style="width:100%;margin-top:8px;" onclick="salvarMetas()">&#128190; Salvar metas</button>
+    </div>
+    <div class="config-card">
+      <h3>&#128190; Backup</h3>
+      <div style="display:flex;flex-direction:column;gap:7px;">
+        <button class="btn btn-g" onclick="exportar()">&#128228; Exportar JSON</button>
+        <label class="btn btn-g" style="text-align:center;cursor:pointer;">&#128229; Importar JSON<input type="file" accept=".json" style="display:none" onchange="importar(event)"></label>
+        <button class="btn btn-d" onclick="limparTudo()">&#128465; Limpar todos os dados</button>
       </div>
     </div>
-
     <div class="config-card">
-      <h3>ℹ️ Sobre</h3>
-      <p style="font-size:13px;color:var(--text3);line-height:1.7;">MotoControle v1.0<br>Dados salvos no próprio celular.<br>Faça backup regularmente!</p>
+      <h3>&#8505;&#65039; Sobre</h3>
+      <p style="font-size:13px;color:var(--text3);line-height:1.7;">MotoControle v2.0<br>Dados salvos no celular.<br>Faca backup regularmente!</p>
     </div>
   </div>
-
 </div>
-
 <!-- BOTTOM NAV -->
 <nav class="bottom-nav">
-  <button class="nav-item active" id="nav-dashboard" onclick="showPage('dashboard')">
-    <span class="icon">📊</span>
-    <span>Início</span>
-  </button>
-  <button class="nav-item" id="nav-entregas" onclick="showPage('entregas')">
-    <span class="icon">📦</span>
-    <span>Entregas</span>
-  </button>
-  <button class="nav-item" id="nav-gastos" onclick="showPage('gastos')">
-    <span class="icon">💸</span>
-    <span>Gastos</span>
-  </button>
-  <button class="nav-item" id="nav-renta" onclick="showPage('renta')">
-    <span class="icon">📈</span>
-    <span>Rentab.</span>
-  </button>
-  <button class="nav-item" id="nav-multas" onclick="showPage('multas')">
-    <span class="icon">🚨</span>
-    <span>Multas</span>
-  </button>
-  <button class="nav-item" id="nav-calc" onclick="openSheet('sheetCalc')">
-    <span class="icon" style="position:relative;">⚡<span style="position:absolute;top:-2px;right:-4px;width:7px;height:7px;background:var(--accent);border-radius:50%;display:block;"></span></span>
-    <span>Calcular</span>
-  </button>
+  <button class="nav-item active" id="nav-dashboard" onclick="showPage('dashboard')"><span class="ni">&#127968;</span><span>Inicio</span></button>
+  <button class="nav-item" id="nav-entregas" onclick="showPage('entregas')"><span class="ni">&#128230;</span><span>Entregas</span></button>
+  <button class="nav-item" id="nav-calc" onclick="openSheet('sheetCalc')"><span class="ni" style="background:var(--accent);border-radius:50%;width:36px;height:36px;display:flex;align-items:center;justify-content:center;margin-top:-6px;box-shadow:0 3px 14px rgba(249,115,22,.5);">&#9889;</span><span>Calcular</span></button>
+  <button class="nav-item" id="nav-garagem" onclick="showPage('garagem')"><span class="ni">&#128295;</span><span>Garagem</span></button>
+  <button class="nav-item" id="nav-mais" onclick="showPage('mais')"><span class="ni">&#9776;</span><span>Mais</span></button>
 </nav>
-
-<!-- FAB -->
-<button class="fab" id="fabBtn" onclick="openFab()">+</button>
-
-<!-- ===== SHEETS ===== -->
-
-<!-- ENTREGA SHEET -->
+<button id="fabBtn" onclick="openFab()" style="position:fixed;bottom:calc(70px + var(--sb) + 10px);right:16px;width:50px;height:50px;border-radius:50%;background:var(--accent);color:#fff;font-size:24px;border:none;cursor:pointer;display:none;align-items:center;justify-content:center;box-shadow:0 4px 18px rgba(249,115,22,.5);z-index:90;">+</button>
+<!-- SHEETS -->
 <div class="sheet-overlay" id="sheetEntrega">
   <div class="sheet">
     <div class="sheet-handle"></div>
-    <h2>📦 <span>Nova</span> Entrega</h2>
-    <div class="form-row">
-      <div class="form-group">
-        <label>Data</label>
-        <input type="date" id="eData">
-      </div>
-      <div class="form-group">
-        <label>Hora</label>
-        <input type="time" id="eHora">
-      </div>
+    <h2>&#128230; <span>Nova</span> Entrega</h2>
+    <div class="fr"><div class="fg"><label>Data</label><input type="date" id="eData"></div><div class="fg"><label>Hora</label><input type="time" id="eHora"></div></div>
+    <div class="fg"><label>Plataforma</label><select id="ePlat" onchange="calcPreview()"><option value="iFood">&#128308; iFood</option><option value="99">&#128993; 99</option><option value="Particular">&#128994; Particular</option></select></div>
+    <div class="fg"><label>Destino</label><input type="text" id="eDest" placeholder="Ex: Perequê-Acu..."></div>
+    <div class="fr"><div class="fg"><label>Valor (R$)</label><input type="number" id="eVal" step="0.01" placeholder="0,00" oninput="calcPreview()"></div><div class="fg"><label>KM</label><input type="number" id="eKm" step="0.1" placeholder="0.0" oninput="calcPreview()"></div></div>
+    <div id="ePreview" style="background:var(--bg3);border:1px solid var(--border);border-radius:11px;padding:12px;margin-bottom:10px;display:none;">
+      <div style="display:flex;justify-content:space-between;font-size:13px;padding:3px 0;"><span style="color:var(--text3);">Bruto</span><span id="pvBruto" style="font-family:'JetBrains Mono',monospace;font-weight:700;"></span></div>
+      <div style="display:flex;justify-content:space-between;font-size:13px;padding:3px 0;"><span style="color:var(--text3);">Custo km</span><span id="pvCusto" style="font-family:'JetBrains Mono',monospace;font-weight:700;color:var(--red);"></span></div>
+      <div style="display:flex;justify-content:space-between;font-size:14px;font-weight:700;padding:8px 0 2px;border-top:1px solid var(--border);margin-top:5px;"><span>Ganho REAL</span><span id="pvReal" style="font-family:'JetBrains Mono',monospace;font-weight:700;"></span></div>
     </div>
-    <div class="form-group">
-      <label>Plataforma</label>
-      <select id="ePlat" onchange="calcPreview()">
-        <option value="iFood">🔴 iFood</option>
-        <option value="99">🟡 99</option>
-        <option value="Particular">🟢 Particular</option>
-      </select>
-    </div>
-    <div class="form-group">
-      <label>Destino / Descrição</label>
-      <input type="text" id="eDest" placeholder="Ex: Perequê-Açu...">
-    </div>
-    <div class="form-row">
-      <div class="form-group">
-        <label>Valor recebido (R$)</label>
-        <input type="number" id="eVal" step="0.01" placeholder="0,00" oninput="calcPreview()">
-      </div>
-      <div class="form-group">
-        <label>KM percorrido</label>
-        <input type="number" id="eKm" step="0.1" placeholder="0.0" oninput="calcPreview()">
-      </div>
-    </div>
-    <div class="profit-preview" id="profitPreview">
-      <div class="profit-row">
-        <span class="lbl">Ganho bruto</span>
-        <span class="val money-neutral" id="pvBruto">R$ 0,00</span>
-      </div>
-      <div class="profit-row">
-        <span class="lbl">⛽ Custo km</span>
-        <span class="val money-negative" id="pvCusto">- R$ 0,00</span>
-      </div>
-      <div class="profit-row total">
-        <span class="lbl" style="font-weight:700;">💰 Ganho REAL</span>
-        <span class="val money-positive" id="pvReal">R$ 0,00</span>
-      </div>
-    </div>
-    <div class="form-actions">
-      <button class="btn btn-ghost" onclick="closeSheet('sheetEntrega')">Cancelar</button>
-      <button class="btn btn-primary" onclick="salvarEntrega()">Registrar</button>
-    </div>
+    <div class="form-actions"><button class="btn btn-g" onclick="closeSheet('sheetEntrega')">Cancelar</button><button class="btn btn-p" onclick="salvarEntrega()">Registrar</button></div>
   </div>
 </div>
-
-<!-- GASTO SHEET -->
 <div class="sheet-overlay" id="sheetGasto">
   <div class="sheet">
     <div class="sheet-handle"></div>
-    <h2>💸 <span>Novo</span> Gasto</h2>
-    <div class="form-group">
-      <label>Data</label>
-      <input type="date" id="gData">
-    </div>
-    <div class="form-group">
-      <label>Categoria</label>
-      <select id="gCat">
-        <option value="Gasolina">⛽ Gasolina</option>
-        <option value="Comida">🍔 Comida</option>
-        <option value="Manutenção">🔧 Manutenção</option>
-        <option value="Seguro">🛡 Seguro</option>
-        <option value="Outros">📦 Outros</option>
-      </select>
-    </div>
-    <div class="form-group">
-      <label>Descrição</label>
-      <input type="text" id="gDesc" placeholder="Descreva o gasto...">
-    </div>
-    <div class="form-group">
-      <label>Valor (R$)</label>
-      <input type="number" id="gVal" step="0.01" placeholder="0,00">
-    </div>
-    <div class="form-actions">
-      <button class="btn btn-ghost" onclick="closeSheet('sheetGasto')">Cancelar</button>
-      <button class="btn btn-primary" onclick="salvarGasto()">Registrar</button>
-    </div>
+    <h2>&#128184; <span>Novo</span> Gasto</h2>
+    <div class="fg"><label>Data</label><input type="date" id="gData"></div>
+    <div class="fg"><label>Categoria</label><select id="gCat"><option value="Gasolina">Gasolina</option><option value="Comida">Comida</option><option value="Manutencao">Manutencao</option><option value="Seguro">Seguro</option><option value="Outros">Outros</option></select></div>
+    <div class="fg"><label>Descricao</label><input type="text" id="gDesc" placeholder="Descreva..."></div>
+    <div class="fg"><label>Valor (R$)</label><input type="number" id="gVal" step="0.01" placeholder="0,00"></div>
+    <div class="form-actions"><button class="btn btn-g" onclick="closeSheet('sheetGasto')">Cancelar</button><button class="btn btn-p" onclick="salvarGasto()">Registrar</button></div>
   </div>
 </div>
-
-<!-- MULTA SHEET -->
 <div class="sheet-overlay" id="sheetMulta">
   <div class="sheet">
     <div class="sheet-handle"></div>
-    <h2>🚨 <span>Nova</span> Multa</h2>
-    <div class="form-row">
-      <div class="form-group">
-        <label>Data</label>
-        <input type="date" id="mData">
-      </div>
-      <div class="form-group">
-        <label>Gravidade</label>
-        <select id="mGrav" onchange="preencherPts()">
-          <option value="Leve">🔵 Leve</option>
-          <option value="Média">🟡 Média</option>
-          <option value="Grave">🔴 Grave</option>
-          <option value="Gravíssima">🔴 Gravíssima</option>
-        </select>
-      </div>
-    </div>
-    <div class="form-group">
-      <label>Tipo de infração</label>
-      <input type="text" id="mInf" placeholder="Ex: Excesso de velocidade...">
-    </div>
-    <div class="form-row">
-      <div class="form-group">
-        <label>Pontos CNH</label>
-        <input type="number" id="mPts" placeholder="0">
-      </div>
-      <div class="form-group">
-        <label>Valor (R$)</label>
-        <input type="number" id="mVal" step="0.01" placeholder="0,00">
-      </div>
-    </div>
-    <div class="form-row">
-      <div class="form-group">
-        <label>Vencimento</label>
-        <input type="date" id="mVenc">
-      </div>
-      <div class="form-group">
-        <label>Status</label>
-        <select id="mStat">
-          <option value="Pendente">⏳ Pendente</option>
-          <option value="Paga">✅ Paga</option>
-          <option value="Recorrendo">⚖️ Recorrendo</option>
-        </select>
-      </div>
-    </div>
-    <div class="form-actions">
-      <button class="btn btn-ghost" onclick="closeSheet('sheetMulta')">Cancelar</button>
-      <button class="btn btn-primary" onclick="salvarMulta()">Registrar</button>
-    </div>
+    <h2>&#128680; <span>Nova</span> Multa</h2>
+    <div class="fr"><div class="fg"><label>Data</label><input type="date" id="mData"></div><div class="fg"><label>Gravidade</label><select id="mGrav" onchange="fillPts()"><option value="Leve">Leve</option><option value="Media">Media</option><option value="Grave">Grave</option><option value="Gravissima">Gravissima</option></select></div></div>
+    <div class="fg"><label>Infracao</label><input type="text" id="mInf" placeholder="Ex: Excesso de velocidade..."></div>
+    <div class="fr"><div class="fg"><label>Pontos</label><input type="number" id="mPts" placeholder="0"></div><div class="fg"><label>Valor (R$)</label><input type="number" id="mVal" step="0.01" placeholder="0,00"></div></div>
+    <div class="fr"><div class="fg"><label>Vencimento</label><input type="date" id="mVenc"></div><div class="fg"><label>Status</label><select id="mStat"><option value="Pendente">Pendente</option><option value="Paga">Paga</option><option value="Recorrendo">Recorrendo</option></select></div></div>
+    <div class="form-actions"><button class="btn btn-g" onclick="closeSheet('sheetMulta')">Cancelar</button><button class="btn btn-p" onclick="salvarMulta()">Registrar</button></div>
   </div>
 </div>
-
-<!-- CALCULADORA RÁPIDA SHEET -->
-<div class="sheet-overlay" id="sheetCalc">
-  <div class="sheet" style="padding-bottom: calc(24px + var(--safe-bottom));">
+<div class="sheet-overlay" id="sheetManut">
+  <div class="sheet">
     <div class="sheet-handle"></div>
-    <h2>⚡ <span>Calculadora</span> Rápida</h2>
-
-    <!-- Plataforma tabs -->
-    <div class="plat-tabs">
-      <div class="plat-tab active-ifood" id="ctab-iFood" onclick="selectCalcPlat('iFood')">🔴 iFood</div>
-      <div class="plat-tab" id="ctab-99" onclick="selectCalcPlat('99')">🟡 99</div>
-      <div class="plat-tab" id="ctab-Particular" onclick="selectCalcPlat('Particular')">🟢 Particular</div>
-    </div>
-
-    <!-- Big Valor input -->
-    <div class="calc-input-wrap">
-      <label>Valor da oferta</label>
-      <span class="prefix">R$</span>
-      <input class="calc-big-input" type="number" id="cVal" inputmode="decimal" placeholder="0.00" step="0.01" oninput="calcRapida()">
-    </div>
-
-    <!-- Big KM input -->
-    <div class="calc-input-wrap">
-      <label>KM da entrega</label>
-      <span class="prefix" style="font-size:16px;bottom:16px;">km</span>
-      <input class="calc-big-input" type="number" id="cKm" inputmode="decimal" placeholder="0.0" step="0.1" oninput="calcRapida()">
-    </div>
-
-    <!-- Toggle retorno maquininha -->
-    <div class="toggle-row" onclick="toggleRetorno()">
-      <div class="toggle-row-left">
-        <span class="toggle-label">🔄 Retorno com maquininha</span>
-        <span class="toggle-sub">Dobra o km para calcular o custo real</span>
-      </div>
-      <div class="switch" id="switchRetorno"></div>
-    </div>
-
-    <!-- Meta por km -->
-    <div class="calc-meta-row">
-      <span class="calc-meta-label">💡 Meta mínima por km rodado</span>
-      <div style="display:flex;align-items:center;gap:4px;">
-        <span style="font-size:12px;color:var(--text3);">R$</span>
-        <input class="calc-meta-input" type="number" id="cMeta" value="1.00" step="0.10" inputmode="decimal" oninput="calcRapida()">
-        <span style="font-size:12px;color:var(--text3);">/km</span>
-      </div>
-    </div>
-
-    <!-- RESULTADO -->
-    <div class="calc-result empty" id="calcResult">
-      <div class="calc-verdict empty" id="calcVerdict">⚡ Digite o valor e os km</div>
-      <div class="calc-real-value empty" id="calcRealVal">R$ —</div>
-      <div class="calc-perkm" id="calcPerKm">— por km rodado</div>
-      <div class="calc-divider"></div>
-      <div class="calc-rows">
-        <div class="calc-row"><span class="cl">Ganho bruto</span><span class="cv" id="crBruto">—</span></div>
-        <div class="calc-row"><span class="cl">⛽ Custo combustível</span><span class="cv money-negative" id="crCusto">—</span></div>
-        <div class="calc-row"><span class="cl">KM considerado</span><span class="cv" id="crKm">—</span></div>
-      </div>
-    </div>
-
-    <!-- Destino opcional -->
-    <input class="calc-dest-input" type="text" id="cDest" placeholder="Destino (opcional, ex: Perequê-Açu)">
-
-    <!-- Botões -->
-    <button class="btn-aceitar" id="btnAceitar" onclick="aceitarEntrega()" disabled>✅ ACEITAR E SALVAR</button>
-    <button class="btn-recusar" onclick="closeSheet('sheetCalc')">❌ Recusar / Fechar</button>
+    <h2>&#128295; <span>Nova</span> Manutencao</h2>
+    <div class="fg"><label>Tipo</label><select id="mnTipo"><option value="Troca de oleo">Troca de oleo</option><option value="Pneu dianteiro">Pneu dianteiro</option><option value="Pneu traseiro">Pneu traseiro</option><option value="Correia / Relacao">Correia / Relacao</option><option value="Freios">Freios</option><option value="Vela de ignicao">Vela de ignicao</option><option value="Filtro de ar">Filtro de ar</option><option value="Revisao geral">Revisao geral</option><option value="Outro">Outro</option></select></div>
+    <div class="fg"><label>Descricao (opcional)</label><input type="text" id="mnDesc" placeholder="Ex: Troca oleo Motul 10W40..."></div>
+    <div class="fr"><div class="fg"><label>Data</label><input type="date" id="mnData"></div><div class="fg"><label>KM atual</label><input type="number" id="mnKmAtual" step="1" placeholder="Ex: 15420"></div></div>
+    <div class="fr"><div class="fg"><label>Proxima troca (KM)</label><input type="number" id="mnKmProx" step="100" placeholder="Ex: 16420"></div><div class="fg"><label>Custo (R$)</label><input type="number" id="mnCusto" step="0.01" placeholder="0,00"></div></div>
+    <div class="form-actions"><button class="btn btn-g" onclick="closeSheet('sheetManut')">Cancelar</button><button class="btn btn-p" onclick="salvarManut()">Registrar</button></div>
   </div>
 </div>
-
-<!-- TOAST -->
+<div class="sheet-overlay" id="sheetAbast">
+  <div class="sheet">
+    <div class="sheet-handle"></div>
+    <h2>&#9981;&#65039; <span>Novo</span> Abastecimento</h2>
+    <div class="fr"><div class="fg"><label>Data</label><input type="date" id="abData"></div><div class="fg"><label>KM hodometro</label><input type="number" id="abKmHodo" step="1" placeholder="Ex: 15420" oninput="calcAbastPreview()"></div></div>
+    <div class="fr"><div class="fg"><label>Litros</label><input type="number" id="abLitros" step="0.01" placeholder="Ex: 8.5" oninput="calcAbastPreview()"></div><div class="fg"><label>Valor total (R$)</label><input type="number" id="abValor" step="0.01" placeholder="0,00" oninput="calcAbastPreview()"></div></div>
+    <div id="abPreview" style="background:var(--bg3);border:1px solid var(--border);border-radius:11px;padding:12px;margin-bottom:10px;display:none;">
+      <div style="display:flex;justify-content:space-between;font-size:13px;padding:3px 0;"><span style="color:var(--text3);">Preco/litro</span><span id="abPLitro" style="font-family:'JetBrains Mono',monospace;font-weight:700;color:var(--accent);"></span></div>
+      <div style="display:flex;justify-content:space-between;font-size:13px;padding:3px 0;"><span style="color:var(--text3);">Rendimento desta vez</span><span id="abRend" style="font-family:'JetBrains Mono',monospace;font-weight:700;color:var(--blue);"></span></div>
+    </div>
+    <div class="form-actions"><button class="btn btn-g" onclick="closeSheet('sheetAbast')">Cancelar</button><button class="btn btn-p" onclick="salvarAbast()">Registrar</button></div>
+  </div>
+</div>
+<!-- CALCULADORA -->
+<div class="sheet-overlay" id="sheetCalc">
+  <div class="sheet">
+    <div class="sheet-handle"></div>
+    <h2>&#9889; <span>Calculadora</span> Rapida</h2>
+    <div class="plat-tabs">
+      <div class="plat-tab pt-ifood on" id="ctab-iFood" onclick="selCalcPlat('iFood')">&#128308; iFood</div>
+      <div class="plat-tab pt-99" id="ctab-99" onclick="selCalcPlat('99')">&#128993; 99</div>
+      <div class="plat-tab pt-part" id="ctab-Particular" onclick="selCalcPlat('Particular')">&#128994; Particular</div>
+    </div>
+    <div class="calc-big-wrap">
+      <label>Valor da oferta</label>
+      <span class="calc-pfx">R$</span>
+      <input class="calc-big" type="number" id="cVal" inputmode="decimal" placeholder="0.00" step="0.01" oninput="calcR()">
+    </div>
+    <div class="calc-big-wrap">
+      <label>KM da entrega (so ida)</label>
+      <span class="calc-pfx" style="font-size:16px;bottom:14px;">km</span>
+      <input class="calc-big" type="number" id="cKm" inputmode="decimal" placeholder="0.0" step="0.1" oninput="calcR()">
+    </div>
+    <div class="toggle-row" onclick="togRetorno()">
+      <div class="toggle-left"><span class="toggle-lbl">&#128260; Retorno com maquininha</span><span class="toggle-sub">Dobra o km (conta ida + volta no custo)</span></div>
+      <div class="sw" id="swRetorno"></div>
+    </div>
+    <div class="calc-meta-row">
+      <span class="calc-meta-lbl">&#128161; Meta minima por km</span>
+      <div style="display:flex;align-items:center;gap:4px;"><span style="font-size:12px;color:var(--text3);">R$</span><input class="calc-meta-in" type="number" id="cMeta" value="1.00" step="0.10" inputmode="decimal" oninput="calcR()"><span style="font-size:12px;color:var(--text3);">/km</span></div>
+    </div>
+    <div class="crono-wrap">
+      <div class="crono-title">&#9201;&#65039; Cronometro da Entrega</div>
+      <div class="crono-display" id="cronoDisplay">00:00</div>
+      <div class="crono-btns">
+        <button class="crono-btn cb-start" id="cronoBtnStart" onclick="cronoToggle()">&#9654; Iniciar</button>
+        <button class="crono-btn cb-reset" onclick="cronoReset()">&#8635; Zerar</button>
+      </div>
+      <div class="crono-result" id="cronoResult"></div>
+    </div>
+    <div class="calc-result cr-empty" id="calcResult">
+      <div class="cr-verdict c-text" id="crVerdict">&#9889; Digite valor e km acima</div>
+      <div class="cr-real" id="crReal" style="color:var(--text3);">R$ --</div>
+      <div class="cr-perkm" id="crPerKm">-- por km rodado</div>
+      <div class="cr-divider"></div>
+      <div class="cr-rows">
+        <div class="cr-row"><span class="cl">Ganho bruto</span><span class="cv c-text" id="crBruto">--</span></div>
+        <div class="cr-row"><span class="cl">Custo combustivel</span><span class="cv c-red" id="crCusto">--</span></div>
+        <div class="cr-row"><span class="cl">KM considerado</span><span class="cv c-text" id="crKmTxt">--</span></div>
+        <div class="cr-row" id="crHoraRow" style="display:none;"><span class="cl">Ganho/hora</span><span class="cv c-orange" id="crHora">--</span></div>
+      </div>
+    </div>
+    <input class="calc-dest" type="text" id="cDest" placeholder="Destino (opcional)">
+    <button class="btn-aceitar" id="btnAceitar" onclick="aceitarEntrega()" disabled>&#9989; ACEITAR E SALVAR</button>
+    <button class="btn-recusar" onclick="closeSheet('sheetCalc')">&#10060; Recusar / Fechar</button>
+  </div>
+</div>
 <div class="toast" id="toast"></div>
-
 <script>
-// ===== DATA =====
-const get = () => ({
-  entregas: JSON.parse(localStorage.getItem('mc_entregas') || '[]'),
-  gastos: JSON.parse(localStorage.getItem('mc_gastos') || '[]'),
-  multas: JSON.parse(localStorage.getItem('mc_multas') || '[]'),
-  config: JSON.parse(localStorage.getItem('mc_config') || '{"kmPorLitro":35,"precoGas":6.89}')
-});
-
-const save = (k, v) => localStorage.setItem('mc_' + k, JSON.stringify(v));
-
-// ===== UTILS =====
-const uid = () => Date.now().toString(36) + Math.random().toString(36).slice(2);
-const fmtDate = s => { if (!s) return '—'; const [y,m,d] = s.split('-'); return `${d}/${m}/${y}`; };
-const fmtMoney = v => 'R$ ' + Number(v||0).toFixed(2).replace('.',',');
-const todayStr = () => new Date().toISOString().split('T')[0];
-const cpkm = () => { const d = get(); return (parseFloat(d.config.precoGas)||6.89) / (parseFloat(d.config.kmPorLitro)||35); };
-
-function toast(msg, type='success') {
-  const t = document.getElementById('toast');
-  t.textContent = (type==='success'?'✅ ':'❌ ') + msg;
-  t.className = 'toast show ' + type;
-  setTimeout(() => t.classList.remove('show'), 2800);
+const get=()=>({entregas:JSON.parse(localStorage.getItem('mc_e')||'[]'),gastos:JSON.parse(localStorage.getItem('mc_g')||'[]'),multas:JSON.parse(localStorage.getItem('mc_m')||'[]'),manut:JSON.parse(localStorage.getItem('mc_mn')||'[]'),abast:JSON.parse(localStorage.getItem('mc_ab')||'[]'),config:JSON.parse(localStorage.getItem('mc_cfg')||'{"kmPorLitro":35,"precoGas":6.89,"hodo":0,"metaDia":0,"metaMes":0}')});
+const save=(k,v)=>localStorage.setItem('mc_'+k,JSON.stringify(v));
+const uid=()=>Date.now().toString(36)+Math.random().toString(36).slice(2);
+const fmtDate=s=>{if(!s)return'--';const[y,m,d]=s.split('-');return`${d}/${m}/${y}`;};
+const fmtM=v=>'R$ '+Number(v||0).toFixed(2).replace('.',',');
+const today=()=>new Date().toISOString().split('T')[0];
+const cpkm=()=>{const c=get().config;return(parseFloat(c.precoGas)||6.89)/(parseFloat(c.kmPorLitro)||35);};
+function toast(msg,type='ok'){const t=document.getElementById('toast');t.textContent=(type==='ok'?'OK ':'ERR ')+msg;t.className='toast show '+type;setTimeout(()=>t.classList.remove('show'),2800);}
+let curPage='dashboard',curMaisTab='gastos',curGtab='manut',filtroPlat='',filtroGasto='';
+const pageTitles={dashboard:'INICIO',entregas:'ENTREGAS',garagem:'GARAGEM',mais:'MAIS',config:'CONFIGURACOES'};
+function showPage(id){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.getElementById('page-'+id).classList.add('active');
+  document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
+  const nv=document.getElementById('nav-'+id);if(nv)nv.classList.add('active');
+  document.getElementById('pageTitle').textContent=pageTitles[id]||id.toUpperCase();
+  document.getElementById('fabBtn').style.display=id==='entregas'?'flex':'none';
+  curPage=id;
+  if(id==='dashboard')renderDash();
+  if(id==='entregas')renderEntregas();
+  if(id==='garagem')renderGaragem();
+  if(id==='mais')renderMais();
+  if(id==='config')initConfig();
 }
-
-// ===== NAVIGATION =====
-let currentPage = 'dashboard';
-let filtroPlat = '';
-let filtroGasto = '';
-
-const pageTitles = { dashboard:'Início', entregas:'Entregas', gastos:'Gastos', renta:'Rentabilidade', multas:'Multas', config:'Configurações', calc:'Calculadora' };
-const fabPages = ['entregas','gastos','multas'];
-
-function showPage(id) {
-  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-  document.getElementById('page-' + id).classList.add('active');
-  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
-  const navEl = document.getElementById('nav-' + id);
-  if (navEl) navEl.classList.add('active');
-  document.getElementById('pageTitle').textContent = pageTitles[id] || id;
-  document.getElementById('fabBtn').style.display = fabPages.includes(id) ? 'flex' : 'none';
-  currentPage = id;
-  if (id==='dashboard') renderDash();
-  if (id==='entregas') renderEntregas();
-  if (id==='gastos') renderGastos();
-  if (id==='multas') renderMultas();
-  if (id==='renta') initRenta();
-  if (id==='config') initConfig();
+function openFab(){if(curPage==='entregas')openSheet('sheetEntrega');}
+function switchGtab(tab){
+  curGtab=tab;
+  document.querySelectorAll('.gtab').forEach(t=>t.classList.remove('active'));
+  document.getElementById('gtab-'+tab).classList.add('active');
+  document.querySelectorAll('.gtab-content').forEach(c=>c.classList.remove('active'));
+  document.getElementById('gc-'+tab).classList.add('active');
+  if(tab==='manut')renderManut();else renderAbast();
 }
-
-function openFab() {
-  if (currentPage === 'entregas') openSheet('sheetEntrega');
-  else if (currentPage === 'gastos') openSheet('sheetGasto');
-  else if (currentPage === 'multas') openSheet('sheetMulta');
+function switchMais(tab){
+  curMaisTab=tab;
+  document.querySelectorAll('#page-mais .gtab-content').forEach(c=>c.classList.remove('active'));
+  document.getElementById('mc-'+tab).classList.add('active');
+  if(tab==='gastos')renderGastos();else if(tab==='multas')renderMultas();else initRenta();
 }
-
-// ===== SHEETS =====
-function openSheet(id) {
-  const s = document.getElementById(id);
-  s.classList.add('open');
-  if (id === 'sheetCalc') {
-    setTimeout(() => {
-      const el = document.getElementById('cVal');
-      if (el) el.focus();
-    }, 350);
-    calcRapida();
-  }
-  if (id === 'sheetEntrega') {
-    const now = new Date();
-    document.getElementById('eData').value = todayStr();
-    document.getElementById('eHora').value = now.toTimeString().slice(0,5);
-    document.getElementById('eVal').value = '';
-    document.getElementById('eDest').value = '';
-    document.getElementById('eKm').value = '';
-    document.getElementById('profitPreview').classList.remove('visible');
-  }
-  if (id === 'sheetGasto') {
-    document.getElementById('gData').value = todayStr();
-    document.getElementById('gDesc').value = '';
-    document.getElementById('gVal').value = '';
-  }
-  if (id === 'sheetMulta') {
-    document.getElementById('mData').value = todayStr();
-    document.getElementById('mInf').value = '';
-    document.getElementById('mVal').value = '';
-    document.getElementById('mVenc').value = '';
-    preencherPts();
-  }
+function renderMais(){switchMais(curMaisTab);}
+function renderGaragem(){if(curGtab==='manut')renderManut();else renderAbast();}
+function openSheet(id){
+  document.getElementById(id).classList.add('open');
+  const now=new Date();
+  if(id==='sheetEntrega'){document.getElementById('eData').value=today();document.getElementById('eHora').value=now.toTimeString().slice(0,5);['eVal','eKm','eDest'].forEach(x=>document.getElementById(x).value='');document.getElementById('ePreview').style.display='none';}
+  if(id==='sheetGasto'){document.getElementById('gData').value=today();['gDesc','gVal'].forEach(x=>document.getElementById(x).value='');}
+  if(id==='sheetMulta'){document.getElementById('mData').value=today();['mInf','mVal'].forEach(x=>document.getElementById(x).value='');fillPts();}
+  if(id==='sheetManut'){document.getElementById('mnData').value=today();['mnDesc','mnKmAtual','mnKmProx','mnCusto'].forEach(x=>document.getElementById(x).value='');const h=get().config.hodo;if(h)document.getElementById('mnKmAtual').value=h;}
+  if(id==='sheetAbast'){document.getElementById('abData').value=today();['abKmHodo','abLitros','abValor'].forEach(x=>document.getElementById(x).value='');document.getElementById('abPreview').style.display='none';const h=get().config.hodo;if(h)document.getElementById('abKmHodo').value=h;}
+  if(id==='sheetCalc'){setTimeout(()=>{const el=document.getElementById('cVal');if(el)el.focus();},350);calcR();}
 }
-
-function closeSheet(id) {
-  document.getElementById(id).classList.remove('open');
+function closeSheet(id){document.getElementById(id).classList.remove('open');}
+document.querySelectorAll('.sheet-overlay').forEach(o=>o.addEventListener('click',e=>{if(e.target===o)o.classList.remove('open');}));
+// ENTREGAS
+function setFP(v,el){filtroPlat=v;document.querySelectorAll('#filtrosPlat .chip').forEach(c=>c.classList.remove('on'));el.classList.add('on');renderEntregas();}
+function salvarEntrega(){
+  const data=document.getElementById('eData').value,val=parseFloat(document.getElementById('eVal').value);
+  if(!data||!val||val<=0){toast('Preencha data e valor!','err');return;}
+  const d=get();
+  d.entregas.unshift({id:uid(),data,hora:document.getElementById('eHora').value,plataforma:document.getElementById('ePlat').value,valor:val,destino:document.getElementById('eDest').value||'--',km:parseFloat(document.getElementById('eKm').value)||0});
+  save('e',d.entregas);closeSheet('sheetEntrega');toast('Entrega registrada!');renderEntregas();renderDash();
 }
-
-document.querySelectorAll('.sheet-overlay').forEach(o => {
-  o.addEventListener('click', e => { if (e.target === o) o.classList.remove('open'); });
-});
-
-// ===== PROFIT PREVIEW =====
-function calcPreview() {
-  const val = parseFloat(document.getElementById('eVal').value) || 0;
-  const km = parseFloat(document.getElementById('eKm').value) || 0;
-  if (!val && !km) { document.getElementById('profitPreview').classList.remove('visible'); return; }
-  const custo = cpkm() * km;
-  const real = val - custo;
-  document.getElementById('pvBruto').textContent = fmtMoney(val);
-  document.getElementById('pvCusto').textContent = '- ' + fmtMoney(custo);
-  document.getElementById('pvReal').textContent = fmtMoney(real);
-  document.getElementById('pvReal').className = 'val ' + (real >= 0 ? 'money-positive' : 'money-negative');
-  document.getElementById('profitPreview').classList.add('visible');
+function delEntrega(id){if(!confirm('Deletar?'))return;const d=get();d.entregas=d.entregas.filter(e=>e.id!==id);save('e',d.entregas);renderEntregas();renderDash();toast('Removido.');}
+function calcPreview(){
+  const val=parseFloat(document.getElementById('eVal').value)||0,km=parseFloat(document.getElementById('eKm').value)||0;
+  const prev=document.getElementById('ePreview');
+  if(!val&&!km){prev.style.display='none';return;}
+  const custo=cpkm()*km,real=val-custo;
+  document.getElementById('pvBruto').textContent=fmtM(val);
+  document.getElementById('pvCusto').textContent='- '+fmtM(custo);
+  document.getElementById('pvReal').textContent=fmtM(real);
+  document.getElementById('pvReal').style.color=real>=0?'var(--green)':'var(--red)';
+  prev.style.display='block';
 }
-
-// ===== ENTREGAS =====
-function salvarEntrega() {
-  const data = document.getElementById('eData').value;
-  const hora = document.getElementById('eHora').value;
-  const plat = document.getElementById('ePlat').value;
-  const val = document.getElementById('eVal').value;
-  const dest = document.getElementById('eDest').value;
-  const km = document.getElementById('eKm').value;
-
-  if (!data || !val || isNaN(parseFloat(val)) || parseFloat(val) <= 0) {
-    toast('Preencha data e valor!', 'error'); return;
-  }
-  const d = get();
-  d.entregas.unshift({ id: uid(), data, hora, plataforma: plat, valor: parseFloat(val), destino: dest || '—', km: parseFloat(km) || 0 });
-  save('entregas', d.entregas);
-  closeSheet('sheetEntrega');
-  toast('Entrega registrada!');
-  renderEntregas();
-  renderDash();
-}
-
-function delEntrega(id) {
-  if (!confirm('Deletar esta entrega?')) return;
-  const d = get();
-  d.entregas = d.entregas.filter(e => e.id !== id);
-  save('entregas', d.entregas);
-  renderEntregas();
-  renderDash();
-  toast('Entrega removida.');
-}
-
-function setFiltroPlat(val, el) {
-  filtroPlat = val;
-  document.querySelectorAll('#filtrosPlat .filter-chip').forEach(c => c.classList.remove('active'));
-  el.classList.add('active');
-  renderEntregas();
-}
-
-function renderEntregas() {
-  const d = get();
-  let list = [...d.entregas];
-  if (filtroPlat) list = list.filter(e => e.plataforma === filtroPlat);
-  const c = cpkm();
-  const el = document.getElementById('listaEntregas');
-  if (!list.length) { el.innerHTML = '<div class="empty-state"><div class="emoji">📦</div><p>Nenhuma entrega ainda.<br>Toque + para adicionar!</p></div>'; return; }
-  el.innerHTML = list.map(e => {
-    const custo = c * (e.km||0);
-    const real = e.valor - custo;
-    const bc = e.plataforma==='iFood'?'badge-ifood':e.plataforma==='99'?'badge-99':'badge-particular';
-    return `<div class="list-item">
-      <div style="font-size:28px;flex-shrink:0">${e.plataforma==='iFood'?'🔴':e.plataforma==='99'?'🟡':'🟢'}</div>
-      <div class="list-item-main">
-        <div class="list-item-title">${e.destino}</div>
-        <div class="list-item-sub">${fmtDate(e.data)} ${e.hora||''} · <span class="badge ${bc}">${e.plataforma}</span>${e.km?' · '+e.km+'km':''}</div>
-        <div style="font-size:11px;color:var(--text3);margin-top:3px;">Bruto: ${fmtMoney(e.valor)}${e.km?' · Custo: -'+fmtMoney(custo):''}</div>
-      </div>
-      <div class="list-item-right">
-        <div class="list-item-value ${real>=0?'money-positive':'money-negative'}">${fmtMoney(real)}</div>
-        <div class="list-item-sub2">real</div>
-      </div>
-      <button class="btn-del" onclick="delEntrega('${e.id}')">🗑</button>
-    </div>`;
+function renderEntregas(){
+  const d=get();let list=[...d.entregas];
+  if(filtroPlat)list=list.filter(e=>e.plataforma===filtroPlat);
+  const el=document.getElementById('listaEntregas'),c=cpkm();
+  if(!list.length){el.innerHTML='<div style="text-align:center;padding:50px 0;color:var(--text3)"><div style="font-size:40px">&#128230;</div><p style="margin-top:8px">Nenhuma entrega.<br>Toque + para adicionar</p></div>';return;}
+  el.innerHTML=list.map(e=>{
+    const custo=c*(e.km||0),real=e.valor-custo;
+    const bc=e.plataforma==='iFood'?'b-ifood':e.plataforma==='99'?'b-99':'b-particular';
+    const em=e.plataforma==='iFood'?'&#128308;':e.plataforma==='99'?'&#128993;':'&#128994;';
+    return `<div class="list-item"><div class="li-icon">${em}</div><div class="li-main"><div class="li-title">${e.destino}</div><div class="li-sub">${fmtDate(e.data)} ${e.hora||''} &middot; <span class="badge ${bc}">${e.plataforma}</span>${e.km?' &middot; '+e.km+'km':''}</div><div style="font-size:10px;color:var(--text3);margin-top:2px;">Bruto: ${fmtM(e.valor)}${e.km?' &middot; Custo: -'+fmtM(custo):''}</div></div><div class="li-right"><div class="li-val ${real>=0?'c-green':'c-red'}">${fmtM(real)}</div><div class="li-sub2">real</div></div><button class="btn-del" onclick="delEntrega('${e.id}')">&#128465;</button></div>`;
   }).join('');
 }
-
-// ===== GASTOS =====
-const catEmoji = { Gasolina:'⛽', Comida:'🍔', Manutenção:'🔧', Seguro:'🛡', Outros:'📦' };
-
-function salvarGasto() {
-  const data = document.getElementById('gData').value;
-  const cat = document.getElementById('gCat').value;
-  const desc = document.getElementById('gDesc').value;
-  const val = document.getElementById('gVal').value;
-  if (!data || !val || isNaN(parseFloat(val)) || parseFloat(val) <= 0) {
-    toast('Preencha data e valor!', 'error'); return;
-  }
-  const d = get();
-  d.gastos.unshift({ id: uid(), data, categoria: cat, descricao: desc || cat, valor: parseFloat(val) });
-  save('gastos', d.gastos);
-  closeSheet('sheetGasto');
-  toast('Gasto registrado!');
-  renderGastos();
-  renderDash();
+// GASTOS
+const catE={Gasolina:'&#9981;&#65039;',Comida:'&#127828;',Manutencao:'&#128295;',Seguro:'&#128737;',Outros:'&#128230;'};
+function setFG(v,el){filtroGasto=v;el.closest('.filter-row').querySelectorAll('.chip').forEach(c=>c.classList.remove('on'));el.classList.add('on');renderGastos();}
+function salvarGasto(){
+  const data=document.getElementById('gData').value,val=parseFloat(document.getElementById('gVal').value);
+  if(!data||!val||val<=0){toast('Preencha data e valor!','err');return;}
+  const d=get();
+  d.gastos.unshift({id:uid(),data,categoria:document.getElementById('gCat').value,descricao:document.getElementById('gDesc').value||document.getElementById('gCat').value,valor:val});
+  save('g',d.gastos);closeSheet('sheetGasto');toast('Gasto registrado!');renderGastos();renderDash();
 }
-
-function delGasto(id) {
-  if (!confirm('Deletar este gasto?')) return;
-  const d = get();
-  d.gastos = d.gastos.filter(g => g.id !== id);
-  save('gastos', d.gastos);
-  renderGastos();
-  renderDash();
-  toast('Gasto removido.');
+function delGasto(id){if(!confirm('Deletar?'))return;const d=get();d.gastos=d.gastos.filter(g=>g.id!==id);save('g',d.gastos);renderGastos();renderDash();toast('Removido.');}
+function renderGastos(){
+  const d=get();let list=[...d.gastos];
+  if(filtroGasto)list=list.filter(g=>g.categoria===filtroGasto);
+  const el=document.getElementById('listaGastos');
+  if(!list.length){el.innerHTML='<div style="text-align:center;padding:40px 0;color:var(--text3)"><div style="font-size:40px">&#128184;</div><p style="margin-top:8px">Nenhum gasto</p></div>';return;}
+  el.innerHTML=list.map(g=>`<div class="list-item"><div class="li-icon">${catE[g.categoria]||'&#128230;'}</div><div class="li-main"><div class="li-title">${g.descricao}</div><div class="li-sub">${fmtDate(g.data)} &middot; <span class="badge b-gasto">${g.categoria}</span></div></div><div class="li-right"><div class="li-val c-red">-${fmtM(g.valor)}</div></div><button class="btn-del" onclick="delGasto('${g.id}')">&#128465;</button></div>`).join('');
 }
-
-function setFiltroGasto(val, el) {
-  filtroGasto = val;
-  document.querySelectorAll('.filter-row .filter-chip').forEach(c => c.classList.remove('active'));
-  el.classList.add('active');
-  renderGastos();
+// MULTAS
+function fillPts(){const pts={Leve:3,Media:4,Grave:5,Gravissima:7};document.getElementById('mPts').value=pts[document.getElementById('mGrav').value]||3;}
+function salvarMulta(){
+  const data=document.getElementById('mData').value,inf=document.getElementById('mInf').value;
+  if(!data||!inf){toast('Preencha data e infracao!','err');return;}
+  const d=get();
+  d.multas.unshift({id:uid(),data,infracao:inf,gravidade:document.getElementById('mGrav').value,pontos:parseInt(document.getElementById('mPts').value)||0,valor:parseFloat(document.getElementById('mVal').value)||0,vencimento:document.getElementById('mVenc').value,status:document.getElementById('mStat').value});
+  save('m',d.multas);closeSheet('sheetMulta');toast('Multa registrada!');renderMultas();
 }
-
-function renderGastos() {
-  const d = get();
-  let list = [...d.gastos];
-  if (filtroGasto) list = list.filter(g => g.categoria === filtroGasto);
-  const el = document.getElementById('listaGastos');
-  if (!list.length) { el.innerHTML = '<div class="empty-state"><div class="emoji">💸</div><p>Nenhum gasto ainda.<br>Toque + para adicionar!</p></div>'; return; }
-  el.innerHTML = list.map(g => `<div class="list-item">
-    <div style="font-size:28px;flex-shrink:0">${catEmoji[g.categoria]||'📦'}</div>
-    <div class="list-item-main">
-      <div class="list-item-title">${g.descricao}</div>
-      <div class="list-item-sub">${fmtDate(g.data)} · <span class="badge badge-gasto">${g.categoria}</span></div>
-    </div>
-    <div class="list-item-right">
-      <div class="list-item-value money-negative">-${fmtMoney(g.valor)}</div>
-    </div>
-    <button class="btn-del" onclick="delGasto('${g.id}')">🗑</button>
-  </div>`).join('');
+function delMulta(id){if(!confirm('Deletar?'))return;const d=get();d.multas=d.multas.filter(m=>m.id!==id);save('m',d.multas);renderMultas();toast('Removido.');}
+function toggleMultaStatus(id){const d=get();const m=d.multas.find(x=>x.id===id);if(!m)return;const opts=['Pendente','Paga','Recorrendo'];m.status=opts[(opts.indexOf(m.status)+1)%opts.length];save('m',d.multas);renderMultas();}
+function renderMultas(){
+  const d=get(),list=d.multas;
+  const totalPts=list.reduce((s,m)=>s+(m.pontos||0),0),totalVal=list.reduce((s,m)=>s+(m.valor||0),0);
+  const pct=Math.min((totalPts/20)*100,100),barColor=pct<40?'var(--green)':pct<70?'var(--yellow)':'var(--red)';
+  document.getElementById('multasResumo').innerHTML=`<div class="cards-grid" style="grid-template-columns:1fr 1fr"><div class="stat-card sc-red"><div class="stat-lbl">Pontos CNH</div><div class="stat-val">${totalPts}<span style="font-size:13px"> / 20</span></div><div class="pts-bar"><div class="pts-fill" style="width:${pct}%;background:${barColor}"></div></div><div class="stat-sub">${20-totalPts} restantes</div></div><div class="stat-card sc-orange"><div class="stat-lbl">Total Multas</div><div class="stat-val" style="font-size:18px;">${fmtM(totalVal)}</div><div class="stat-sub">${list.filter(m=>m.status==='Pendente').length} pendentes</div></div></div><button class="btn btn-d" style="width:100%;margin-bottom:8px;" onclick="openSheet('sheetMulta')">+ Registrar Multa</button>`;
+  const el=document.getElementById('listaMultas');
+  if(!list.length){el.innerHTML='<div style="text-align:center;padding:30px 0;color:var(--text3)"><div style="font-size:36px">&#127881;</div><p>Nenhuma multa!</p></div>';return;}
+  const se={Pendente:'Pendente',Paga:'Paga',Recorrendo:'Recorrendo'};
+  const gc={Leve:'c-blue',Media:'c-orange',Grave:'c-red',Gravissima:'c-red'};
+  el.innerHTML=list.map(m=>`<div class="list-item"><div class="li-icon">&#128680;</div><div class="li-main"><div class="li-title">${m.infracao}</div><div class="li-sub">${fmtDate(m.data)} &middot; <span class="${gc[m.gravidade]||'c-text'}" style="font-weight:700;">${m.gravidade}</span> &middot; ${m.pontos}pts</div>${m.vencimento?`<div style="font-size:10px;color:var(--text3);">Venc: ${fmtDate(m.vencimento)}</div>`:''}</div><div class="li-right"><div class="li-val c-red">${m.valor?fmtM(m.valor):'--'}</div><button onclick="toggleMultaStatus('${m.id}')" style="font-size:10px;margin-top:4px;padding:3px 7px;border-radius:7px;background:var(--bg3);border:1px solid var(--border);color:var(--text2);cursor:pointer;">${se[m.status]} ${m.status}</button></div><button class="btn-del" onclick="delMulta('${m.id}')">&#128465;</button></div>`).join('');
 }
-
-// ===== MULTAS =====
-function preencherPts() {
-  const g = document.getElementById('mGrav').value;
-  const pts = { Leve:3, Média:4, Grave:5, Gravíssima:7 };
-  document.getElementById('mPts').value = pts[g] || 3;
+// MANUTENCAO
+function salvarManut(){
+  const data=document.getElementById('mnData').value,tipo=document.getElementById('mnTipo').value;
+  const kmAtual=parseFloat(document.getElementById('mnKmAtual').value)||0;
+  if(!data){toast('Preencha a data!','err');return;}
+  const d=get();
+  d.manut.unshift({id:uid(),data,tipo,desc:document.getElementById('mnDesc').value||tipo,kmAtual,kmProx:parseFloat(document.getElementById('mnKmProx').value)||0,custo:parseFloat(document.getElementById('mnCusto').value)||0});
+  if(kmAtual>0){d.config.hodo=kmAtual;save('cfg',d.config);}
+  save('mn',d.manut);closeSheet('sheetManut');toast('Manutencao registrada!');renderManut();
 }
-
-function salvarMulta() {
-  const data = document.getElementById('mData').value;
-  const inf = document.getElementById('mInf').value;
-  if (!data || !inf) { toast('Preencha data e infração!', 'error'); return; }
-  const d = get();
-  d.multas.unshift({
-    id: uid(), data,
-    infracao: inf,
-    gravidade: document.getElementById('mGrav').value,
-    pontos: parseInt(document.getElementById('mPts').value)||0,
-    valor: parseFloat(document.getElementById('mVal').value)||0,
-    vencimento: document.getElementById('mVenc').value,
-    status: document.getElementById('mStat').value
-  });
-  save('multas', d.multas);
-  closeSheet('sheetMulta');
-  toast('Multa registrada!');
-  renderMultas();
-}
-
-function delMulta(id) {
-  if (!confirm('Deletar esta multa?')) return;
-  const d = get();
-  d.multas = d.multas.filter(m => m.id !== id);
-  save('multas', d.multas);
-  renderMultas();
-  toast('Multa removida.');
-}
-
-function toggleStatusMulta(id) {
-  const d = get();
-  const m = d.multas.find(x => x.id === id);
-  if (!m) return;
-  const opts = ['Pendente','Paga','Recorrendo'];
-  m.status = opts[(opts.indexOf(m.status)+1) % opts.length];
-  save('multas', d.multas);
-  renderMultas();
-}
-
-function renderMultas() {
-  const d = get();
-  const list = d.multas;
-  const totalPts = list.reduce((s,m) => s+(m.pontos||0), 0);
-  const totalVal = list.reduce((s,m) => s+(m.valor||0), 0);
-  const limite = 20;
-  const pct = Math.min((totalPts/limite)*100, 100);
-  const barColor = pct<40?'var(--green)':pct<70?'var(--yellow)':'var(--red)';
-
-  document.getElementById('multasResumo').innerHTML = `
-    <div class="cards-grid">
-      <div class="stat-card red">
-        <div class="stat-label">Pontos CNH</div>
-        <div class="stat-value">${totalPts}<span style="font-size:14px"> / ${limite}</span></div>
-        <div class="points-bar"><div class="points-fill" style="width:${pct}%;background:${barColor}"></div></div>
-        <div class="stat-sub">${limite-totalPts} restantes</div>
-      </div>
-      <div class="stat-card orange">
-        <div class="stat-label">Total Multas</div>
-        <div class="stat-value" style="font-size:20px">${fmtMoney(totalVal)}</div>
-        <div class="stat-sub">${list.filter(m=>m.status==='Pendente').length} pendentes</div>
-      </div>
-    </div>`;
-
-  const el = document.getElementById('listaMultas');
-  if (!list.length) { el.innerHTML = '<div class="empty-state"><div class="emoji">🎉</div><p>Nenhuma multa!<br>Continue assim!</p></div>'; return; }
-  const statusEmoji = { Pendente:'⏳', Paga:'✅', Recorrendo:'⚖️' };
-  el.innerHTML = list.map(m => {
-    const bg = m.gravidade==='Leve'?'multa-leve':m.gravidade==='Média'?'multa-media':'multa-grave';
-    return `<div class="list-item">
-      <div style="font-size:26px;flex-shrink:0">🚨</div>
-      <div class="list-item-main">
-        <div class="list-item-title">${m.infracao}</div>
-        <div class="list-item-sub">${fmtDate(m.data)} · <span class="multa-badge ${bg}">${m.gravidade}</span> · ${m.pontos}pts</div>
-        ${m.vencimento?`<div style="font-size:11px;color:var(--text3)">Venc: ${fmtDate(m.vencimento)}</div>`:''}
-      </div>
-      <div class="list-item-right">
-        <div class="list-item-value money-negative">${m.valor?fmtMoney(m.valor):'—'}</div>
-        <button class="btn btn-ghost" style="padding:4px 8px;font-size:11px;margin-top:4px;border-radius:8px;" onclick="toggleStatusMulta('${m.id}')">${statusEmoji[m.status]||'⏳'} ${m.status}</button>
-      </div>
-      <button class="btn-del" onclick="delMulta('${m.id}')">🗑</button>
-    </div>`;
+function delManut(id){if(!confirm('Deletar?'))return;const d=get();d.manut=d.manut.filter(m=>m.id!==id);save('mn',d.manut);renderManut();toast('Removido.');}
+function renderManut(){
+  const d=get(),list=d.manut,hodo=d.config.hodo||0;
+  const alertEl=document.getElementById('manutAlertas');
+  const urgentes=list.filter(m=>m.kmProx>0&&hodo>0&&(m.kmProx-hodo)<=500&&(m.kmProx-hodo)>0);
+  const vencidas=list.filter(m=>m.kmProx>0&&hodo>0&&hodo>=m.kmProx);
+  let alertHtml='';
+  if(vencidas.length)alertHtml+=`<div class="alert-banner">&#128308; ${vencidas.length} manutencao(oes) VENCIDA(S)!</div>`;
+  if(urgentes.length)alertHtml+=`<div class="warn-banner">&#128993; ${urgentes.length} manutencao(oes) proximas (menos de 500km)</div>`;
+  if(hodo>0)alertHtml+=`<div style="font-size:12px;color:var(--text3);margin-bottom:8px;text-align:right;">Hodometro: <b style="color:var(--accent);">${hodo.toLocaleString()} km</b></div>`;
+  alertHtml+=`<button class="btn btn-p" style="width:100%;margin-bottom:10px;" onclick="openSheet('sheetManut')">+ Registrar Manutencao</button>`;
+  alertEl.innerHTML=alertHtml;
+  const el=document.getElementById('listaManut');
+  if(!list.length){el.innerHTML='<div style="text-align:center;padding:40px 0;color:var(--text3)"><div style="font-size:40px">&#128295;</div><p style="margin-top:8px">Nenhuma manutencao registrada</p></div>';return;}
+  el.innerHTML=list.map(m=>{
+    const rest=m.kmProx>0&&hodo>0?m.kmProx-hodo:null;
+    let urgClass='',barPct=0;
+    if(rest!==null){if(rest<=0){urgClass='c-red';barPct=100;}else if(rest<=500){urgClass='c-orange';barPct=70;}else{urgClass='c-green';barPct=20;}}
+    return `<div class="list-item" style="flex-direction:column;align-items:stretch;gap:8px;"><div style="display:flex;align-items:center;gap:10px;"><div class="li-icon">&#128295;</div><div class="li-main"><div class="li-title">${m.desc}</div><div class="li-sub">${fmtDate(m.data)}${m.kmAtual?' &middot; '+m.kmAtual.toLocaleString()+'km':''}</div></div><div class="li-right">${m.custo?`<div class="li-val c-red">-${fmtM(m.custo)}</div>`:''} ${m.kmProx?`<div class="li-sub2">Prox: ${m.kmProx.toLocaleString()}km</div>`:''}</div><button class="btn-del" onclick="delManut('${m.id}')">&#128465;</button></div>${rest!==null?`<div style="display:flex;justify-content:space-between;font-size:11px;margin-bottom:3px;"><span style="color:var(--text3);">Proxima manutencao</span><span class="${urgClass}" style="font-weight:700;">${rest<=0?'VENCIDA':rest.toLocaleString()+' km restantes'}</span></div>`:''}</div>`;
   }).join('');
 }
-
-// ===== RENTABILIDADE =====
-function initRenta() {
-  const d = get();
-  document.getElementById('rKm').value = d.config.kmPorLitro || '';
-  document.getElementById('rGas').value = d.config.precoGas || '';
-  atualizarCusto();
-  document.getElementById('rentaData').value = todayStr();
-  calcDia();
+// ABASTECIMENTO
+function calcAbastPreview(){
+  const litros=parseFloat(document.getElementById('abLitros').value)||0,valor=parseFloat(document.getElementById('abValor').value)||0,km=parseFloat(document.getElementById('abKmHodo').value)||0;
+  const prev=document.getElementById('abPreview');
+  if(!litros||!valor){prev.style.display='none';return;}
+  document.getElementById('abPLitro').textContent=fmtM(valor/litros)+'/litro';
+  const d=get(),ultimo=d.abast[0];
+  if(ultimo&&km&&km>ultimo.kmHodo){document.getElementById('abRend').textContent=((km-ultimo.kmHodo)/litros).toFixed(1)+' km/litro';}
+  else{document.getElementById('abRend').textContent='--';}
+  prev.style.display='block';
 }
-
-function salvarConfigRenta() {
-  const km = parseFloat(document.getElementById('rKm').value);
-  const gas = parseFloat(document.getElementById('rGas').value);
-  const d = get();
-  if (km) d.config.kmPorLitro = km;
-  if (gas) d.config.precoGas = gas;
-  save('config', d.config);
-  atualizarCusto();
+function salvarAbast(){
+  const data=document.getElementById('abData').value,litros=parseFloat(document.getElementById('abLitros').value),valor=parseFloat(document.getElementById('abValor').value);
+  if(!data||!litros||!valor){toast('Preencha data, litros e valor!','err');return;}
+  const kmHodo=parseFloat(document.getElementById('abKmHodo').value)||0;
+  const d=get();let kmRendido=0;
+  if(kmHodo>0&&d.abast.length>0&&d.abast[0].kmHodo<kmHodo)kmRendido=kmHodo-d.abast[0].kmHodo;
+  d.abast.unshift({id:uid(),data,litros,valor,kmHodo,kmRendido,pLitro:valor/litros});
+  if(kmHodo>0){d.config.hodo=kmHodo;save('cfg',d.config);}
+  save('ab',d.abast);closeSheet('sheetAbast');toast('Abastecimento registrado!');renderAbast();
 }
-
-function atualizarCusto() {
-  document.getElementById('rCusto').textContent = 'R$ ' + cpkm().toFixed(4) + ' / km';
+function delAbast(id){if(!confirm('Deletar?'))return;const d=get();d.abast=d.abast.filter(a=>a.id!==id);save('ab',d.abast);renderAbast();toast('Removido.');}
+function renderAbast(){
+  const d=get(),list=d.abast;
+  const cardsEl=document.getElementById('abastCards');
+  if(list.length>0){
+    const totalG=list.reduce((s,a)=>s+a.valor,0),totalL=list.reduce((s,a)=>s+a.litros,0);
+    const mr=list.filter(a=>a.kmRendido>0),rendMedio=mr.length?mr.reduce((s,a)=>s+(a.kmRendido/a.litros),0)/mr.length:0;
+    const cfgR=parseFloat(d.config.kmPorLitro)||35;
+    cardsEl.innerHTML=`<div class="stat-card sc-yellow"><div class="stat-lbl">Total abastecido</div><div class="stat-val" style="font-size:18px;">${fmtM(totalG)}</div><div class="stat-sub">${totalL.toFixed(1)}L</div></div><div class="stat-card sc-blue"><div class="stat-lbl">Rendimento medio</div><div class="stat-val" style="color:${rendMedio===0?'var(--text)':rendMedio>=cfgR?'var(--green)':'var(--red)'};font-size:20px;">${rendMedio>0?rendMedio.toFixed(1):'--'}<span style="font-size:12px"> km/L</span></div><div class="stat-sub">Config: ${cfgR} km/L</div></div>`;
+  }else{cardsEl.innerHTML='';}
+  const el=document.getElementById('listaAbast');
+  if(!list.length){el.innerHTML=`<button class="btn btn-p" style="width:100%;margin-bottom:10px;" onclick="openSheet('sheetAbast')">+ Registrar Abastecimento</button><div style="text-align:center;padding:40px 0;color:var(--text3)"><div style="font-size:40px">&#9981;&#65039;</div><p style="margin-top:8px">Nenhum abastecimento</p></div>`;return;}
+  const cfgR=parseFloat(d.config.kmPorLitro)||35;
+  el.innerHTML=`<button class="btn btn-p" style="width:100%;margin-bottom:10px;" onclick="openSheet('sheetAbast')">+ Registrar Abastecimento</button>`+list.map(a=>{
+    const rend=a.kmRendido>0?a.kmRendido/a.litros:0,rendOk=rend===0||rend>=cfgR*0.9;
+    return `<div class="list-item"><div class="li-icon">&#9981;&#65039;</div><div class="li-main"><div class="li-title">${a.litros.toFixed(1)}L &middot; ${fmtM(a.pLitro)}/L</div><div class="li-sub">${fmtDate(a.data)}${a.kmHodo?' &middot; '+a.kmHodo.toLocaleString()+'km':''}</div>${rend>0?`<div style="font-size:11px;color:${rendOk?'var(--green)':'var(--red)'};font-weight:700;margin-top:2px;">${rend.toFixed(1)} km/L ${!rendOk?'abaixo do normal':''}</div>`:''}</div><div class="li-right"><div class="li-val c-red">-${fmtM(a.valor)}</div>${a.kmRendido>0?`<div class="li-sub2">${a.kmRendido}km</div>`:''}</div><button class="btn-del" onclick="delAbast('${a.id}')">&#128465;</button></div>`;
+  }).join('');
 }
-
-function calcDia() {
-  const data = document.getElementById('rentaData').value;
-  if (!data) return;
-  const d = get();
-  renderRenta(d.entregas.filter(e=>e.data===data), d.gastos.filter(g=>g.data===data), 'rentaDiaResult', `dia ${fmtDate(data)}`);
+// CALCULADORA
+let calcPlat='iFood',retornoOn=false,cronoRunning=false,cronoStart=0,cronoElapsed=0,cronoInterval=null;
+function selCalcPlat(p){
+  calcPlat=p;
+  ['iFood','99','Particular'].forEach(x=>{const t=document.getElementById('ctab-'+x);t.className='plat-tab '+(x==='iFood'?'pt-ifood':x==='99'?'pt-99':'pt-part');if(x===p)t.classList.add('on');});
+  calcR();
 }
-
-function calcPeriodo() {
-  const ini = document.getElementById('rentaIni').value;
-  const fim = document.getElementById('rentaFim').value;
-  if (!ini||!fim) return;
-  const d = get();
-  renderRenta(d.entregas.filter(e=>e.data>=ini&&e.data<=fim), d.gastos.filter(g=>g.data>=ini&&g.data<=fim), 'rentaPeriodoResult', `${fmtDate(ini)} a ${fmtDate(fim)}`);
+function togRetorno(){retornoOn=!retornoOn;document.getElementById('swRetorno').classList.toggle('on',retornoOn);calcR();}
+function calcR(){
+  const val=parseFloat(document.getElementById('cVal').value)||0,kmBase=parseFloat(document.getElementById('cKm').value)||0,meta=parseFloat(document.getElementById('cMeta').value)||1.0;
+  const kmReal=retornoOn?kmBase*2:kmBase,custo=cpkm()*kmReal,real=val-custo,porkm=kmReal>0?real/kmReal:0;
+  const res=document.getElementById('calcResult'),verdict=document.getElementById('crVerdict'),realEl=document.getElementById('crReal'),perkm=document.getElementById('crPerKm'),btn=document.getElementById('btnAceitar');
+  if(!val&&!kmBase){res.className='calc-result cr-empty';verdict.textContent='Digite valor e km acima';verdict.className='cr-verdict c-text';realEl.textContent='R$ --';realEl.style.color='var(--text3)';perkm.textContent='-- por km';['crBruto','crCusto','crKmTxt'].forEach(id=>document.getElementById(id).textContent='--');btn.disabled=true;return;}
+  const ok=kmReal>0?porkm>=meta:real>=0;
+  res.className='calc-result '+(ok?'cr-ok':'cr-nok');
+  verdict.textContent=ok?'VALE A PENA!':'NAO VALE';verdict.className='cr-verdict '+(ok?'c-green':'c-red');
+  realEl.textContent=fmtM(real);realEl.style.color=ok?'var(--green)':'var(--red)';
+  perkm.textContent=kmReal>0?`${fmtM(porkm)}/km - meta: ${fmtM(meta)}/km`:'KM nao informado';
+  document.getElementById('crBruto').textContent=fmtM(val);
+  document.getElementById('crCusto').textContent='- '+fmtM(custo);
+  document.getElementById('crKmTxt').textContent=kmReal.toFixed(1)+'km'+(retornoOn?' (ida+volta)':'');
+  btn.disabled=!val;btn.textContent=ok?'ACEITAR E SALVAR':'SALVAR MESMO ASSIM';
+  updateCronoResult();
 }
-
-function renderRenta(ents, gsts, id, label) {
-  const el = document.getElementById(id);
-  if (!ents.length && !gsts.length) { el.innerHTML = '<p style="color:var(--text3);font-size:13px;text-align:center;padding:16px;">Sem dados para este período.</p>'; return; }
-  const bruto = ents.reduce((s,e)=>s+e.valor,0);
-  const km = ents.reduce((s,e)=>s+(e.km||0),0);
-  const custoKm = cpkm() * km;
-  const gastos = gsts.reduce((s,g)=>s+g.valor,0);
-  const real = bruto - custoKm;
-  const liquido = real - gastos;
-  const ok = liquido >= 0;
-  el.innerHTML = `
-    <div class="renta-grid">
-      <div class="renta-result-card"><div class="rl">Entregas</div><div class="rv" style="color:var(--blue)">${ents.length}</div></div>
-      <div class="renta-result-card"><div class="rl">KM total</div><div class="rv">${km.toFixed(1)}km</div></div>
-      <div class="renta-result-card"><div class="rl">Ganho bruto</div><div class="rv" style="color:var(--text)">${fmtMoney(bruto)}</div></div>
-      <div class="renta-result-card"><div class="rl">Custo km</div><div class="rv" style="color:var(--red)">-${fmtMoney(custoKm)}</div></div>
-      <div class="renta-result-card"><div class="rl">Ganho real</div><div class="rv" style="color:var(--accent)">${fmtMoney(real)}</div></div>
-      <div class="renta-result-card"><div class="rl">Outros gastos</div><div class="rv" style="color:var(--red)">-${fmtMoney(gastos)}</div></div>
-    </div>
-    <div style="background:${ok?'rgba(34,197,94,0.1)':'rgba(239,68,68,0.1)'};border:1px solid ${ok?'rgba(34,197,94,0.3)':'rgba(239,68,68,0.3)'};border-radius:12px;padding:14px;display:flex;justify-content:space-between;align-items:center;">
-      <div>
-        <div style="font-size:12px;color:var(--text3);margin-bottom:4px;">Lucro líquido (${label})</div>
-        <div style="font-family:'Bebas Neue',sans-serif;font-size:30px;color:${ok?'var(--green)':'var(--red)'};">${fmtMoney(liquido)}</div>
-      </div>
-      <div style="font-size:36px">${ok?'✅':'❌'}</div>
-    </div>
-    <p style="text-align:center;font-size:13px;font-weight:700;color:${ok?'var(--green)':'var(--red)'};margin-top:10px;">${ok?'🤑 Compensou trabalhar!':'😞 Não compensou. Revise os gastos.'}</p>`;
+function cronoToggle(){
+  if(!cronoRunning){cronoStart=Date.now()-cronoElapsed;cronoRunning=true;document.getElementById('cronoBtnStart').textContent='Pausar';document.getElementById('cronoBtnStart').className='crono-btn cb-stop';cronoInterval=setInterval(updateCrono,500);}
+  else{cronoElapsed=Date.now()-cronoStart;cronoRunning=false;clearInterval(cronoInterval);document.getElementById('cronoBtnStart').textContent='Continuar';document.getElementById('cronoBtnStart').className='crono-btn cb-start';updateCronoResult();}
 }
-
-// ===== DASHBOARD =====
-function renderDash() {
-  const d = get();
-  const hoje = todayStr();
-  const mes = hoje.slice(0,7);
-  const eHoje = d.entregas.filter(e=>e.data===hoje);
-  const eMes = d.entregas.filter(e=>e.data.startsWith(mes));
-  const gMes = d.gastos.filter(g=>g.data.startsWith(mes));
-  const brutoHoje = eHoje.reduce((s,e)=>s+e.valor,0);
-  const brutoMes = eMes.reduce((s,e)=>s+e.valor,0);
-  const gastosMes = gMes.reduce((s,g)=>s+g.valor,0);
-  const kmMes = eMes.reduce((s,e)=>s+(e.km||0),0);
-  const liquido = brutoMes - cpkm()*kmMes - gastosMes;
-
-  document.getElementById('dashCards').innerHTML = `
-    <div class="stat-card orange"><div class="stat-icon">☀️</div><div class="stat-label">Hoje (bruto)</div><div class="stat-value">${fmtMoney(brutoHoje)}</div><div class="stat-sub">${eHoje.length} entregas</div></div>
-    <div class="stat-card green"><div class="stat-icon">📅</div><div class="stat-label">Mês (bruto)</div><div class="stat-value">${fmtMoney(brutoMes)}</div><div class="stat-sub">${eMes.length} entregas</div></div>
-    <div class="stat-card red"><div class="stat-icon">💸</div><div class="stat-label">Gastos mês</div><div class="stat-value">${fmtMoney(gastosMes)}</div><div class="stat-sub">${gMes.length} lançamentos</div></div>
-    <div class="stat-card ${liquido>=0?'blue':'red'}"><div class="stat-icon">💰</div><div class="stat-label">Lucro mês</div><div class="stat-value">${fmtMoney(liquido)}</div><div class="stat-sub">${kmMes.toFixed(1)}km rodados</div></div>`;
-
-  const c = cpkm();
-  const ultE = d.entregas.slice(0,3);
-  document.getElementById('dashEntregas').innerHTML = ultE.length ? ultE.map(e=>{
-    const real = e.valor - c*(e.km||0);
-    const bc = e.plataforma==='iFood'?'badge-ifood':e.plataforma==='99'?'badge-99':'badge-particular';
-    return `<div class="list-item">
-      <div style="font-size:24px;flex-shrink:0">${e.plataforma==='iFood'?'🔴':e.plataforma==='99'?'🟡':'🟢'}</div>
-      <div class="list-item-main">
-        <div class="list-item-title">${e.destino}</div>
-        <div class="list-item-sub">${fmtDate(e.data)} · <span class="badge ${bc}">${e.plataforma}</span></div>
-      </div>
-      <div class="list-item-right"><div class="list-item-value ${real>=0?'money-positive':'money-negative'}">${fmtMoney(real)}</div><div class="list-item-sub2">real</div></div>
-    </div>`;
-  }).join('') : '<div class="empty-state" style="padding:24px"><div class="emoji" style="font-size:32px">📦</div><p style="font-size:13px">Nenhuma entrega ainda</p></div>';
-
-  const ultG = d.gastos.slice(0,3);
-  document.getElementById('dashGastos').innerHTML = ultG.length ? ultG.map(g=>
-    `<div class="list-item">
-      <div style="font-size:24px;flex-shrink:0">${catEmoji[g.categoria]||'📦'}</div>
-      <div class="list-item-main">
-        <div class="list-item-title">${g.descricao}</div>
-        <div class="list-item-sub">${fmtDate(g.data)}</div>
-      </div>
-      <div class="list-item-right"><div class="list-item-value money-negative">-${fmtMoney(g.valor)}</div></div>
-    </div>`
-  ).join('') : '<div class="empty-state" style="padding:24px"><div class="emoji" style="font-size:32px">💸</div><p style="font-size:13px">Nenhum gasto ainda</p></div>';
+function cronoReset(){clearInterval(cronoInterval);cronoRunning=false;cronoStart=0;cronoElapsed=0;document.getElementById('cronoDisplay').textContent='00:00';document.getElementById('cronoBtnStart').textContent='Iniciar';document.getElementById('cronoBtnStart').className='crono-btn cb-start';document.getElementById('cronoResult').textContent='';document.getElementById('crHoraRow').style.display='none';}
+function updateCrono(){const e=cronoRunning?Date.now()-cronoStart:cronoElapsed,s=Math.floor(e/1000),m=Math.floor(s/60).toString().padStart(2,'0'),sec=(s%60).toString().padStart(2,'0');document.getElementById('cronoDisplay').textContent=`${m}:${sec}`;}
+function updateCronoResult(){
+  const elapsed=cronoRunning?Date.now()-cronoStart:cronoElapsed;if(!elapsed)return;
+  const val=parseFloat(document.getElementById('cVal').value)||0,km=parseFloat(document.getElementById('cKm').value)||0;
+  const custo=cpkm()*(retornoOn?km*2:km),real=val-custo,horas=elapsed/3600000;
+  if(horas>0&&val>0){const porHora=real/horas;document.getElementById('crHora').textContent=fmtM(porHora)+'/h';document.getElementById('crHoraRow').style.display='flex';const mins=Math.floor(elapsed/60000);document.getElementById('cronoResult').textContent=`Tempo: ${Math.floor(mins/60)?Math.floor(mins/60)+'h ':''}${mins%60}min -> ${fmtM(porHora)}/hora`;}
 }
-
-// ===== CONFIG =====
-function initConfig() {
-  const d = get();
-  document.getElementById('cfgKm').value = d.config.kmPorLitro || '';
-  document.getElementById('cfgGas').value = d.config.precoGas || '';
+function aceitarEntrega(){
+  const val=parseFloat(document.getElementById('cVal').value);if(!val||val<=0){toast('Digite o valor!','err');return;}
+  const km=parseFloat(document.getElementById('cKm').value)||0,dest=document.getElementById('cDest').value||'--',now=new Date();
+  const d=get();
+  d.entregas.unshift({id:uid(),data:today(),hora:now.toTimeString().slice(0,5),plataforma:calcPlat,valor:val,destino:dest,km});
+  save('e',d.entregas);closeSheet('sheetCalc');toast('Entrega salva!');
+  ['cVal','cKm','cDest'].forEach(id=>document.getElementById(id).value='');
+  retornoOn=false;document.getElementById('swRetorno').classList.remove('on');
+  cronoReset();calcR();
+  if(curPage==='dashboard')renderDash();if(curPage==='entregas')renderEntregas();
 }
-
-function salvarConfigFull() {
-  const km = parseFloat(document.getElementById('cfgKm').value);
-  const gas = parseFloat(document.getElementById('cfgGas').value);
-  if (!km||!gas) { toast('Preencha os campos!','error'); return; }
-  const d = get();
-  d.config.kmPorLitro = km;
-  d.config.precoGas = gas;
-  save('config', d.config);
-  toast('Configurações salvas!');
+// RENTABILIDADE
+function initRenta(){const d=get();document.getElementById('rKm').value=d.config.kmPorLitro||'';document.getElementById('rGas').value=d.config.precoGas||'';atualizarCusto();document.getElementById('rentaData').value=today();calcDia();}
+function salvarCfgRenta(){const km=parseFloat(document.getElementById('rKm').value),gas=parseFloat(document.getElementById('rGas').value);const d=get();if(km)d.config.kmPorLitro=km;if(gas)d.config.precoGas=gas;save('cfg',d.config);atualizarCusto();}
+function atualizarCusto(){document.getElementById('rCusto').textContent='R$ '+cpkm().toFixed(4)+'/km';}
+function calcDia(){const data=document.getElementById('rentaData').value;if(!data)return;const d=get();renderRenta(d.entregas.filter(e=>e.data===data),d.gastos.filter(g=>g.data===data),'rentaDiaResult',`dia ${fmtDate(data)}`);}
+function calcPeriodo(){const ini=document.getElementById('rentaIni').value,fim=document.getElementById('rentaFim').value;if(!ini||!fim)return;const d=get();renderRenta(d.entregas.filter(e=>e.data>=ini&&e.data<=fim),d.gastos.filter(g=>g.data>=ini&&g.data<=fim),'rentaPeriodoResult',`${fmtDate(ini)} a ${fmtDate(fim)}`);}
+function renderRenta(ents,gsts,id,label){
+  const el=document.getElementById(id);if(!ents.length&&!gsts.length){el.innerHTML='<p style="color:var(--text3);font-size:13px;text-align:center;padding:14px;">Sem dados.</p>';return;}
+  const bruto=ents.reduce((s,e)=>s+e.valor,0),km=ents.reduce((s,e)=>s+(e.km||0),0),custoKm=cpkm()*km,gastos=gsts.reduce((s,g)=>s+g.valor,0),real=bruto-custoKm,liq=real-gastos,ok=liq>=0;
+  el.innerHTML=`<div class="cards-grid" style="grid-template-columns:1fr 1fr;margin-top:10px;"><div class="stat-card sc-blue"><div class="stat-lbl">Entregas</div><div class="stat-val">${ents.length}</div></div><div class="stat-card sc-orange"><div class="stat-lbl">KM total</div><div class="stat-val">${km.toFixed(1)}</div></div><div class="stat-card sc-green"><div class="stat-lbl">Ganho bruto</div><div class="stat-val" style="font-size:18px;">${fmtM(bruto)}</div></div><div class="stat-card sc-red"><div class="stat-lbl">Custo KM</div><div class="stat-val" style="font-size:18px;">-${fmtM(custoKm)}</div></div></div><div style="background:${ok?'rgba(34,197,94,.1)':'rgba(239,68,68,.1)'};border:1px solid ${ok?'rgba(34,197,94,.3)':'rgba(239,68,68,.3)'};border-radius:13px;padding:14px;display:flex;justify-content:space-between;align-items:center;margin-top:4px;"><div><div style="font-size:11px;color:var(--text3);margin-bottom:4px;">Lucro liquido (${label})</div><div style="font-family:'Bebas Neue',sans-serif;font-size:30px;color:${ok?'var(--green)':'var(--red)'};">${fmtM(liq)}</div><div style="font-size:11px;color:var(--text3);">Gastos extras: -${fmtM(gastos)}</div></div><div style="font-size:36px;">${ok?'OK':'X'}</div></div><p style="text-align:center;font-size:13px;font-weight:700;color:${ok?'var(--green)':'var(--red)'};margin-top:8px;">${ok?'Compensou trabalhar!':'Nao compensou. Revise os gastos.'}</p>`;
 }
-
-function exportar() {
-  const blob = new Blob([JSON.stringify(get(), null, 2)], { type: 'application/json' });
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement('a');
-  a.href = url;
-  a.download = 'motocontrole_backup_' + todayStr() + '.json';
-  a.click();
-  URL.revokeObjectURL(url);
-  toast('Backup exportado!');
+// DASHBOARD
+function renderDash(){
+  const d=get(),hoje=today(),mes=hoje.slice(0,7);
+  const eHoje=d.entregas.filter(e=>e.data===hoje),eMes=d.entregas.filter(e=>e.data.startsWith(mes)),gMes=d.gastos.filter(g=>g.data.startsWith(mes));
+  const brutoHoje=eHoje.reduce((s,e)=>s+e.valor,0),brutoMes=eMes.reduce((s,e)=>s+e.valor,0),gastosMes=gMes.reduce((s,g)=>s+g.valor,0);
+  const kmMes=eMes.reduce((s,e)=>s+(e.km||0),0),realHoje=eHoje.reduce((s,e)=>s+e.valor-cpkm()*(e.km||0),0),liq=brutoMes-cpkm()*kmMes-gastosMes;
+  const metaDia=d.config.metaDia||0,metaMes=d.config.metaMes||0;
+  let metasHtml='';
+  if(metaDia>0){const pct=Math.min(100,(realHoje/metaDia)*100),done=pct>=100;metasHtml+=`<div class="progress-wrap"><div class="progress-header"><span class="progress-title">Meta de hoje</span><span class="progress-vals">${fmtM(realHoje)} / ${fmtM(metaDia)}</span></div><div class="progress-bar-bg"><div class="progress-bar-fill ${done?'done':''}" style="width:${pct}%"></div></div><div class="progress-sub">${done?'Meta atingida!':'Faltam '+fmtM(metaDia-realHoje)}</div></div>`;}
+  if(metaMes>0){const pct=Math.min(100,(liq/metaMes)*100),done=pct>=100;metasHtml+=`<div class="progress-wrap"><div class="progress-header"><span class="progress-title">Meta do mes</span><span class="progress-vals">${fmtM(Math.max(0,liq))} / ${fmtM(metaMes)}</span></div><div class="progress-bar-bg"><div class="progress-bar-fill ${done?'done':''}" style="width:${Math.max(0,pct)}%"></div></div><div class="progress-sub">${done?'Meta atingida!':liq<0?'No negativo':'Faltam '+fmtM(metaMes-liq)}</div></div>`;}
+  if(!metaDia&&!metaMes)metasHtml=`<div style="text-align:center;padding:6px;margin-bottom:10px;font-size:12px;color:var(--text3);">Defina suas <a onclick="showPage('config')" style="color:var(--accent);cursor:pointer;">metas</a> nas configuracoes</div>`;
+  document.getElementById('metasSection').innerHTML=metasHtml;
+  document.getElementById('dashCards').innerHTML=`<div class="stat-card sc-orange"><div class="stat-ico">&#9728;&#65039;</div><div class="stat-lbl">Hoje (real)</div><div class="stat-val" style="font-size:20px;">${fmtM(realHoje)}</div><div class="stat-sub">${eHoje.length} entregas</div></div><div class="stat-card sc-green"><div class="stat-ico">&#128197;</div><div class="stat-lbl">Mes (bruto)</div><div class="stat-val" style="font-size:20px;">${fmtM(brutoMes)}</div><div class="stat-sub">${eMes.length} entregas</div></div><div class="stat-card sc-red"><div class="stat-ico">&#128184;</div><div class="stat-lbl">Gastos mes</div><div class="stat-val" style="font-size:20px;">${fmtM(gastosMes)}</div><div class="stat-sub">${gMes.length} itens</div></div><div class="stat-card ${liq>=0?'sc-blue':'sc-red'}"><div class="stat-ico">&#128176;</div><div class="stat-lbl">Lucro mes</div><div class="stat-val" style="font-size:20px;">${fmtM(liq)}</div><div class="stat-sub">${kmMes.toFixed(0)}km</div></div>`;
+  renderChart7Dias(d.entregas);renderRankingPlat(d.entregas);
+  const c=cpkm(),ultE=d.entregas.slice(0,4);
+  document.getElementById('dashEntregas').innerHTML=ultE.length?ultE.map(e=>{const real=e.valor-c*(e.km||0);const bc=e.plataforma==='iFood'?'b-ifood':e.plataforma==='99'?'b-99':'b-particular';return `<div class="list-item"><div class="li-icon">${e.plataforma==='iFood'?'&#128308;':e.plataforma==='99'?'&#128993;':'&#128994;'}</div><div class="li-main"><div class="li-title">${e.destino}</div><div class="li-sub">${fmtDate(e.data)} &middot; <span class="badge ${bc}">${e.plataforma}</span></div></div><div class="li-right"><div class="li-val ${real>=0?'c-green':'c-red'}">${fmtM(real)}</div><div class="li-sub2">real</div></div></div>`;}).join(''):'<div style="text-align:center;padding:30px;color:var(--text3)"><div style="font-size:32px">&#128230;</div><p style="font-size:13px;margin-top:6px;">Sem entregas. Toque para comecar!</p></div>';
 }
-
-function importar(e) {
-  const file = e.target.files[0];
-  if (!file) return;
-  const reader = new FileReader();
-  reader.onload = ev => {
-    try {
-      const data = JSON.parse(ev.target.result);
-      if (data.entregas) save('entregas', data.entregas);
-      if (data.gastos) save('gastos', data.gastos);
-      if (data.multas) save('multas', data.multas);
-      if (data.config) save('config', data.config);
-      toast('Dados importados!');
-      renderDash();
-    } catch { toast('Arquivo inválido!','error'); }
-  };
-  reader.readAsText(file);
+function renderChart7Dias(entregas){
+  const dias=[];
+  for(let i=6;i>=0;i--){const d=new Date();d.setDate(d.getDate()-i);const str=d.toISOString().split('T')[0];const label=['D','S','T','Q','Q','S','S'][d.getDay()];const val=entregas.filter(e=>e.data===str).reduce((s,e)=>s+e.valor,0);dias.push({str,label,val});}
+  const maxVal=Math.max(...dias.map(d=>d.val),1);
+  const el=document.getElementById('chartSemanal');
+  if(dias.every(d=>d.val===0)){el.innerHTML='<div style="color:var(--text3);font-size:12px;width:100%;text-align:center;padding-top:30px;">Sem dados nos ultimos 7 dias</div>';return;}
+  el.innerHTML='<div class="chart-base"></div>'+dias.map(d=>{
+    const h=Math.max(4,Math.round((d.val/maxVal)*84)),isToday=d.str===today();
+    return `<div class="bar-col"><div class="bar bar-total" style="height:${h}px;opacity:${d.val===0?.3:1}${isToday?';background:linear-gradient(180deg,#fb923c,rgba(249,115,22,.3))':''};">${d.val>0?`<div class="bar-val" style="${isToday?'color:var(--accent);':''}">${d.val>=100?Math.round(d.val):d.val.toFixed(0)}</div>`:''}</div><div class="bar-label" style="${isToday?'color:var(--accent);font-weight:800;':''}">${d.label}${isToday?'*':''}</div></div>`;
+  }).join('');
 }
-
-function limparTudo() {
-  if (!confirm('Apagar TODOS os dados?')) return;
-  if (!confirm('Tem certeza? Faça um backup antes!')) return;
-  ['entregas','gastos','multas','config'].forEach(k => localStorage.removeItem('mc_'+k));
-  toast('Dados apagados.');
-  renderDash();
+function renderRankingPlat(entregas){
+  const stats={};
+  entregas.forEach(e=>{if(!stats[e.plataforma])stats[e.plataforma]={bruto:0,real:0,km:0,count:0};const custo=cpkm()*(e.km||0);stats[e.plataforma].bruto+=e.valor;stats[e.plataforma].real+=e.valor-custo;stats[e.plataforma].km+=e.km||0;stats[e.plataforma].count++;});
+  const sorted=Object.entries(stats).sort((a,b)=>{const rA=a[1].km>0?a[1].real/a[1].km:a[1].real;const rB=b[1].km>0?b[1].real/b[1].km:b[1].real;return rB-rA;});
+  const el=document.getElementById('rankingPlat');
+  if(!sorted.length){el.innerHTML='<div style="color:var(--text3);font-size:12px;text-align:center;padding:10px;">Sem entregas ainda</div>';return;}
+  const medals=['&#127945;','&#129352;','&#129353;'],mc=['gold','silver','bronze'];
+  el.innerHTML=sorted.map(([plat,s],i)=>{const rkm=s.km>0?s.real/s.km:0;const em=plat==='iFood'?'&#128308;':plat==='99'?'&#128993;':'&#128994;';return `<div class="rank-item"><div class="rank-pos ${mc[i]||''}">${medals[i]||i+1}</div><div style="font-size:18px;">${em}</div><div class="rank-info"><div class="rank-name">${plat}</div><div class="rank-sub">${s.count} entregas &middot; ${s.km.toFixed(0)}km</div></div><div style="text-align:right;"><div class="rank-val">${fmtM(s.real)}</div><div style="font-size:10px;color:var(--text3);">${rkm>0?fmtM(rkm)+'/km':'--'}</div></div></div>`;}).join('');
 }
-
-// ===== CALCULADORA RÁPIDA =====
-let calcPlat = 'iFood';
-let retornoOn = false;
-
-function selectCalcPlat(plat) {
-  calcPlat = plat;
-  document.querySelectorAll('.plat-tab').forEach(t => {
-    t.className = 'plat-tab';
-  });
-  const cls = plat === 'iFood' ? 'active-ifood' : plat === '99' ? 'active-99' : 'active-particular';
-  document.getElementById('ctab-' + plat).classList.add(cls);
-  calcRapida();
-}
-
-function toggleRetorno() {
-  retornoOn = !retornoOn;
-  const sw = document.getElementById('switchRetorno');
-  sw.classList.toggle('on', retornoOn);
-  calcRapida();
-}
-
-function calcRapida() {
-  const val = parseFloat(document.getElementById('cVal').value) || 0;
-  const kmBase = parseFloat(document.getElementById('cKm').value) || 0;
-  const meta = parseFloat(document.getElementById('cMeta').value) || 1.0;
-  const kmReal = retornoOn ? kmBase * 2 : kmBase;
-  const custo = cpkm() * kmReal;
-  const ganhoReal = val - custo;
-  const porkm = kmReal > 0 ? ganhoReal / kmReal : 0;
-
-  const result = document.getElementById('calcResult');
-  const verdict = document.getElementById('calcVerdict');
-  const realVal = document.getElementById('calcRealVal');
-  const perKm = document.getElementById('calcPerKm');
-  const crBruto = document.getElementById('crBruto');
-  const crCusto = document.getElementById('crCusto');
-  const crKm = document.getElementById('crKm');
-  const btnAceitar = document.getElementById('btnAceitar');
-
-  if (!val && !kmBase) {
-    result.className = 'calc-result empty';
-    verdict.className = 'calc-verdict empty';
-    verdict.textContent = '⚡ Digite o valor e os km';
-    realVal.className = 'calc-real-value empty';
-    realVal.textContent = 'R$ —';
-    perKm.textContent = '— por km rodado';
-    crBruto.textContent = '—';
-    crCusto.textContent = '—';
-    crKm.textContent = '—';
-    btnAceitar.disabled = true;
-    return;
-  }
-
-  const ok = kmReal > 0 ? (porkm >= meta) : (ganhoReal >= 0);
-
-  result.className = 'calc-result ' + (ok ? 'ok' : 'nok');
-  verdict.className = 'calc-verdict ' + (ok ? 'ok' : 'nok');
-  verdict.textContent = ok ? '✅ VALE A PENA!' : '❌ NÃO VALE';
-  realVal.className = 'calc-real-value ' + (ok ? 'ok' : 'nok');
-  realVal.textContent = fmtMoney(ganhoReal);
-  perKm.textContent = kmReal > 0 ? (fmtMoney(porkm) + ' por km · meta: ' + fmtMoney(meta) + '/km') : 'KM não informado';
-  crBruto.textContent = fmtMoney(val);
-  crCusto.textContent = '- ' + fmtMoney(custo);
-  crKm.textContent = kmReal.toFixed(1) + ' km' + (retornoOn ? ' (ida+volta)' : '');
-
-  btnAceitar.disabled = !val;
-  btnAceitar.textContent = ok ? '✅ ACEITAR E SALVAR' : '⚠️ SALVAR MESMO ASSIM';
-}
-
-function aceitarEntrega() {
-  const val = parseFloat(document.getElementById('cVal').value);
-  const kmBase = parseFloat(document.getElementById('cKm').value) || 0;
-  const dest = document.getElementById('cDest').value || '—';
-  if (!val || val <= 0) { toast('Digite o valor da entrega!', 'error'); return; }
-
-  const now = new Date();
-  const d = get();
-  d.entregas.unshift({
-    id: uid(),
-    data: todayStr(),
-    hora: now.toTimeString().slice(0,5),
-    plataforma: calcPlat,
-    valor: val,
-    destino: dest,
-    km: kmBase
-  });
-  save('entregas', d.entregas);
-  closeSheet('sheetCalc');
-  toast('Entrega salva com sucesso! 🏍');
-
-  // reset
-  document.getElementById('cVal').value = '';
-  document.getElementById('cKm').value = '';
-  document.getElementById('cDest').value = '';
-  retornoOn = false;
-  document.getElementById('switchRetorno').classList.remove('on');
-  calcRapida();
-
-  if (currentPage === 'dashboard') renderDash();
-  if (currentPage === 'entregas') renderEntregas();
-}
-
-function openCalcSheet() {
-  openSheet('sheetCalc');
-  // auto focus valor after animation
-  setTimeout(() => {
-    const el = document.getElementById('cVal');
-    if (el) el.focus();
-  }, 350);
-}
-
-// ===== SW REGISTER =====
-if ('serviceWorker' in navigator) {
-  navigator.serviceWorker.register('sw.js').catch(() => {});
-}
-
-// ===== INIT =====
-document.getElementById('fabBtn').style.display = 'none';
+// CONFIG
+function initConfig(){const d=get();document.getElementById('cfgKm').value=d.config.kmPorLitro||'';document.getElementById('cfgGas').value=d.config.precoGas||'';document.getElementById('cfgHodo').value=d.config.hodo||'';document.getElementById('cfgMetaDia').value=d.config.metaDia||'';document.getElementById('cfgMetaMes').value=d.config.metaMes||'';}
+function salvarCfgFull(){const km=parseFloat(document.getElementById('cfgKm').value),gas=parseFloat(document.getElementById('cfgGas').value);if(!km||!gas){toast('Preencha km/litro e preco!','err');return;}const d=get();d.config.kmPorLitro=km;d.config.precoGas=gas;d.config.hodo=parseFloat(document.getElementById('cfgHodo').value)||d.config.hodo||0;save('cfg',d.config);toast('Configuracoes salvas!');}
+function salvarMetas(){const d=get();d.config.metaDia=parseFloat(document.getElementById('cfgMetaDia').value)||0;d.config.metaMes=parseFloat(document.getElementById('cfgMetaMes').value)||0;save('cfg',d.config);toast('Metas salvas!');}
+function exportar(){const blob=new Blob([JSON.stringify(get(),null,2)],{type:'application/json'});const url=URL.createObjectURL(blob);const a=document.createElement('a');a.href=url;a.download='motocontrole_backup_'+today()+'.json';a.click();URL.revokeObjectURL(url);toast('Backup exportado!');}
+function importar(e){const file=e.target.files[0];if(!file)return;const reader=new FileReader();reader.onload=ev=>{try{const data=JSON.parse(ev.target.result);if(data.entregas)save('e',data.entregas);if(data.gastos)save('g',data.gastos);if(data.multas)save('m',data.multas);if(data.manut)save('mn',data.manut);if(data.abast)save('ab',data.abast);if(data.config)save('cfg',data.config);toast('Dados importados!');renderDash();}catch{toast('Arquivo invalido!','err');}};reader.readAsText(file);}
+function limparTudo(){if(!confirm('Apagar TODOS os dados?'))return;if(!confirm('Ultima chance - tem backup?'))return;['e','g','m','mn','ab','cfg'].forEach(k=>localStorage.removeItem('mc_'+k));toast('Dados apagados.');renderDash();}
+if('serviceWorker' in navigator)navigator.serviceWorker.register('./sw.js').catch(()=>{});
+document.getElementById('fabBtn').style.display='none';
 renderDash();
 </script>
 </body>
